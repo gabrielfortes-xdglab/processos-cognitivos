@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temas Transversais · Evolução da cognição</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <span class="stage theme active">Evolução da cognição</span>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Evolução da cognição</h2>
+  <p class="muted">A cognição é uma <b>adaptação</b>: foi esculpida pela seleção natural para resolver os problemas que o ambiente impôs. Duas partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · Seleção e adaptação</button>
+    <button data-tab="m2" aria-pressed="false">2 · O cérebro no tempo</button>
+  </div>
+
+  <!-- M1 -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Seleção natural e pressão evolutiva</div>
+      Variações herdáveis que ajudam a sobreviver e a se reproduzir tendem a se espalhar pelas gerações. Quando o ambiente impõe um problema (achar comida, evitar predador, viver em grupo), capacidades cognitivas que o resolvem são <b>selecionadas</b>. A cognição tem custos: o cérebro é caro, exige infância longa e dificulta o parto.
+    </div>
+
+    <h3>Jogo: pressão evolutiva → adaptação</h3>
+    <p class="how">Para cada mudança ambiental, escolha a adaptação cognitiva que mais ajuda a sobreviver.</p>
+    <div class="gamehead" style="display:flex; gap:14px; font-size:13px; color:var(--text-secondary); margin-bottom:8px"><span>Desafio <b id="ev-i" style="color:var(--text-primary)">1</b> / 5</span><span>Sobreviveu: <b id="ev-s" style="color:var(--text-success)">0</b></span></div>
+    <div id="ev-stage" style="min-height:150px; background:var(--surface-1); border-radius:10px; padding:1rem"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Cada pressão do ambiente seleciona uma capacidade diferente: memória espacial para recursos que mudam, detecção de ameaça contra predadores, cognição social para grupos grandes. A mente não é genérica: ela carrega soluções para os problemas dos nossos ancestrais (e daí vêm também os descompassos no mundo moderno).</div></div>
+    <div class="sources">Fontes: Darwin; psicologia evolucionista (Cosmides e Tooby); hipótese do cérebro social (Dunbar); princípio do detector de fumaça (Nesse). As adaptações aqui são ilustrativas; a seleção age sobre variação ao longo de gerações.</div>
+  </section>
+
+  <!-- M2 -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">A encefalização</div>
+      Ao longo da linhagem humana, o volume do cérebro cresceu e novas capacidades surgiram. Mas tamanho não é tudo: organização, conexões e <b>cultura cumulativa</b> importam tanto quanto.
+    </div>
+
+    <h3>Percorra a linhagem</h3>
+    <div style="display:flex; align-items:center; gap:12px; margin:1rem 0"><span style="font-size:14px; color:var(--text-secondary)">Tempo</span><input type="range" id="ev-h" min="0" max="4" value="0" step="1" style="flex:1"></div>
+    <div id="ev-hom" style="background:var(--surface-1); border-radius:10px; padding:1rem"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">O crescimento do cérebro acompanha o surgimento de ferramentas, fogo, linguagem e símbolos. Mas repare: o Neandertal tinha volume até maior que o nosso. O salto humano não é só tamanho, é a capacidade de acumular e transmitir cultura.</div></div>
+    <div class="sources">Fontes: volumes endocranianos de hominídeos (aproximados); tecido caro (Aiello e Wheeler); cozimento (Wrangham); cultura cumulativa (Tomasello).</div>
+  </section>
+
+  <footer>Protótipo · tema transversal · Evolução da cognição</footer>
+</div>
+
+<script>
+/* TABS */
+(function(){ const b=document.querySelectorAll('.subnav button'), s={m1:document.getElementById('m1'),m2:document.getElementById('m2')};
+  b.forEach(x=>x.onclick=()=>{ const t=x.dataset.tab; b.forEach(y=>y.setAttribute('aria-pressed',y===x)); for(const k in s) s[k].classList.toggle('hidden',k!==t); }); })();
+
+/* M1 JOGO */
+(function(){
+  const CHAL=[
+    {c:'A comida fica escondida em locais que mudam a cada estação.', a:'mem', w:'Memória espacial guarda onde estavam os recursos e atualiza com o tempo.'},
+    {c:'Predadores se escondem na vegetação da savana.', a:'ame', w:'Detecção rápida de ameaça (melhor errar para o lado seguro) salva vidas.'},
+    {c:'O grupo cresceu: é preciso saber em quem confiar e o que cada um pretende.', a:'soc', w:'Cognição social e teoria da mente coordenam a vida em grupo grande.'},
+    {c:'O alimento só é acessível quebrando uma casca muito dura.', a:'fer', w:'O uso de ferramentas abre nichos alimentares novos.'},
+    {c:'Vem uma seca previsível: é preciso guardar para depois.', a:'pla', w:'Planejar e antecipar o futuro permite estocar e migrar a tempo.'}
+  ];
+  const AD={mem:'Memória espacial', ame:'Detecção de ameaça', soc:'Cognição social', fer:'Uso de ferramentas', pla:'Planejamento'};
+  const g=id=>document.getElementById(id), stage=g('ev-stage'); let i=0, surv=0;
+  function show(){ if(i>=CHAL.length) return done(); const ch=CHAL[i]; g('ev-i').textContent=i+1;
+    stage.innerHTML='<div style="font-size:15px; margin-bottom:10px">'+ch.c+'</div><div style="display:flex; gap:6px; flex-wrap:wrap" id="ev-opts"></div><div id="ev-fb" style="font-size:14px; margin-top:10px; min-height:1.3em"></div>';
+    const op=g('ev-opts'); Object.keys(AD).forEach(k=>{ const b=document.createElement('button'); b.textContent=AD[k]; b.style.fontSize='13px'; b.onclick=()=>ans(k,ch); op.appendChild(b); }); }
+  function ans(k,ch){ const ok=k===ch.a; if(ok)surv++; g('ev-s').textContent=surv;
+    g('ev-fb').innerHTML=(ok?'<span style="color:var(--text-success)">Sobreviveu e se espalhou. </span>':'<span style="color:var(--text-danger)">Não foi a melhor escolha. </span>')+'A pressão favorece <b>'+AD[ch.a]+'</b>: '+ch.w;
+    g('ev-opts').querySelectorAll('button').forEach(b=>b.disabled=true);
+    const nx=document.createElement('button'); nx.textContent=i<CHAL.length-1?'Próximo desafio':'Ver resultado'; nx.style.marginTop='10px'; nx.onclick=()=>{i++;show();}; stage.appendChild(nx); }
+  function done(){ stage.innerHTML='<div style="font-size:16px; font-weight:500">Você sobreviveu a '+surv+' de '+CHAL.length+' pressões.</div><p style="font-size:14px; color:var(--text-secondary); margin-top:6px">Cada ambiente selecionou uma capacidade diferente: é assim que a cognição é esculpida ao longo das gerações.</p><button id="ev-again" style="margin-top:8px">Recomeçar</button>'; g('ev-i').textContent=CHAL.length; g('ev-again').onclick=()=>{i=0;surv=0;g('ev-s').textContent=0;show();}; }
+  show();
+})();
+
+/* M2 ENCEFALIZAÇÃO */
+(function(){
+  const HOM=[
+    {n:'Australopithecus', t:'~3,5 milhões de anos', cc:450, f:'Bipedia; uso ocasional de objetos.'},
+    {n:'Homo habilis', t:'~2,3 milhões de anos', cc:600, f:'Primeiras ferramentas de pedra (Oldowan).'},
+    {n:'Homo erectus', t:'~1,8 milhão de anos', cc:900, f:'Controle do fogo; ferramentas melhores; grandes deslocamentos.'},
+    {n:'Homo neanderthalensis', t:'~400 mil anos', cc:1400, f:'Ferramentas refinadas; sepultamento; possíveis símbolos.'},
+    {n:'Homo sapiens', t:'~300 mil anos até hoje', cc:1350, f:'Linguagem plena; arte e símbolos; cultura cumulativa.'}
+  ];
+  const sl=document.getElementById('ev-h'), box=document.getElementById('ev-hom');
+  function render(){ const h=HOM[+sl.value], pct=Math.round(h.cc/1500*100);
+    box.innerHTML='<div style="display:flex; justify-content:space-between; align-items:baseline"><div style="font-size:18px; font-weight:500; font-family:Newsreader,serif">'+h.n+'</div><div style="font-size:13px; color:var(--text-muted)">'+h.t+'</div></div>'+
+      '<div style="font-size:13px; color:var(--text-secondary); margin:8px 0 4px">Volume cerebral: ~'+h.cc+' cm³</div><div style="background:var(--surface-2); border-radius:999px; height:18px; overflow:hidden"><div style="height:100%; width:'+pct+'%; background:var(--text-accent); border-radius:999px; transition:width .3s"></div></div>'+
+      '<div style="font-size:14px; margin-top:10px">'+h.f+'</div>'; }
+  sl.oninput=render; render();
+})();
+</script>
+</body>
+</html>

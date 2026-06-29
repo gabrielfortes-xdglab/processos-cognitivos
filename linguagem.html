@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Linguagem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .card2{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.1rem; margin-top:1rem}
+  .ctag{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--teal); margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <span class="stage active">Linguagem<span class="arrow"> ›</span></span>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Linguagem</h2>
+  <p class="muted">A linguagem <b>codifica</b> e <b>decodifica</b> sentido por níveis de processamento; quando se rompe, falha de modos característicos; e estrutura o pensamento por metáforas. Este módulo tem três partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · Microprocessamento</button>
+    <button data-tab="m2" aria-pressed="false">2 · Afasias</button>
+    <button data-tab="m3" aria-pressed="false">3 · Metáforas</button>
+  </div>
+
+  <!-- ===================== MÓDULO 1 ===================== -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Decodificar e codificar</div>
+      Compreender a fala é <b>decodificar</b>: o sinal sobe por níveis (fonologia → léxico → sintaxe → semântica → pragmática). Produzir é o caminho inverso, <b>codificar</b>. Cada nível pode falhar de um jeito próprio.
+    </div>
+
+    <h3>A esteira do processamento</h3>
+    <p class="muted" style="margin-top:0">Escolha a direção e clique num nível para desligá-lo e ver a falha.</p>
+
+    <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap">
+      <button class="dir" data-d="comp" aria-pressed="true">Compreender (decodificar)</button>
+      <button class="dir" data-d="prod" aria-pressed="false">Produzir (codificar)</button>
+    </div>
+    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px">Níveis (clique para desligar):</div>
+    <div id="levels" style="display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin-bottom:12px"></div>
+    <div id="example" style="font-size:14px; color:var(--text-secondary); margin-bottom:8px"></div>
+    <button id="proc">Processar</button>
+    <div id="result" style="background:var(--surface-1); border-radius:10px; padding:.9rem 1.1rem; margin-top:12px; font-size:15px; min-height:2.6em"></div>
+
+    <div class="card2">
+      <div class="ctag">Decodificação da leitura · duas rotas</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px">
+        <button id="r-lex">Ler "CASA" (palavra conhecida)</button>
+        <button id="r-fon">Ler "BLERTO" (pseudopalavra)</button>
+      </div>
+      <div id="read" style="font-size:14px; color:var(--text-secondary); min-height:2.4em"></div>
+    </div>
+
+    <div class="sources">Fontes: produção da fala, Levelt (1989); modelo de dupla rota da leitura, Coltheart et al. (2001).</div>
+  </section>
+
+  <!-- ===================== MÓDULO 2 ===================== -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Quando o processamento se rompe</div>
+      Lesões em áreas da linguagem rompem o processamento de formas características. Compare dois perfis clássicos: <b>Broca</b> afeta a <b>produção</b>; <b>Wernicke</b> afeta a <b>compreensão</b>.
+    </div>
+
+    <h3>Simulador de afasia</h3>
+    <p class="muted" style="margin-top:0">Escolha o perfil e veja a mesma intenção virar fala diferente, e a compreensão ser preservada ou se perder.</p>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px">
+      <button class="mode" data-m="normal" aria-pressed="true">Sem afasia</button>
+      <button class="mode" data-m="broca" aria-pressed="false">Afasia de Broca</button>
+      <button class="mode" data-m="wernicke" aria-pressed="false">Afasia de Wernicke</button>
+    </div>
+    <div id="prof" style="background:var(--surface-1); border-radius:10px; padding:.9rem 1.1rem; margin-bottom:1.25rem; font-size:14px"></div>
+
+    <div class="card2" style="margin-top:0">
+      <div class="ctag">Produção (formar a frase)</div>
+      <div style="font-size:14px; color:var(--text-secondary); margin-bottom:8px">Monte a intenção clicando nas palavras:</div>
+      <div id="bank" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px"></div>
+      <div style="font-size:13px; color:var(--text-secondary)">Intenção: <span id="intent" style="color:var(--text-primary)">—</span></div>
+      <div style="display:flex; gap:8px; margin:10px 0"><button id="speak">Falar</button><button id="clr">Limpar</button></div>
+      <div style="font-size:13px; color:var(--text-secondary)">Sai como fala: <span id="out" style="font-size:17px; color:var(--text-primary)">—</span></div>
+      <div id="outnote" style="font-size:12px; color:var(--text-muted); margin-top:4px"></div>
+    </div>
+
+    <div class="card2">
+      <div class="ctag">Compreensão (entender a frase)</div>
+      <div style="font-size:14px; color:var(--text-secondary)">Você ouve:</div>
+      <div id="heard" style="font-size:18px; margin:4px 0 10px">—</div>
+      <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px">Quem realizou a ação (quem viu)?</div>
+      <div id="copts" style="display:flex; gap:8px; flex-wrap:wrap"></div>
+      <div id="cfb" style="font-size:13px; margin-top:10px; min-height:1.3em"></div>
+    </div>
+
+    <div class="sources">Fontes: Broca (1861); Wernicke (1874); modelo de Geschwind. A localização clássica Broca/Wernicke é uma simplificação didática; hoje a linguagem é entendida como redes mais distribuídas.</div>
+  </section>
+
+  <!-- ===================== MÓDULO 3 ===================== -->
+  <section id="m3" class="hidden">
+    <div class="def">
+      <div class="k">Metáfora conceitual</div>
+      Entendemos um domínio abstrato (<b>alvo</b>) nos termos de um concreto (<b>fonte</b>), por mapeamentos sistemáticos que moldam a linguagem e o pensamento (Lakoff e Johnson). Uma só metáfora gera muitas expressões, e quase não notamos.
+    </div>
+
+    <h3>Atlas de metáforas</h3>
+    <p class="muted" style="margin-top:0">Escolha uma metáfora e veja a fonte estruturar o alvo.</p>
+
+    <div id="picker" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px"></div>
+    <div style="display:flex; gap:10px; align-items:stretch; margin-bottom:14px">
+      <div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted)">Domínio-fonte</div><div id="fonte" style="font-size:18px; font-weight:500; margin-top:4px">—</div></div>
+      <div style="display:flex; align-items:center; color:var(--text-accent); font-size:13px; text-align:center">estrutura →</div>
+      <div style="flex:1; background:var(--bg-accent); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-accent)">Domínio-alvo</div><div id="alvo" style="font-size:18px; font-weight:500; margin-top:4px; color:var(--text-accent)">—</div></div>
+    </div>
+    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px">Mapeamentos (fonte → alvo):</div>
+    <div id="maps" style="display:grid; gap:6px; margin-bottom:14px"></div>
+    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px">Expressões que isso gera no dia a dia:</div>
+    <div id="exprs" style="display:flex; gap:6px; flex-wrap:wrap"></div>
+    <p id="note" style="font-size:12px; color:var(--text-muted); margin-top:1rem"></p>
+
+    <div class="sources">Fonte: Lakoff e Johnson, <i>Metáforas da Vida Cotidiana</i> (1980).</div>
+  </section>
+
+  <footer>Protótipo · módulo de Linguagem · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== TABS ===== */
+(function(){
+  const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); });
+})();
+
+/* ===== M1: ESTEIRA + LEITURA ===== */
+(function(){
+  const DATA={
+    comp:{ ex:'Você ouve: "o gato bebe leite"', ok:'Entendido: o gato (quem) bebe (ação) leite (o quê).',
+      levels:[ {k:'fon',l:'Fonologia',m:'Sem segmentar os sons, nada vira palavra: você ouve um borrão sonoro.'},
+        {k:'lex',l:'Léxico',m:'As palavras não são reconhecidas: sons sem acesso ao significado (lembra Wernicke).'},
+        {k:'sin',l:'Sintaxe',m:'Você pega as palavras soltas (gato, beber, leite), mas não quem faz o quê.'},
+        {k:'sem',l:'Semântica',m:'Monta a frase, mas não acessa o sentido do conjunto.'},
+        {k:'pra',l:'Pragmática',m:'Entende o literal, mas perde intenção e contexto (ironia, indireta).'} ] },
+    prod:{ ex:'Intenção: pedir água', ok:'«me vê uma água, por favor»',
+      levels:[ {k:'pra',l:'Intenção',m:'Sem intenção clara, não há o que dizer.'},
+        {k:'sem',l:'Semântica',m:'O conceito fica vago: você quer algo, mas não sabe o quê.'},
+        {k:'lex',l:'Léxico',m:'Não acha a palavra: "aquela coisa…" (anomia).'},
+        {k:'sin',l:'Sintaxe',m:'Sai telegráfico, sem estrutura: "água… querer…" (lembra Broca).'},
+        {k:'fon',l:'Fonologia/Articulação',m:'Os sons saem trocados ou não se articulam.'} ] }
+  };
+  let dir='comp'; const broken=new Set();
+  const lv=document.getElementById('levels'), ex=document.getElementById('example'), res=document.getElementById('result');
+  function renderLevels(){ lv.innerHTML=''; const L=DATA[dir].levels;
+    L.forEach((x,i)=>{ const c=document.createElement('button'); c.textContent=x.l; c.style.fontSize='13px';
+      if(broken.has(x.k)){ c.style.background='rgba(226,75,74,.15)'; c.style.borderColor='var(--text-danger)'; c.style.color='var(--text-danger)'; c.style.textDecoration='line-through'; }
+      c.onclick=()=>{ broken.has(x.k)?broken.delete(x.k):broken.add(x.k); renderLevels(); }; lv.appendChild(c);
+      if(i<L.length-1){ const a=document.createElement('span'); a.textContent='→'; a.style.color='var(--text-muted)'; lv.appendChild(a); } });
+    ex.textContent=DATA[dir].ex; }
+  function proc(){ const L=DATA[dir].levels, hit=L.find(x=>broken.has(x.k));
+    if(hit){ res.innerHTML='<span style="color:var(--text-danger)">Falhou em <b>'+hit.l+'</b>:</span> '+hit.m; }
+    else { res.innerHTML='<span style="color:var(--text-success)">'+DATA[dir].ok+'</span>'; } }
+  document.querySelectorAll('.dir').forEach(b=>b.onclick=()=>{ dir=b.dataset.d; document.querySelectorAll('.dir').forEach(x=>x.setAttribute('aria-pressed',x===b)); res.innerHTML=''; renderLevels(); });
+  document.getElementById('proc').onclick=proc; renderLevels();
+  const read=document.getElementById('read');
+  document.getElementById('r-lex').onclick=()=>{ read.innerHTML='<b style="color:var(--text-accent)">Rota lexical (direta):</b> a palavra já está no léxico, então é reconhecida inteira, de imediato → <b>CASA</b>. Rápida para palavras conhecidas e frequentes.'; };
+  document.getElementById('r-fon').onclick=()=>{ read.innerHTML='<b style="color:var(--text-accent)">Rota fonológica:</b> palavra nova, sem entrada no léxico; converte grafema→fonema, soletrando: B · L · E · R · T · O → /blérto/. Mais lenta, mas lê qualquer sequência.'; };
+})();
+
+/* ===== M2: AFASIAS ===== */
+(function(){
+  const PROF={
+    normal:{f:'Fala fluente · gramática preservada · compreensão preservada', x:'Linguagem preservada, de referência (sem afasia).'},
+    broca:{f:'Não-fluente e esforçada · agramatismo · compreensão preservada', x:'Consciência do déficit (frustração). Lesão na área de Broca (frontal inferior esq.).'},
+    wernicke:{f:'Fluente · mas vazia (parafasias e neologismos) · compreensão prejudicada', x:'Pouca consciência do déficit. Lesão na área de Wernicke (temporal superior post. esq.).'}
+  };
+  const TILES=[{w:'o',t:'f'},{w:'menino',t:'cn',neo:'tévalo'},{w:'chuta',t:'cv',inf:'chutar',neo:'flunca'},{w:'a',t:'f'},{w:'bola',t:'cn',neo:'bralinha'}];
+  let mode='normal', built=[]; const g=id=>document.getElementById(id);
+  const bank=g('bank'), intent=g('intent'), out=g('out'), outnote=g('outnote'), prof=g('prof'), heard=g('heard'), copts=g('copts'), cfb=g('cfb');
+  TILES.forEach((tl,i)=>{ const b=document.createElement('button'); b.textContent=tl.w; b.style.fontSize='14px'; b.onclick=()=>{ built.push(i); intent.textContent=built.map(j=>TILES[j].w).join(' '); }; bank.appendChild(b); });
+  g('clr').onclick=()=>{ built=[]; intent.textContent='—'; out.textContent='—'; outnote.textContent=''; };
+  function speak(){ if(!built.length){ out.textContent='(monte a intenção primeiro)'; return; } const arr=built.map(j=>TILES[j]);
+    if(mode==='normal'){ out.textContent=arr.map(t=>t.w).join(' '); outnote.textContent='Frase completa e bem formada.'; }
+    else if(mode==='broca'){ const c=arr.filter(t=>t.t!=='f').map(t=>t.t==='cv'?t.inf:t.w); out.textContent='ãh… '+c.join(' … '); outnote.textContent='Telegráfico: caem artigos, preposições e flexões (agramatismo). Esforçado, mas a ideia central aparece.'; }
+    else { out.textContent=arr.map(t=>(t.t==='cn'||t.t==='cv')?t.neo:t.w).join(' '); outnote.textContent='Fluente e bem encaixado na gramática, mas as palavras de conteúdo viram parafasias/neologismos: soa bem e diz nada.'; } }
+  g('speak').onclick=speak;
+  const NORMAL_SENT='a menina viu o gato', WERN_SENT='então a frumosa blantou o grasto lá, sabe, no negócio de sempre…', OPTS=['a menina','o gato','não dá para entender'];
+  function renderComp(){ heard.textContent=mode==='wernicke'?WERN_SENT:NORMAL_SENT; heard.style.color=mode==='wernicke'?'var(--text-danger)':'var(--text-primary)'; copts.innerHTML=''; cfb.textContent='';
+    OPTS.forEach(o=>{ const b=document.createElement('button'); b.textContent=o; b.style.fontSize='14px'; b.onclick=()=>answer(o); copts.appendChild(b); }); }
+  function answer(o){ if(mode==='wernicke'){ cfb.innerHTML='<span style="color:var(--text-danger)">A fala flui sem esforço, mas chega como jargão sem conteúdo: o significado se perde. A resposta honesta é "não dá para entender".</span>'; }
+    else { if(o==='a menina') cfb.innerHTML='<span style="color:var(--text-success)">Certo. Compreensão preservada (vale para quem não tem afasia e para o Broca).</span>'; else cfb.innerHTML='<span style="color:var(--text-danger)">Não: foi "a menina" quem viu. A entrada estava clara, então dá para acertar.</span>'; } }
+  function setMode(m){ mode=m; document.querySelectorAll('.mode').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
+    prof.innerHTML='<b>'+(m==='normal'?'Sem afasia':m==='broca'?'Afasia de Broca':'Afasia de Wernicke')+'</b><br><span style="color:var(--text-secondary)">'+PROF[m].f+'</span><br><span style="color:var(--text-muted); font-size:13px">'+PROF[m].x+'</span>';
+    if(built.length) speak(); renderComp(); }
+  document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>setMode(b.dataset.m)); setMode('normal');
+})();
+
+/* ===== M3: ATLAS DE METÁFORAS ===== */
+(function(){
+  const M=[
+    {n:'DISCUSSÃO É GUERRA', fonte:'Guerra', alvo:'Discussão', map:[['atacar','criticar o ponto do outro'],['defender','justificar a própria posição'],['posição','ponto de vista'],['ganhar / perder','vencer ou ceder']], expr:['"ele atacou meu argumento"','"não defendi bem minha tese"','"ele derrubou meu ponto"','"ganhei a discussão"']},
+    {n:'TEMPO É DINHEIRO', fonte:'Dinheiro', alvo:'Tempo', map:[['gastar','usar tempo'],['economizar','poupar tempo'],['investir','dedicar tempo'],['perder','desperdiçar tempo']], expr:['"não desperdice meu tempo"','"isso vai te poupar horas"','"invisti muito tempo nisso"','"quanto isso custa de tempo?"']},
+    {n:'AMOR É VIAGEM', fonte:'Viagem', alvo:'Relacionamento', map:[['caminho','rumo do relacionamento'],['encruzilhada','decisão difícil'],['sem saída','impasse'],['andar / patinar','progredir ou estagnar']], expr:['"não vamos a lugar nenhum"','"chegamos a uma encruzilhada"','"é um caminho sem volta"','"estamos patinando"']},
+    {n:'TEORIAS SÃO EDIFÍCIOS', fonte:'Edifício', alvo:'Teoria', map:[['fundação','premissas / base'],['construir','elaborar'],['sustentar','dar suporte'],['desmoronar','refutar-se']], expr:['"a base do argumento é frágil"','"precisa fundamentar melhor"','"a teoria desmoronou"','"vamos construir esse raciocínio"']},
+    {n:'FELIZ É PARA CIMA', fonte:'Cima e baixo (espaço)', alvo:'Ânimo', map:[['para cima','alegria'],['para baixo','tristeza'],['levantar','animar'],['cair','desanimar']], expr:['"estou pra baixo hoje"','"isso me levantou"','"caí em desânimo"','"o ânimo está lá em cima"']}
+  ];
+  const picker=document.getElementById('picker'), fonte=document.getElementById('fonte'), alvo=document.getElementById('alvo'), maps=document.getElementById('maps'), exprs=document.getElementById('exprs'), note=document.getElementById('note');
+  M.forEach((m,i)=>{ const b=document.createElement('button'); b.textContent=m.n; b.style.fontSize='12.5px'; b.onclick=()=>sel(i); picker.appendChild(b); });
+  function sel(i){ const m=M[i]; [].forEach.call(picker.children,(c,j)=>c.setAttribute('aria-pressed',j===i));
+    fonte.textContent=m.fonte; alvo.textContent=m.alvo;
+    maps.innerHTML=m.map.map(p=>'<div style="display:flex; gap:8px; align-items:center; background:var(--surface-1); border-radius:8px; padding:.5rem .7rem; font-size:14px"><span style="min-width:120px">'+p[0]+'</span><span style="color:var(--text-muted)">→</span><span style="color:var(--text-accent)">'+p[1]+'</span></div>').join('');
+    exprs.innerHTML=m.expr.map(e=>'<span style="font-size:14px; padding:6px 11px; border-radius:8px; background:var(--surface-2); border:0.5px solid var(--border)">'+e+'</span>').join('');
+    note.textContent='Uma única metáfora ('+m.fonte.toLowerCase()+' → '+m.alvo.toLowerCase()+') gera muitas expressões, e quase não notamos que estamos usando.'; }
+  sel(0);
+})();
+</script>
+</body>
+</html>

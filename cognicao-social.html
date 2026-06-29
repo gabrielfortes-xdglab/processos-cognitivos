@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Cognição social</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+  .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2rem 0 .2rem}
+  .card ul{margin:.4rem 0 0; padding-left:1.1rem} .card li{font-size:.88rem; color:var(--ink-soft); margin:2px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <span class="stage active">Cognição social</span>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Cognição social</h2>
+  <p class="muted">Como compreendemos a nós mesmos, aos outros e o que se passa entre nós. A ênfase aqui é a <b>colaboração</b> e a <b>empatia</b>. Três partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · O que é + colaboração</button>
+    <button data-tab="m2" aria-pressed="false">2 · Atenção conjunta e teoria da mente</button>
+    <button data-tab="m3" aria-pressed="false">3 · Empatia</button>
+  </div>
+
+  <!-- ===================== M1 ===================== -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">O que é cognição social</div>
+      Conjunto de processos que permitem <b>perceber, interpretar e responder</b> a informações sobre nós mesmos e sobre os outros, incluindo seus estados mentais, intenções e emoções. Integra processos automáticos e deliberados.
+    </div>
+
+    <h3>A marca humana é colaborativa</h3>
+    <p class="muted" style="margin-top:0">O que distingue a cognição humana não é a inteligência geral, é a capacidade de <b>compartilhar</b> atenção e intenções (intencionalidade compartilhada, Tomasello). Crianças de 2,5 anos empatam com primatas na cognição física, mas os superam de longe na cognição social (Herrmann et al., 2007).</p>
+
+    <h3 style="margin-top:1.5rem">Intencionalidade: individual × compartilhada</h3>
+    <p class="how">Há um objetivo na cena. Escolha o cenário e o modo, e clique em <b>Tentar</b>: veja por que sozinho não dá, mas juntos dá.</p>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px">
+      <button class="scn" data-s="tronco" aria-pressed="true">Levantar um tronco</button>
+      <button class="scn" data-s="comida" aria-pressed="false">Pegar comida no alto</button>
+    </div>
+    <div id="goal" style="font-size:13px; color:var(--text-secondary); margin-bottom:6px"></div>
+    <div style="background:var(--surface-1); border-radius:12px; padding:.5rem; margin-bottom:10px">
+    <svg id="scene" viewBox="0 0 400 160" style="width:100%; display:block; max-height:175px">
+      <path id="link" d="M90,74 Q200,24 310,74" fill="none" stroke="var(--text-accent)" stroke-width="3" stroke-dasharray="6 5" opacity="0"/>
+      <text id="we" x="200" y="30" text-anchor="middle" font-size="15" fill="var(--text-accent)" opacity="0">NÓS</text>
+      <circle id="agentL" cx="90" cy="98" r="22" fill="#3f93e0" style="transition:cx .5s, cy .5s"/>
+      <circle id="agentR" cx="310" cy="98" r="22" fill="#e0a91b" style="transition:cx .5s, cy .5s"/>
+      <rect id="tronco" x="150" y="100" width="100" height="16" rx="6" fill="#9a6b4a" style="transition:x .12s, y .5s"/>
+      <circle id="comida" cx="200" cy="36" r="13" fill="#d85a30" opacity="0" style="transition:cx .5s, cy .5s, opacity .4s"/>
+    </svg>
+    </div>
+    <div style="display:flex; gap:8px; margin-bottom:10px">
+      <button class="md" data-m="ind" aria-pressed="true">Modo individual (animal)</button>
+      <button class="md" data-m="sha" aria-pressed="false">Modo compartilhado (humano)</button>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px">
+      <button id="try">Tentar</button><button id="reset-try">Recomeçar</button>
+      <span id="try-res" style="font-size:14px; min-height:1.3em"></span>
+    </div>
+    <p style="font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:1.25rem 0 .2rem">Por que muda (individual × compartilhado)</p>
+    <div id="dims" style="display:grid; gap:8px"></div>
+    <div id="cap" style="font-size:14px; color:var(--text-secondary); margin-top:12px"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">A escada vai de intencionalidade <b>individual</b> → <b>conjunta</b> (o "nós" da díade) → <b>coletiva</b> (cultura, normas). Grandes primatas entendem o outro como agente, mas o "nós" (objetivo comum, papéis reversíveis, comunicar para compartilhar) é a marca humana. (Posição de Tomasello; há debate.)</div></div>
+    <div class="sources">Fontes: intencionalidade compartilhada, Tomasello et al. (2005); escada da intencionalidade, Tomasello (2014); inteligência cultural, Herrmann et al. (2007); cooperação precoce, Warneken e Tomasello (2006).</div>
+  </section>
+
+  <!-- ===================== M2 ===================== -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Os domínios se constroem em cascata</div>
+      As habilidades sociais simples são a base das complexas: o interesse por pessoas leva à atenção conjunta, que leva à tomada de perspectiva, que leva à teoria da mente.
+    </div>
+    <div class="flow">
+      <div class="box">Motivação social<br><span class="dim">primeiros meses</span></div>
+      <div class="arr">→</div>
+      <div class="box">Atenção conjunta<br><span class="dim">~9 meses</span></div>
+      <div class="arr">→</div>
+      <div class="box">Tomada de perspectiva<br><span class="dim">~18–24 meses</span></div>
+      <div class="arr">→</div>
+      <div class="box">Teoria da mente<br><span class="dim">~4–5 anos</span></div>
+    </div>
+
+    <p class="subtitle">Atenção conjunta</p>
+    <h3 style="margin-top:.2rem">Seguir o olhar</h3>
+    <p class="how">O rosto olha para um lado. Quando o ponto aparecer, diga de que lado ele está, o mais rápido possível. (O olhar não prevê o lado.)</p>
+    <div style="background:var(--surface-1); border-radius:12px; padding:.5rem">
+    <svg id="face" viewBox="0 0 600 220" style="width:100%; display:block">
+      <rect id="boxL" x="20" y="80" width="70" height="60" rx="10" fill="none" stroke="var(--border)" stroke-width="2"/>
+      <rect id="boxR" x="510" y="80" width="70" height="60" rx="10" fill="none" stroke="var(--border)" stroke-width="2"/>
+      <circle id="tgt" cx="55" cy="110" r="15" fill="#e0a91b" opacity="0"/>
+      <circle cx="300" cy="110" r="62" fill="none" stroke="var(--text-secondary)" stroke-width="3"/>
+      <ellipse cx="278" cy="100" rx="16" ry="11" fill="#fff"/><ellipse cx="322" cy="100" rx="16" ry="11" fill="#fff"/>
+      <circle id="pL" cx="278" cy="100" r="6" fill="#1a2b3a" style="transition:cx .2s"/><circle id="pR" cx="322" cy="100" r="6" fill="#1a2b3a" style="transition:cx .2s"/>
+      <path d="M285,132 Q300,142 315,132" stroke="var(--text-secondary)" stroke-width="3" fill="none"/>
+    </svg>
+    </div>
+    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0"><button id="ansL">◀ esquerda</button><button id="ansR">direita ▶</button></div>
+    <div id="g-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
+    <div id="g-res" style="margin-top:1rem"></div>
+
+    <p class="subtitle">Teoria da mente</p>
+    <h3 style="margin-top:.2rem">Sally-Anne (falsa crença)</h3>
+    <p class="how">Avance a história e responda onde a Sally vai procurar a bola.</p>
+    <div style="background:var(--surface-1); border-radius:12px; padding:.5rem">
+    <svg id="san" viewBox="0 0 600 300" style="width:100%; display:block">
+      <g id="sally" style="transition:opacity .4s"><circle cx="95" cy="110" r="20" fill="#e0a91b"/><rect x="80" y="132" width="30" height="46" rx="10" fill="#e0a91b"/><text x="95" y="196" text-anchor="middle" font-size="13" fill="var(--text-secondary)">Sally</text></g>
+      <g id="anne"><circle cx="505" cy="110" r="20" fill="#3f93e0"/><rect x="490" y="132" width="30" height="46" rx="10" fill="#3f93e0"/><text x="505" y="196" text-anchor="middle" font-size="13" fill="var(--text-secondary)">Anne</text></g>
+      <rect x="200" y="210" width="100" height="64" rx="8" fill="none" stroke="#9c7a3a" stroke-width="3"/><text x="250" y="292" text-anchor="middle" font-size="13" fill="var(--text-secondary)">cesta (Sally)</text>
+      <rect x="350" y="210" width="100" height="64" rx="6" fill="#2a3a42" stroke="#5b7ca8" stroke-width="3"/><text x="400" y="292" text-anchor="middle" font-size="13" fill="var(--text-secondary)">caixa (Anne)</text>
+      <circle id="ball" cx="95" cy="150" r="14" fill="#5bbf46" style="transition:cx .5s, cy .5s"/>
+    </svg>
+    </div>
+    <div id="san-narr" style="font-size:15px; margin:12px 0; min-height:2.6em"></div>
+    <div id="san-ctrl" style="display:flex; gap:8px; flex-wrap:wrap"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Seguir o olhar é a raiz da <b>atenção conjunta</b>: a atenção do outro puxa a sua automaticamente. A Sally-Anne mostra a <b>teoria da mente</b>: inferir que o outro age pela crença dele (que pode ser falsa), não pela realidade. Uma é base da outra na cascata.</div></div>
+    <div class="sources">Fontes: atenção conjunta, Carpenter, Nagell e Tomasello (1998); falsa crença, Baron-Cohen, Leslie e Frith (1985); escala de teoria da mente, Wellman e Liu (2004).</div>
+  </section>
+
+  <!-- ===================== M3 ===================== -->
+  <section id="m3" class="hidden">
+    <div class="def">
+      <div class="k">Três eixos</div>
+      A cognição social se organiza em cognição <b>autodirigida</b> (sobre si), <b>dirigida ao outro</b> (sobre terceiros) e <b>compartilhada</b> (a ponte entre as duas).
+    </div>
+    <div class="cards">
+      <div class="card"><h4>Autodirigida (self)</h4><ul><li>Autorreferência e autoconhecimento</li><li>Esquemas pessoais</li><li>Autorregulação</li></ul></div>
+      <div class="card"><h4>Dirigida ao outro</h4><ul><li>Reconhecer o agente e pistas sociais</li><li>Reconhecer emoções</li><li>Teoria da mente</li></ul></div>
+      <div class="card"><h4>Compartilhada (a ponte)</h4><ul><li>Atenção conjunta</li><li>Ressonância e contágio afetivo</li><li>Empatia e comunicação</li></ul></div>
+    </div>
+
+    <h3 style="margin-top:1.75rem">A ponte: ressonância</h3>
+    <p class="muted" style="margin-top:0">Ao ver alguém agir, ativamos as mesmas áreas motoras (ressonância motora, neurônios-espelho); ao ver alguém num estado afetivo, ativamos as mesmas regiões emocionais (contágio afetivo: amígdala, ínsula, cingulado). Sentimos um eco do outro.</p>
+
+    <h3 style="margin-top:1.5rem">As três empatias</h3>
+    <p class="how">Empatia não é um bloco único. Ligue e desligue os três processos e veja como são separáveis.</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px">
+      <button class="emp" data-e="af" aria-pressed="false">Empatia afetiva</button>
+      <button class="emp" data-e="co" aria-pressed="false">Empatia cognitiva</button>
+      <button class="emp" data-e="pr" aria-pressed="false">Comportamento pró-social</button>
+    </div>
+    <div id="emp-out" style="background:var(--surface-1); border-radius:10px; padding:1rem; font-size:15px; min-height:3.4em"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">São três processos separáveis (de Waal): <b>afetiva</b> (sentir junto, ressonância), <b>cognitiva</b> (compreender, teoria da mente) e <b>comportamento pró-social</b> (agir). O pró-social é uma consequência frequente da empatia, não parte dela; e sentir/entender não garante agir. Confundi-los gera erros conceituais.</div></div>
+    <div class="sources">Fontes: ressonância e espelho, Rizzolatti et al. (2001), Iacoboni (2009); contágio afetivo, Molenberghs et al. (2012); empatia em três processos, de Waal (2021). Integra com o módulo de Emoção (amígdala como hub; regulação como subdomínio social).</div>
+  </section>
+
+  <footer>Protótipo · módulo de Cognição social · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== TABS ===== */
+(function(){ const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); }); })();
+
+/* ===== M1: COMPARADOR DE INTENCIONALIDADE ===== */
+(function(){
+  const DIMS=[
+    {k:'Objetivo', ind:'"MEU": cada um busca o próprio; o outro é ferramenta ou obstáculo.', sha:'"NOSSO": uma meta comum, agimos juntos.'},
+    {k:'Atenção', ind:'Segue o olhar do outro (entende que é um agente), mas sem base compartilhada.', sha:'Atenção conjunta com base compartilhada: sei que você sabe que eu sei.'},
+    {k:'Papéis', ind:'Fixos: cada um faz o seu; não assume o papel do outro.', sha:'Complementares e reversíveis: entendo seu papel e poderia trocá-lo.'},
+    {k:'Comunicação', ind:'Imperativa: pedir para obter ("me dá").', sha:'Declarativa e informativa: compartilhar ("olha aquilo") e ajudar ("está ali").'},
+    {k:'Divisão do resultado', ind:'Quem consegue, fica; a cooperação quebra se um obtém sozinho.', sha:'Dividir o ganho e re-engajar o parceiro.'}
+  ];
+  const g=id=>document.getElementById(id), dims=g('dims'), res=g('try-res');
+  const aL=g('agentL'), aR=g('agentR'), tronco=g('tronco'), comida=g('comida');
+  let mode='ind', scn='tronco', busy=false;
+  function reset(){ busy=false; aL.setAttribute('cx',90); aL.setAttribute('cy',98); aR.setAttribute('cx',310); aR.setAttribute('cy',98);
+    tronco.setAttribute('x',150); tronco.setAttribute('y',100); comida.setAttribute('cx',200); comida.setAttribute('cy',36);
+    tronco.setAttribute('opacity', scn==='tronco'?'1':'0'); comida.setAttribute('opacity', scn==='comida'?'1':'0');
+    g('link').setAttribute('opacity', mode==='sha'?'1':'0'); g('we').setAttribute('opacity', mode==='sha'?'1':'0');
+    g('goal').textContent='Objetivo: '+(scn==='tronco'?'levantar o tronco.':'pegar a comida lá no alto.'); res.textContent=''; }
+  function render(){ dims.innerHTML=DIMS.map(d=>{ const v=mode==='ind'?d.ind:d.sha, col=mode==='ind'?'var(--text-secondary)':'var(--text-accent)';
+      return '<div style="background:var(--surface-1); border-radius:10px; padding:.7rem .9rem"><div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted)">'+d.k+'</div><div style="font-size:14px; margin-top:2px; color:'+col+'">'+v+'</div></div>'; }).join('');
+    g('cap').textContent= mode==='ind'? 'Modo individual (típico de grandes primatas): há entendimento do outro como agente, mas não se forma um "nós".' : 'Modo compartilhado (humano): surge o "nós" — objetivo comum, papéis reversíveis e comunicação para compartilhar, não só para pedir.'; reset(); }
+  function tryIt(){ if(busy)return; busy=true; res.textContent='';
+    if(scn==='tronco'){
+      if(mode==='sha'){ aL.setAttribute('cx',168); aR.setAttribute('cx',232); setTimeout(()=>{ tronco.setAttribute('y',70); },350); res.innerHTML='<span style="color:var(--text-success)">Conseguiram! A meta é NOSSA: cada um faz a sua parte e o tronco sobe.</span>'; }
+      else { aL.setAttribute('cx',124); let n=0; const w=setInterval(()=>{ tronco.setAttribute('x', n%2?156:144); n++; if(n>5){ clearInterval(w); tronco.setAttribute('x',150); aL.setAttribute('cx',90); busy=false; } },110); res.innerHTML='<span style="color:var(--text-danger)">Sozinho não levanta. No modo individual, o outro é obstáculo, não parceiro.</span>'; }
+    } else {
+      if(mode==='sha'){ aR.setAttribute('cx',150); setTimeout(()=>{ aL.setAttribute('cy',58); },350); setTimeout(()=>{ comida.setAttribute('cx',90); comida.setAttribute('cy',58); },800); setTimeout(()=>{ comida.setAttribute('opacity','0'); },1300); res.innerHTML='<span style="color:var(--text-success)">Conseguiram! Com papéis que se completam (um apoia o outro), vocês alcançam.</span>'; }
+      else { aL.setAttribute('cy',60); setTimeout(()=>{ aL.setAttribute('cy',98); busy=false; },550); res.innerHTML='<span style="color:var(--text-danger)">Pulando sozinho, não alcança: falta o parceiro com papel complementar.</span>'; }
+    }
+  }
+  document.querySelectorAll('.md').forEach(b=>b.onclick=()=>{ mode=b.dataset.m; document.querySelectorAll('.md').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===mode)); render(); });
+  document.querySelectorAll('.scn').forEach(b=>b.onclick=()=>{ scn=b.dataset.s; document.querySelectorAll('.scn').forEach(x=>x.setAttribute('aria-pressed',x.dataset.s===scn)); render(); });
+  g('try').onclick=tryIt; g('reset-try').onclick=reset; render();
+})();
+
+/* ===== M2a: SEGUIR O OLHAR ===== */
+(function(){
+  const g=id=>document.getElementById(id), pL=g('pL'), pR=g('pR'), tgt=g('tgt'), fb=g('g-fb'), res=g('g-res');
+  let gaze='L', target='L', t0=0, ready=false, trials=[];
+  function gazeTo(d){ const off=d==='L'?-8:8; pL.setAttribute('cx',278+off); pR.setAttribute('cx',322+off); }
+  function next(){ ready=false; tgt.setAttribute('opacity','0'); fb.textContent=''; gaze=Math.random()<0.5?'L':'R'; gazeTo(gaze);
+    setTimeout(()=>{ target=Math.random()<0.5?'L':'R'; tgt.setAttribute('cx', target==='L'?55:545); tgt.setAttribute('opacity','1'); t0=performance.now(); ready=true; }, 650+Math.random()*300); }
+  function answer(side){ if(!ready)return; const rt=performance.now()-t0; ready=false; const correct=side===target, valid=gaze===target; trials.push({rt,correct,valid});
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(target==='L'?'esquerda':'direita')+'</span>'; draw(); setTimeout(next,600); }
+  function mean(a){ return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0; }
+  function draw(){ const ok=trials.filter(t=>t.correct), v=mean(ok.filter(t=>t.valid).map(t=>t.rt)), iv=mean(ok.filter(t=>!t.valid).map(t=>t.rt));
+    res.innerHTML='<div style="display:flex; gap:10px"><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Olhar apontava p/ o alvo</div><div style="font-size:22px; font-weight:500; color:var(--text-success)">'+v+' ms</div></div><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Olhar p/ o lado oposto</div><div style="font-size:22px; font-weight:500; color:var(--text-warning)">'+iv+' ms</div></div></div>'+(trials.length>=8?'<p style="font-size:13px; color:var(--text-muted); margin-top:.8rem">Mesmo sem prever nada, o olhar do rosto puxa sua atenção: você responde mais rápido quando ele aponta para o alvo. É a base da atenção conjunta.</p>':'<p style="font-size:12px; color:var(--text-muted); margin-top:.6rem">faça algumas tentativas para ver a diferença</p>'); }
+  g('ansL').onclick=()=>answer('L'); g('ansR').onclick=()=>answer('R'); draw(); next();
+})();
+
+/* ===== M2b: SALLY-ANNE ===== */
+(function(){
+  const g=id=>document.getElementById(id), ball=g('ball'), sally=g('sally'), narr=g('san-narr'), ctrl=g('san-ctrl');
+  const CESTA=250, CAIXA=400; let idx=0;
+  const STEPS=[
+    {n:'Esta é a Sally (com a cesta) e a Anne (com a caixa). A Sally tem uma bola.', do:()=>{ball.setAttribute('cx',95);ball.setAttribute('cy',150);sally.style.opacity=1;}},
+    {n:'A Sally guarda a bola na cesta dela.', do:()=>{ball.setAttribute('cx',CESTA);ball.setAttribute('cy',240);}},
+    {n:'A Sally sai da sala (não vê mais nada).', do:()=>{sally.style.opacity=.12;}},
+    {n:'Enquanto a Sally está fora, a Anne passa a bola da cesta para a caixa.', do:()=>{ball.setAttribute('cx',CAIXA);}},
+    {n:'A Sally volta para pegar a bola. Onde ela vai procurar primeiro?', do:()=>{sally.style.opacity=1;}}
+  ];
+  function render(){ const s=STEPS[idx]; s.do(); narr.textContent=s.n; ctrl.innerHTML='';
+    if(idx<STEPS.length-1){ const b=document.createElement('button'); b.textContent='Próximo'; b.onclick=()=>{idx++;render();}; ctrl.appendChild(b); }
+    else { ['cesta','caixa'].forEach(opt=>{ const b=document.createElement('button'); b.textContent='Na '+opt; b.onclick=()=>answer(opt); ctrl.appendChild(b); }); } }
+  function answer(opt){ ctrl.innerHTML='';
+    if(opt==='cesta') narr.innerHTML='<span style="color:var(--text-success)">Isso. A Sally procura na cesta</span>, porque foi lá que ela deixou a bola. Ela não viu a troca, então tem uma <b>crença falsa</b>. Inferir isso é teoria da mente.';
+    else narr.innerHTML='<span style="color:var(--text-danger)">Essa é a resposta de quem ainda não separa "o que eu sei" de "o que a Sally sabe".</span> A bola está na caixa, mas a Sally não viu a troca: ela procura na <b>cesta</b> (crença falsa). Crianças abaixo de ~4 anos costumam errar aqui.';
+    const b=document.createElement('button'); b.textContent='Recomeçar'; b.onclick=()=>{idx=0;render();}; ctrl.appendChild(b); }
+  render();
+})();
+
+/* ===== M3: AS TRÊS EMPATIAS ===== */
+(function(){
+  const st={af:false,co:false,pr:false}, out=document.getElementById('emp-out');
+  function desc(){ if(!st.af&&!st.co&&!st.pr) return 'Sem ressonância, sem compreensão e sem ação: indiferença.';
+    const p=[]; if(st.af)p.push('você sente um eco do que o outro sente (ressonância afetiva: amígdala, ínsula)'); if(st.co)p.push('você compreende o que o outro pensa e sente, mesmo sem sentir junto (teoria da mente)'); if(st.pr)p.push('você age para ajudar');
+    let r=''; if(st.af&&st.co&&!st.pr) r='Sente e entende, mas não age: empatia não garante ajuda.'; else if(st.co&&!st.af) r='Compreende sem ressoar: dá para entender o outro "de fora".'; else if(st.af&&!st.co) r='Sente junto sem necessariamente compreender (contágio afetivo).'; else if(st.pr&&!st.af&&!st.co) r='Ajuda sem ressoar nem compreender: o pró-social pode vir por outras vias.'; else if(st.af&&st.co&&st.pr) r='Sentir + compreender + agir: o caso completo.';
+    return p.join('; ')+'.'+(r?' — '+r:''); }
+  function render(){ out.textContent=desc(); document.querySelectorAll('.emp').forEach(b=>b.setAttribute('aria-pressed', st[b.dataset.e])); }
+  document.querySelectorAll('.emp').forEach(b=>b.onclick=()=>{ st[b.dataset.e]=!st[b.dataset.e]; render(); }); render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Sensação e percepção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+  .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:1.75rem 0 .2rem}
+  .scene-stack{position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line); margin:.5rem 0}
+  #scene-base{width:100%; display:block; transition:filter .3s}
+  #scene-ov{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+  #sig{width:100%; height:92px; display:block; background:var(--bg-soft); border-radius:10px}
+  #spk{width:100%; height:46px; display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <span class="stage active">Sensação e percepção<span class="arrow"> ›</span></span>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Sensação e percepção</h2>
+  <p class="muted"><b>Sensação</b> é captar o estímulo e convertê-lo em sinal neural (transdução). <b>Percepção</b> é organizar e interpretar esse sinal. Este módulo tem duas partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · Sensação (transdução)</button>
+    <button data-tab="m2" aria-pressed="false">2 · Percepção (sentidos animais)</button>
+  </div>
+
+  <!-- ===================== MÓDULO 1 ===================== -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Do meio físico ao meio bioquímico</div>
+      Cada receptor é sintonizado a um tipo de estímulo e converte o <b>meio físico</b> (onda de luz, onda de som, moléculas, pressão) em <b>sinal bioquímico</b> dentro da célula. Escolha um sentido e veja o sinal e a sequência de transdução.
+    </div>
+
+    <h3>Escolha um sentido</h3>
+    <div class="selrow">
+      <button class="sx" data-s="visao" aria-pressed="true">Visão</button>
+      <button class="sx" data-s="audicao" aria-pressed="false">Audição</button>
+      <button class="sx" data-s="olfato" aria-pressed="false">Olfato</button>
+      <button class="sx" data-s="tato" aria-pressed="false">Tato</button>
+    </div>
+
+    <p class="subtitle">O sinal</p>
+    <div id="sig-meio" style="font-size:13px; color:var(--text-secondary); margin:.2rem 0 .5rem"></div>
+    <canvas id="sig"></canvas>
+    <div id="freq-wrap" style="display:flex; align-items:center; gap:12px; margin:10px 0">
+      <span style="font-size:14px; color:var(--text-secondary)" id="freq-label">Frequência</span>
+      <input type="range" id="freq" min="0" max="100" value="40" style="flex:1">
+      <span id="freq-read" style="font-size:14px; min-width:120px; text-align:right"></span>
+    </div>
+
+    <p class="subtitle">A sequência de transdução</p>
+    <div id="chain" class="chain"></div>
+
+    <p class="subtitle">A intensidade vira disparos</p>
+    <p class="how">Estímulo mais forte → mais amplitude → o receptor dispara mais rápido → você percebe mais intenso.</p>
+    <canvas id="spk"></canvas>
+    <div style="display:flex; align-items:center; gap:12px; margin:8px 0">
+      <span style="font-size:14px; color:var(--text-secondary)">Intensidade</span>
+      <input type="range" id="inten" min="0" max="100" value="50" style="flex:1">
+      <span id="inten-read" style="font-size:14px; min-width:120px; text-align:right">média</span>
+    </div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">A <b>frequência</b> do sinal define a <i>qualidade</i> (a cor na visão, a altura no som); a <b>intensidade</b> define a <i>quantidade</i> (a taxa de disparos). O receptor não "copia" o mundo: ele traduz uma faixa específica de energia em código neural.</div></div>
+    <div class="sources">Fontes: transdução sensorial (MSU, Foundations of Neuroscience); fototransdução e mecanotransdução (revisões clássicas).</div>
+  </section>
+
+  <!-- ===================== MÓDULO 2 ===================== -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Umwelt</div>
+      Cada espécie vive em seu mundo perceptivo, montado a partir dos receptores que possui (von Uexküll, 1934). A mesma cena vira coisas diferentes: a percepção constrói, não copia a realidade.
+    </div>
+
+    <h3>Veja a mesma cena com outros sentidos</h3>
+    <div class="scene-stack">
+      <svg id="scene-base" viewBox="0 0 600 340">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd0ff"/><stop offset="1" stop-color="#dff0ff"/></linearGradient>
+          <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aa83c"/><stop offset="1" stop-color="#2f6f22"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="600" height="232" fill="url(#sky)"/>
+        <circle cx="525" cy="55" r="30" fill="#ffd76b"/>
+        <path d="M0,232 Q150,205 330,228 T600,224 L600,232 Z" fill="#6cb84e"/>
+        <rect x="0" y="228" width="600" height="112" fill="url(#grass)"/>
+        <g stroke="#3f8a2c" stroke-width="3" stroke-linecap="round">
+          <path d="M40,340 q-6,-40 2,-64"/><path d="M70,340 q8,-42 0,-70"/><path d="M540,340 q8,-40 -2,-64"/><path d="M575,340 q-6,-38 2,-58"/>
+        </g>
+        <!-- pássaro num galho -->
+        <line x1="60" y1="150" x2="150" y2="150" stroke="#7a5a3a" stroke-width="4"/>
+        <g transform="translate(105,138)"><ellipse cx="0" cy="0" rx="16" ry="11" fill="#6b8fb0"/><circle cx="-13" cy="-6" r="8" fill="#6b8fb0"/><path d="M-20,-6 l-9,2 l9,3 z" fill="#e0a91b"/><path d="M2,-2 q12,4 16,12 q-12,0 -18,-6 z" fill="#557699"/><circle cx="-15" cy="-7" r="1.8" fill="#10202e"/></g>
+        <!-- flor vermelha -->
+        <g id="fl-red"><line x1="180" y1="340" x2="180" y2="206" stroke="#2f6f22" stroke-width="5"/>
+          <g transform="translate(180,194)" fill="#e23a3a"><circle cx="0" cy="-14" r="11"/><circle cx="13" cy="-4" r="11"/><circle cx="8" cy="12" r="11"/><circle cx="-8" cy="12" r="11"/><circle cx="-13" cy="-4" r="11"/><circle cx="0" cy="0" r="9" fill="#9a1f1f"/></g></g>
+        <!-- flor amarela -->
+        <g id="fl-yellow"><line x1="310" y1="340" x2="310" y2="196" stroke="#2f6f22" stroke-width="5"/>
+          <g transform="translate(310,184)" fill="#f2c41e"><circle cx="0" cy="-15" r="12"/><circle cx="14" cy="-4" r="12"/><circle cx="9" cy="13" r="12"/><circle cx="-9" cy="13" r="12"/><circle cx="-14" cy="-4" r="12"/><circle cx="0" cy="0" r="9" fill="#c5870f"/></g></g>
+        <!-- rato (virado para a esquerda) -->
+        <g id="rat" transform="translate(470,288)">
+          <path d="M34,2 q40,4 44,-26" fill="none" stroke="#9a8a7a" stroke-width="4"/>
+          <ellipse cx="0" cy="0" rx="40" ry="23" fill="#8a7a6c"/>
+          <ellipse cx="-12" cy="20" rx="6" ry="4" fill="#6f6155"/><ellipse cx="14" cy="21" rx="6" ry="4" fill="#6f6155"/>
+          <circle cx="-36" cy="-6" r="15" fill="#8a7a6c"/>
+          <circle cx="-42" cy="-20" r="8" fill="#8a7a6c"/><circle cx="-42" cy="-20" r="4" fill="#d99a9a"/>
+          <circle cx="-43" cy="-7" r="2.6" fill="#10202e"/>
+          <circle cx="-51" cy="-1" r="3" fill="#e08a9a"/>
+        </g>
+      </svg>
+      <svg id="scene-ov" viewBox="0 0 600 340">
+        <defs>
+          <radialGradient id="heat" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff2b0"/><stop offset="35%" stop-color="#ff7a00"/><stop offset="100%" stop-color="#ff7a0000"/></radialGradient>
+          <radialGradient id="scentg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7CFFA0cc"/><stop offset="100%" stop-color="#7CFFA000"/></radialGradient>
+        </defs>
+        <g id="ov-uv" opacity="0">
+          <circle cx="180" cy="194" r="24" fill="#1a1530" opacity="0.78"/>
+          <circle cx="310" cy="184" r="26" fill="none" stroke="#c46bff" stroke-width="3" stroke-dasharray="5 5"/><circle cx="310" cy="184" r="13" fill="none" stroke="#c46bff" stroke-width="3"/>
+          <circle cx="180" cy="194" r="22" fill="none" stroke="#c46bff" stroke-width="3" stroke-dasharray="5 5"/>
+        </g>
+        <g id="ov-thermal" opacity="0">
+          <ellipse cx="470" cy="285" rx="74" ry="50" fill="url(#heat)"/>
+          <circle cx="525" cy="55" r="50" fill="url(#heat)" opacity="0.7"/>
+          <ellipse cx="105" cy="138" rx="34" ry="26" fill="url(#heat)" opacity="0.5"/>
+        </g>
+        <g id="ov-sonar" opacity="0">
+          <g transform="translate(300,42)" fill="#cfefff"><ellipse cx="0" cy="0" rx="9" ry="6"/><path d="M-8,-2 q-22,-12 -30,2 q16,2 26,6 z"/><path d="M8,-2 q22,-12 30,2 q-16,2 -26,6 z"/></g>
+          <circle cx="300" cy="48" r="20" fill="none" stroke="#cfefff" stroke-width="2"><animate attributeName="r" from="20" to="360" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2s" repeatCount="indefinite"/></circle>
+          <circle cx="300" cy="48" r="20" fill="none" stroke="#cfefff" stroke-width="2"><animate attributeName="r" from="20" to="360" dur="2s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+          <ellipse cx="470" cy="285" rx="46" ry="30" fill="none" stroke="#cfefff" stroke-width="1.5" opacity="0.7"/>
+          <circle cx="310" cy="184" r="26" fill="none" stroke="#cfefff" stroke-width="1.5" opacity="0.6"/>
+          <ellipse cx="105" cy="138" rx="22" ry="16" fill="none" stroke="#cfefff" stroke-width="1.5" opacity="0.6"/>
+        </g>
+        <g id="ov-scent" opacity="0">
+          <circle cx="470" cy="278" r="50" fill="url(#scentg)"/>
+          <circle cx="310" cy="184" r="34" fill="url(#scentg)"/>
+          <circle cx="180" cy="194" r="30" fill="url(#scentg)"/>
+          <circle cx="430" cy="250" r="20" fill="url(#scentg)" opacity=".7"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="selrow">
+      <button class="obs" data-m="humano" aria-pressed="true">Humano</button>
+      <button class="obs" data-m="abelha" aria-pressed="false">Abelha</button>
+      <button class="obs" data-m="cobra" aria-pressed="false">Cobra</button>
+      <button class="obs" data-m="morcego" aria-pressed="false">Morcego</button>
+      <button class="obs" data-m="cao" aria-pressed="false">Cão</button>
+    </div>
+    <div class="infobox">
+      <div class="cap" id="o-cap">Humano — visão tricromática</div>
+      <div class="fact" id="o-fact">A cena como referência: luz visível, cores normais.</div>
+      <div class="src" id="o-src"></div>
+    </div>
+
+    <div class="sources">Fontes: abelha — NC State (2024), J. Plant Ecology (2020); cobra — Gracheva et al., Nature (2010); morcego — Scientific American; cão — Wikipedia (dog olfaction); Umwelt — von Uexküll.</div>
+  </section>
+
+  <footer>Protótipo · módulo de Sensação e percepção · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== TABS ===== */
+(function(){ const b=document.querySelectorAll('.subnav button'), s={m1:document.getElementById('m1'),m2:document.getElementById('m2')};
+  b.forEach(x=>x.onclick=()=>{ const t=x.dataset.tab; b.forEach(y=>y.setAttribute('aria-pressed',y===x)); for(const k in s) s[k].classList.toggle('hidden',k!==t); }); })();
+
+/* ===== M1: SINAL + TRANSDUÇÃO + INTENSIDADE ===== */
+(function(){
+  const SENSES={
+    visao:{meio:'Luz — onda eletromagnética', sig:'wave', freqLab:'Frequência (cor: vermelho → violeta)', perc:'cor e brilho',
+      stages:['Onda de luz','Retina','Fotorreceptor: o retinal muda na rodopsina','Sinal elétrico','Nervo óptico']},
+    audicao:{meio:'Som — onda de pressão no ar', sig:'wave', freqLab:'Frequência (altura: grave → agudo)', perc:'altura e volume',
+      stages:['Onda sonora (ar)','Tímpano vibra','Cóclea: meio aquoso (endolinfa)','Estereocílios entortam','Nervo auditivo']},
+    olfato:{meio:'Moléculas voláteis — estímulo químico', sig:'mol', perc:'tipo e intensidade do cheiro',
+      stages:['Moléculas no ar','Muco do epitélio (meio aquoso)','Receptor olfatório encaixa a molécula','Sinal','Bulbo olfatório']},
+    tato:{meio:'Pressão e deformação — estímulo mecânico', sig:'press', perc:'força e textura',
+      stages:['Pressão na pele','Mecanorreceptor deforma','Canais mecanossensíveis abrem','Sinal','Medula e córtex']}
+  };
+  const g=id=>document.getElementById(id);
+  const sig=g('sig'), sctx=sig.getContext('2d'), spk=g('spk'), pctx=spk.getContext('2d');
+  const freq=g('freq'), inten=g('inten'), freqWrap=g('freq-wrap');
+  let sense='visao', mols=[], spikes=[], last=0;
+  for(let i=0;i<40;i++) mols.push({x:Math.random(),y:Math.random(),s:0.2+Math.random()*0.8});
+
+  function nmToRGB(wl){ let r=0,gc=0,b=0; if(wl<440){r=-(wl-440)/60;b=1;} else if(wl<490){gc=(wl-440)/50;b=1;} else if(wl<510){gc=1;b=-(wl-510)/20;} else if(wl<580){r=(wl-510)/70;gc=1;} else if(wl<645){r=1;gc=-(wl-645)/65;} else {r=1;} return 'rgb('+Math.round(r*255)+','+Math.round(gc*255)+','+Math.round(b*255)+')'; }
+  function colorName(wl){ return wl<450?'violeta':wl<490?'azul':wl<560?'verde':wl<590?'amarelo':wl<625?'laranja':'vermelho'; }
+
+  function setSense(s){ sense=s; const d=SENSES[s];
+    document.querySelectorAll('.sx').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===s));
+    g('sig-meio').textContent='Meio físico: '+d.meio;
+    freqWrap.style.display = (d.sig==='wave')?'flex':'none';
+    if(d.sig==='wave') g('freq-label').textContent=d.freqLab;
+    g('chain').innerHTML=d.stages.map((st,i)=>{ const bio=i===2; return '<div class="box'+(bio?' bio':'')+'"><div class="c">'+st+'</div></div>'+(i<d.stages.length-1?'<div class="arr">→</div>':''); }).join('');
+    render();
+  }
+  function render(){ const v=+inten.value/100;
+    g('inten-read').textContent=v<0.33?'fraca':v<0.66?'média':'forte';
+    if(SENSES[sense].sig==='wave'){ const f=+freq.value/100;
+      if(sense==='visao'){ const wl=700-300*f; g('freq-read').innerHTML='<span style="display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;background:'+nmToRGB(wl)+'"></span>'+colorName(wl); }
+      else { const hz=Math.round(80*Math.pow(50,f)); g('freq-read').textContent=(f<0.33?'grave':f<0.66?'médio':'agudo')+' (~'+hz+' Hz)'; }
+    }
+  }
+  document.querySelectorAll('.sx').forEach(b=>b.onclick=()=>setSense(b.dataset.s));
+  freq.oninput=render; inten.oninput=render;
+
+  function loop(t){
+    const W=sig.width=sig.clientWidth, H=sig.height=sig.clientHeight, v=+inten.value/100, f=+freq.value/100, d=SENSES[sense];
+    sctx.clearRect(0,0,W,H);
+    const acc=getComputedStyle(document.documentElement).getPropertyValue('--teal-bright').trim()||'#6ff0c0';
+    if(d.sig==='wave'){ const cycles=2+f*16, amp=6+v*(H*0.36), col=sense==='visao'?nmToRGB(700-300*f):'#6cc6ff';
+      sctx.strokeStyle=col; sctx.lineWidth=2.5; sctx.beginPath();
+      for(let x=0;x<=W;x++){ const y=H/2 + amp*Math.sin((x/W)*cycles*6.283 + t/300); x?sctx.lineTo(x,y):sctx.moveTo(x,y); } sctx.stroke();
+    } else if(d.sig==='mol'){
+      const rx=W-34, ry=H/2; // receptor (encaixe) à direita
+      sctx.strokeStyle='#2bb48a'; sctx.lineWidth=3;
+      sctx.beginPath(); sctx.moveTo(rx,ry-22); sctx.lineTo(rx,ry-7); sctx.arc(rx,ry,7,-Math.PI/2,Math.PI/2,true); sctx.lineTo(rx,ry+22); sctx.stroke();
+      sctx.beginPath(); sctx.moveTo(rx+14,ry-22); sctx.lineTo(rx+14,ry+22); sctx.stroke();
+      const n=Math.round(6+v*30); // moléculas fluindo para o receptor
+      for(let i=0;i<n;i++){ const m=mols[i]; m.x+=0.003+0.004*m.s; if(m.x>0.9)m.x=0; const x=m.x*(W-60)+6, y=(m.y*0.6+0.2)*H;
+        sctx.fillStyle='rgba(120,210,160,'+(0.45+m.s*0.5)+')';
+        sctx.beginPath(); sctx.arc(x,y,3+m.s*2,0,6.283); sctx.fill();
+        sctx.beginPath(); sctx.arc(x+4,y-3,2,0,6.283); sctx.fill();
+        sctx.beginPath(); sctx.arc(x+4,y+3,2,0,6.283); sctx.fill(); }
+    } else { // tato: sonda pressiona a pele; mecanorreceptor se achata
+      const baseY=H*0.40, depth=v*(H*0.34), cx=W/2, tipY=baseY+depth-2+Math.sin(t/300)*1.5;
+      sctx.strokeStyle='#c9a07a'; sctx.lineWidth=3; sctx.beginPath();
+      for(let x=0;x<=W;x++){ const dd=Math.exp(-Math.pow((x-cx)/(W*0.13),2)); const y=baseY+depth*dd; x?sctx.lineTo(x,y):sctx.moveTo(x,y); } sctx.stroke();
+      sctx.fillStyle='#8aa0b0'; sctx.fillRect(cx-7, tipY-36, 14, 30); sctx.beginPath(); sctx.arc(cx,tipY-6,7,0,6.283); sctx.fill();
+      const mrY=Math.min(H-8, baseY+H*0.36), rxr=12+depth*0.55, ryr=Math.max(3,12-depth*0.55);
+      sctx.fillStyle='rgba(43,180,138,'+(0.4+v*0.5)+')'; sctx.beginPath(); sctx.ellipse(cx,mrY,rxr,ryr,0,0,6.283); sctx.fill(); }
+    // spikes
+    const Ws=spk.width=spk.clientWidth, Hs=spk.height=spk.clientHeight, ff=Math.round(2+v*38);
+    if(t-last>=1000/ff){ spikes.push(Ws); last=t; }
+    pctx.clearRect(0,0,Ws,Hs); pctx.strokeStyle=acc; pctx.lineWidth=2;
+    pctx.globalAlpha=.25; pctx.beginPath(); pctx.moveTo(0,Hs*0.72); pctx.lineTo(Ws,Hs*0.72); pctx.stroke(); pctx.globalAlpha=1;
+    spikes=spikes.filter(x=>x>-4); spikes.forEach((x,i)=>{ spikes[i]-=2.6; const xx=spikes[i]; pctx.beginPath(); pctx.moveTo(xx,Hs*0.72); pctx.lineTo(xx,Hs*0.16); pctx.stroke(); });
+    requestAnimationFrame(loop);
+  }
+  setSense('visao'); requestAnimationFrame(loop);
+})();
+
+/* ===== M2: UMWELT (base filtrada + overlays vívidos) ===== */
+(function(){
+  const M={
+    humano:{f:'none', cap:'Humano — visão tricromática', fact:'A cena como referência: luz visível, cores normais.', src:'', show:[]},
+    abelha:{f:'saturate(1.5) hue-rotate(205deg)', cap:'Abelha — ultravioleta, sem vermelho', fact:'A flor vermelha vira escura; padrões UV viram guias que apontam o néctar.', src:'NC State (2024); J. Plant Ecology (2020)', show:['ov-uv']},
+    cobra:{f:'brightness(.4) saturate(.6)', cap:'Cobra (jararaca) — calor (infravermelho)', fact:'O rato, o sol e o pássaro de sangue quente brilham; o resto, frio, some no escuro.', src:'Gracheva et al., Nature (2010)', show:['ov-thermal']},
+    morcego:{f:'grayscale(1) brightness(.5)', cap:'Morcego — ecolocalização', fact:'Sem cor: o morcego emite pulsos e lê os ecos; os objetos surgem como contornos.', src:'Scientific American', show:['ov-sonar']},
+    cao:{f:'saturate(.25) brightness(.95)', cap:'Cão — olfato dominante, visão dicromática', fact:'Cores desbotadas e plumas de cheiro subindo das fontes (rato, flores).', src:'Wikipedia (dog olfaction)', show:['ov-scent']}
+  };
+  const base=document.getElementById('scene-base');
+  const cap=document.getElementById('o-cap'), fact=document.getElementById('o-fact'), src=document.getElementById('o-src');
+  const ovs=['ov-uv','ov-thermal','ov-sonar','ov-scent'].map(id=>document.getElementById(id));
+  function set(m){ const d=M[m]; base.style.filter=d.f;
+    ovs.forEach(o=>o.setAttribute('opacity','0')); d.show.forEach(id=>document.getElementById(id).setAttribute('opacity','1'));
+    cap.textContent=d.cap; fact.textContent=d.fact; src.textContent=d.src?('Fonte: '+d.src):'';
+    document.querySelectorAll('.obs').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); }
+  document.querySelectorAll('.obs').forEach(b=>b.onclick=()=>set(b.dataset.m)); set('humano');
+})();
+</script>
+</body>
+</html>

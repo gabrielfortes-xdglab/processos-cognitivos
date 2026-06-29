@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Emoção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+  .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2rem 0 .2rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <span class="stage active">Emoção<span class="arrow"> ›</span></span>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Emoção</h2>
+  <p class="muted">A emoção nasce de como <b>avaliamos</b> a situação, pode ser <b>regulada</b>, e molda a cognição (atenção, memória, decisão). Este módulo tem quatro partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · Avaliação</button>
+    <button data-tab="m2" aria-pressed="false">2 · Regulação</button>
+    <button data-tab="m3" aria-pressed="false">3 · Emoção e cognição</button>
+    <button data-tab="m4" aria-pressed="false">4 · Vieses</button>
+  </div>
+
+  <!-- ===================== M1: AVALIAÇÃO ===================== -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Como a emoção nasce</div>
+      As teorias de <b>avaliação</b> supõem que a experiência emocional vem das avaliações cognitivas da situação. Cada emoção é gerada por um <b>padrão de avaliação</b> específico, que pode envolver processos automáticos e controlados.
+    </div>
+    <p class="how">Imagine uma situação importante para você. Ajuste como você a avalia e veja a emoção que tende a surgir.</p>
+
+    <div id="emo" style="border-radius:12px; padding:1.1rem; margin-bottom:1.25rem; text-align:center">
+      <div id="emo-name" style="font-size:26px; font-weight:500; font-family:Georgia,serif">—</div>
+      <div id="emo-why" style="font-size:14px; margin-top:6px"></div>
+    </div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px">Quem é o responsável?</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px">
+      <button class="ag" data-a="eu">Eu</button><button class="ag" data-a="outro" aria-pressed="true">Outro</button><button class="ag" data-a="circ">Circunstância</button>
+    </div>
+    <div style="display:grid; gap:14px">
+      <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Relevância para meus objetivos</span><span id="l-rel">alta</span></div><input type="range" id="rel" min="0" max="100" value="75"></div>
+      <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Para mim é… (ruim ↔ bom)</span><span id="l-val">ruim</span></div><input type="range" id="val" min="0" max="100" value="28"></div>
+      <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Controle / capacidade de lidar</span><span id="l-ctrl">baixo</span></div><input type="range" id="ctrl" min="0" max="100" value="40"></div>
+      <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Certeza (incerto/futuro ↔ certo/agora)</span><span id="l-cert">certo</span></div><input type="range" id="cert" min="0" max="100" value="70"></div>
+    </div>
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Mudar só uma avaliação (quem é o responsável, ter ou não controle) troca a emoção, mesmo com a "mesma" situação ruim: raiva, culpa, medo e tristeza vêm de padrões de avaliação diferentes.</div></div>
+    <div class="sources">Fontes: avaliação, Lazarus; Scherer; Smith e Ellsworth (1985); Roseman.</div>
+  </section>
+
+  <!-- ===================== M2: REGULAÇÃO ===================== -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Regular a emoção</div>
+      Os principais tipos de estratégia são o <b>emprego da atenção</b>, as <b>alterações cognitivas</b> e a <b>modulação das respostas</b>. Reavaliar (alteração cognitiva) é o mais eficaz para reduzir afeto negativo; suprimir (modular a resposta) é dos menos. Estratégias exigentes funcionam melhor quando usadas cedo.
+    </div>
+    <p class="how">A emoção se forma ao longo de uma linha do tempo. Escolha uma estratégia e veja onde ela age.</p>
+
+    <div id="line" style="display:flex; align-items:stretch; gap:4px; margin-bottom:6px"></div>
+    <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:1.25rem"><span>← antecedentes (cedo)</span><span>resposta (tarde) →</span></div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px">Estratégia:</div>
+    <div id="strats" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.25rem"></div>
+    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px">Afeto negativo após a estratégia:</div>
+    <div style="background:var(--surface-1); border-radius:999px; height:22px; overflow:hidden; margin-bottom:4px"><div id="bar" style="height:100%; width:80%; background:var(--text-danger); border-radius:999px; transition:width .4s"></div></div>
+    <div id="eff" style="font-size:13px; color:var(--text-muted); margin-bottom:1rem"></div>
+    <div id="rnote" style="font-size:14px; min-height:2.4em"></div>
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Onde você intervém importa: reinterpretar a situação (cedo) reduz mais o afeto negativo e ativa o pré-frontal, baixando a amígdala; segurar a expressão (tarde) reduz pouco e custa caro. A eficácia também depende da situação.</div></div>
+    <div class="sources">Fonte: modelo processual de regulação da emoção, Gross.</div>
+  </section>
+
+  <!-- ===================== M3: EMOÇÃO E COGNIÇÃO ===================== -->
+  <section id="m3" class="hidden">
+    <div class="def">
+      <div class="k">Afeto molda a cognição</div>
+      A emoção muda a <b>atenção</b> (estreita ou amplia), a <b>memória</b> (realça o emocional) e a <b>decisão</b> (cada emoção empurra para um lado). Aqui, três demonstrações.
+    </div>
+
+    <p class="subtitle">Atenção</p>
+    <h3 style="margin-top:.2rem">Escopo: intensidade estreita ou amplia</h3>
+    <p class="how">Aumente a intensidade motivacional e veja a atenção se fechar no centro.</p>
+    <div id="sc-grid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px; max-width:360px; margin:0 auto"></div>
+    <div style="display:flex; align-items:center; gap:12px; margin:12px 0"><span style="font-size:14px; color:var(--text-secondary)">Intensidade</span><input type="range" id="sc-int" min="0" max="100" value="30" style="flex:1"><span id="sc-lab" style="font-size:14px; min-width:70px; text-align:right">baixa</span></div>
+    <div id="sc-note" style="font-size:13px; color:var(--text-muted)"></div>
+
+    <p class="subtitle">Memória</p>
+    <h3 style="margin-top:.2rem">O emocional gruda mais</h3>
+    <p class="how">Memorize a lista; depois marque as palavras que viu. Compare emocionais x neutras.</p>
+    <div id="em-stage" style="min-height:130px; background:var(--surface-1); border-radius:10px; padding:1rem; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px"></div>
+    <div id="em-res" style="margin-top:10px"></div>
+
+    <p class="subtitle">Decisão</p>
+    <h3 style="margin-top:.2rem">Dilema moral: dois cenários</h3>
+    <p class="how">Responda os dois e veja o que a sua reação revela.</p>
+    <div id="mo-stage" style="min-height:150px; background:var(--surface-1); border-radius:10px; padding:1rem"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Emoção intensa estreita a atenção e define o que entra na memória; o conteúdo emocional é mais lembrado (papel da amígdala). E, na decisão, o repúdio a empurrar alguém (resposta afetiva) compete com o cálculo de "salvar mais" (resposta cognitiva): é o modelo de dois processos para dilemas morais.</div></div>
+    <div class="sources">Fontes: escopo atencional, Harmon-Jones e Gable; memória emocional e amígdala, Adolphs (Urbach-Wiethe); dilema moral, Greene (modelo de dois processos, que é simplificado).</div>
+  </section>
+
+  <!-- ===================== M4: VIESES ===================== -->
+  <section id="m4" class="hidden">
+    <div class="def">
+      <div class="k">Vieses na ansiedade e na depressão</div>
+      Ansiedade e depressão se ligam a quatro vieses: de <b>atenção</b>, de <b>interpretação</b>, de memória <b>explícita</b> e <b>implícita</b>. O viés de atenção é mais forte na ansiedade; os de memória, na depressão. Reconhecer e modificar esses vieses (CBM) ajuda a reduzir sintomas.
+    </div>
+    <h3>Viés de interpretação</h3>
+    <p class="how">Para cada situação ambígua, escolha a leitura que primeiro lhe ocorre.</p>
+    <div id="bi-stage" style="min-height:150px; background:var(--surface-1); border-radius:10px; padding:1rem"></div>
+    <div id="bi-res" style="margin-top:10px"></div>
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">A mesma situação ambígua admite leitura de ameaça ou benigna. Tender à ameaça é o viés interpretativo (mais ligado à ansiedade). A modificação do viés (CBM) treina a leitura benigna repetidamente, reduzindo o viés e os sintomas, mais na ansiedade que na depressão.</div></div>
+    <div class="sources">Fontes: vieses cognitivos e CBM, Mathews e MacLeod; Hakamata et al. Caveat: muitos estudos usam problemas pouco relevantes para a vida dos participantes.</div>
+  </section>
+
+  <footer>Protótipo · módulo de Emoção · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== TABS ===== */
+(function(){ const btns=document.querySelectorAll('.subnav button'), secs={m1:m1e(),m2:m2e(),m3:m3e(),m4:m4e()};
+  function m1e(){return document.getElementById('m1');} function m2e(){return document.getElementById('m2');} function m3e(){return document.getElementById('m3');} function m4e(){return document.getElementById('m4');}
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); }); })();
+
+/* ===== M1: AVALIAÇÃO -> EMOÇÃO ===== */
+(function(){
+  let agent='outro'; const g=id=>document.getElementById(id);
+  const rel=g('rel'),val=g('val'),ctrl=g('ctrl'),cert=g('cert'),box=g('emo'),name=g('emo-name'),why=g('emo-why');
+  function pick(){ const r=+rel.value,v=+val.value,c=+ctrl.value,ce=+cert.value;
+    if(r<25) return {e:'Indiferença',t:'neu',w:'Pouco relevante para seus objetivos: quase nenhuma emoção surge.'};
+    if(v>=55){ if(ce<40) return {e:'Esperança',t:'pos',w:'Algo bom, mas ainda incerto/futuro.'}; if(agent==='eu') return {e:'Orgulho',t:'pos',w:'Bom para você e fruto da sua ação.'}; return {e:'Alegria',t:'pos',w:'Bom para seus objetivos.'}; }
+    if(v<=45){ if(ce<40&&c<50) return {e:'Medo / Ansiedade',t:'neg',w:'Algo ruim, incerto e fora do seu controle: ameaça futura.'};
+      if(agent==='outro') return {e:'Raiva',t:'neg',w:'Algo ruim atribuído a outra pessoa'+(c>55?', e você sente que pode reagir.':'.')};
+      if(agent==='eu') return {e:'Culpa',t:'neg',w:'Algo ruim atribuído a você mesmo.'};
+      return {e:'Tristeza',t:'neg',w:'Algo ruim, por circunstância, com pouco a fazer.'}; }
+    return {e:'Neutro / ambivalente',t:'neu',w:'Avaliação no meio do caminho: a emoção não se define.'}; }
+  function render(){ g('l-rel').textContent=rel.value<33?'baixa':rel.value<66?'média':'alta'; g('l-val').textContent=val.value<45?'ruim':val.value>55?'bom':'neutro'; g('l-ctrl').textContent=ctrl.value<33?'baixo':ctrl.value<66?'médio':'alto'; g('l-cert').textContent=cert.value<40?'incerto':'certo';
+    const p=pick(), C={pos:['rgba(43,180,138,.14)','var(--text-success)'],neg:['rgba(226,75,74,.14)','var(--text-danger)'],neu:['var(--surface-1)','var(--text-secondary)']};
+    box.style.background=C[p.t][0]; name.style.color=C[p.t][1]; name.textContent=p.e; why.textContent=p.w; why.style.color='var(--text-secondary)'; }
+  document.querySelectorAll('.ag').forEach(b=>b.onclick=()=>{ agent=b.dataset.a; document.querySelectorAll('.ag').forEach(x=>x.setAttribute('aria-pressed',x.dataset.a===agent)); render(); });
+  [rel,val,ctrl,cert].forEach(s=>s.oninput=render); render();
+})();
+
+/* ===== M2: REGULAÇÃO (GROSS) ===== */
+(function(){
+  const STAGES=[{k:'sit',l:'Situação'},{k:'at',l:'Atenção'},{k:'av',l:'Avaliação'},{k:'re',l:'Resposta'}];
+  const STRATS=[
+    {id:'selecao',nome:'Selecionar a situação',stage:'sit',neg:25,ef:'alta',tipo:'antecedente',w:'Evita o gatilho antes de ele agir. Eficaz, mas nem sempre dá para usar.'},
+    {id:'modific',nome:'Modificar a situação',stage:'sit',neg:35,ef:'alta',tipo:'antecedente',w:'Muda a situação para que ela gere menos emoção negativa.'},
+    {id:'atencao',nome:'Deslocar a atenção',stage:'at',neg:48,ef:'média',tipo:'antecedente',w:'Desviar o foco do que incomoda. Ajuda, mas o estímulo continua lá.'},
+    {id:'reaval',nome:'Reavaliar (reinterpretar)',stage:'av',neg:24,ef:'alta',tipo:'antecedente',w:'Reinterpretar o significado da situação. A mais eficaz: ativa o pré-frontal e reduz a amígdala.'},
+    {id:'supres',nome:'Suprimir a expressão',stage:'re',neg:70,ef:'baixa',tipo:'resposta',w:'Segurar a expressão depois que a emoção surgiu. Reduz pouco o que se sente e tem custo: das menos eficazes.'}
+  ];
+  const g=id=>document.getElementById(id), line=g('line'), strdiv=g('strats'), bar=g('bar'), eff=g('eff'), note=g('rnote'); let active=null;
+  function renderLine(){ line.innerHTML=''; STAGES.forEach((s,i)=>{ const on=active&&STRATS.find(x=>x.id===active).stage===s.k; const box=document.createElement('div');
+    box.style.cssText='flex:1; min-width:70px; text-align:center; font-size:13px; padding:.7rem .4rem; border-radius:10px; border:1px solid '+(on?'var(--text-accent)':'var(--border)')+'; background:'+(on?'var(--bg-accent)':'var(--surface-1)')+'; color:'+(on?'var(--text-accent)':'var(--text-secondary)'); box.textContent=s.l; line.appendChild(box);
+    if(i<STAGES.length-1){ const a=document.createElement('div'); a.textContent='→'; a.style.cssText='display:flex;align-items:center;color:var(--text-muted)'; line.appendChild(a); } }); }
+  STRATS.forEach(s=>{ const b=document.createElement('button'); b.textContent=s.nome; b.style.fontSize='13px'; b.onclick=()=>sel(s.id); strdiv.appendChild(b); });
+  function sel(id){ active=id; const s=STRATS.find(x=>x.id===id); document.querySelectorAll('#strats button').forEach((b,i)=>b.setAttribute('aria-pressed',STRATS[i].id===id));
+    bar.style.width=s.neg+'%'; bar.style.background=s.neg<40?'var(--text-success)':s.neg<60?'var(--text-warning)':'var(--text-danger)';
+    eff.textContent='Eficácia: '+s.ef+' · estratégia '+s.tipo+(s.tipo==='antecedente'?' (age cedo)':' (age tarde)'); note.textContent=s.w; renderLine(); }
+  renderLine(); note.textContent='Escolha uma estratégia para ver onde ela age.';
+})();
+
+/* ===== M3a: ESCOPO ATENCIONAL ===== */
+(function(){
+  const grid=document.getElementById('sc-grid'), int=document.getElementById('sc-int'), lab=document.getElementById('sc-lab'), note=document.getElementById('sc-note');
+  const N=15, CENTER=7, cells=[];
+  for(let i=0;i<N;i++){ const c=document.createElement('div'); c.style.cssText='aspect-ratio:1; border-radius:8px; transition:opacity .2s, transform .2s; background:'+(i===CENTER?'var(--text-accent)':'#5b7ca8');
+    if(i===CENTER){ c.textContent='alvo'; c.style.cssText+=';display:flex;align-items:center;justify-content:center;color:#06231b;font-size:11px'; } grid.appendChild(c); cells.push(c); }
+  function render(){ const v=+int.value/100; lab.textContent=v<0.33?'baixa':v<0.66?'média':'alta';
+    cells.forEach((c,i)=>{ if(i===CENTER){ c.style.transform='scale('+(1+v*0.15)+')'; return; } c.style.opacity=(1-v*0.92).toFixed(2); });
+    note.textContent = v>0.6? 'Intensidade alta: a atenção se estreita no alvo e a periferia some. O que fica no foco tende a ser lembrado; a periferia se perde.' : v<0.34? 'Intensidade baixa: atenção ampla, você abrange o todo.' : 'Intensidade média: o foco começa a se fechar.'; }
+  int.oninput=render; render();
+})();
+
+/* ===== M3b: MEMÓRIA EMOCIONAL ===== */
+(function(){
+  const EMO=['sangue','morte','beijo','medo','choro','grito','perigo','paixão'], NEU=['mesa','papel','rua','caixa','lápis','porta','nuvem','garfo'];
+  const stage=document.getElementById('em-stage'), res=document.getElementById('em-res');
+  const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+  let studied=[], sel;
+  function intro(){ res.innerHTML=''; stage.innerHTML='<p class="muted" style="margin:0">8 palavras vão aparecer por alguns segundos. Tente memorizá-las.</p>'; const b=document.createElement('button'); b.textContent='Começar'; b.onclick=study; stage.appendChild(b); }
+  function study(){ const e=shuf(EMO).slice(0,4), n=shuf(NEU).slice(0,4); studied=shuf(e.concat(n)); let s=6;
+    stage.innerHTML='<div style="font-size:13px;color:var(--text-secondary)">Memorize · <span id="em-cd">'+s+'</span>s</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px">'+studied.map(w=>'<span style="font-size:17px;padding:6px 12px;border-radius:8px;background:var(--bg-accent);color:var(--text-accent)">'+w+'</span>').join('')+'</div>';
+    const cd=document.getElementById('em-cd'); const t=setInterval(()=>{ s--; if(cd)cd.textContent=s; if(s<=0){clearInterval(t); test();} },1000); }
+  function test(){ const ne=shuf(EMO.filter(w=>!studied.includes(w))).slice(0,4), nn=shuf(NEU.filter(w=>!studied.includes(w))).slice(0,4); const pool=shuf(studied.concat(ne).concat(nn)); sel=new Set();
+    stage.innerHTML='<div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Quais você viu? Marque-as.</div><div id="em-pool" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div><button id="em-go" style="margin-top:12px">Responder</button>';
+    const pp=document.getElementById('em-pool'); pool.forEach(w=>{ const c=document.createElement('div'); c.textContent=w; c.style.cssText='font-size:15px;padding:7px 13px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);cursor:pointer';
+      c.onclick=()=>{ if(sel.has(w)){sel.delete(w);c.style.borderColor='var(--border)';c.style.background='var(--surface-2)';} else {sel.add(w);c.style.borderColor='var(--text-accent)';c.style.background='var(--bg-accent)';} }; pp.appendChild(c); });
+    document.getElementById('em-go').onclick=result; }
+  function result(){ const he=studied.filter(w=>EMO.includes(w)&&sel.has(w)).length, hn=studied.filter(w=>NEU.includes(w)&&sel.has(w)).length;
+    stage.innerHTML='<p class="muted" style="margin:0">Fim.</p>'; const b=document.createElement('button'); b.textContent='Repetir'; b.onclick=intro; stage.appendChild(b);
+    res.innerHTML='<div style="display:flex;gap:10px"><div style="flex:1;background:var(--surface-1);border-radius:10px;padding:.8rem"><div style="font-size:13px;color:var(--text-secondary)">Emocionais lembradas</div><div style="font-size:22px;font-weight:500;color:var(--text-danger)">'+he+' / 4</div></div><div style="flex:1;background:var(--surface-1);border-radius:10px;padding:.8rem"><div style="font-size:13px;color:var(--text-secondary)">Neutras lembradas</div><div style="font-size:22px;font-weight:500;color:var(--text-secondary)">'+hn+' / 4</div></div></div><p style="font-size:13px;color:var(--text-muted);margin-top:.8rem">As emocionais costumam ser mais lembradas: a amígdala realça a consolidação do que tem carga emocional (lesões nela, como na doença de Urbach-Wiethe, apagam esse reforço).</p>'; }
+  intro();
+})();
+
+/* ===== M3c: DILEMA MORAL ===== */
+(function(){
+  const stage=document.getElementById('mo-stage'); let ans={};
+  function q1(){ stage.innerHTML='<div style="font-weight:500;margin-bottom:6px">Cenário 1 · o desvio</div><div style="font-size:15px">Um bonde desgovernado vai matar 5 pessoas. Você pode <b>puxar uma alavanca</b> e desviá-lo para outro trilho, onde matará 1 pessoa. Você puxa a alavanca?</div><div style="display:flex;gap:8px;margin-top:10px"><button id="q1s">Puxo</button><button id="q1n">Não puxo</button></div>';
+    document.getElementById('q1s').onclick=()=>{ans.a=true;q2();}; document.getElementById('q1n').onclick=()=>{ans.a=false;q2();}; }
+  function q2(){ stage.innerHTML='<div style="font-weight:500;margin-bottom:6px">Cenário 2 · a passarela</div><div style="font-size:15px">O mesmo bonde vai matar 5 pessoas. Ao seu lado, numa passarela, há um homem grande. A única forma de parar o bonde é <b>empurrá-lo</b> sobre os trilhos: ele morre, mas salva os 5. Você empurra?</div><div style="display:flex;gap:8px;margin-top:10px"><button id="q2s">Empurro</button><button id="q2n">Não empurro</button></div>';
+    document.getElementById('q2s').onclick=()=>{ans.b=true;reveal();}; document.getElementById('q2n').onclick=()=>{ans.b=false;reveal();}; }
+  function reveal(){ const classic = ans.a && !ans.b;
+    stage.innerHTML='<div style="font-weight:500;margin-bottom:6px">O que isso revela</div><div style="font-size:14px">Você '+(ans.a?'puxaria a alavanca':'não puxaria a alavanca')+' e '+(ans.b?'empurraria o homem':'não empurraria o homem')+'.</div>'+
+      '<div style="font-size:14px;color:var(--text-secondary);margin-top:8px">Nos dois casos, 1 morre para salvar 5. Mas a maioria <b>puxa a alavanca</b> (impessoal → resposta <b>utilitária/cognitiva</b>) e <b>não empurra</b> o homem (ação pessoal e aversiva → resposta <b>afetiva/deontológica</b>). '+(classic?'Foi exatamente o seu padrão.':'Seu padrão fugiu um pouco do mais comum, o que também é interessante.')+' É o modelo de dois processos (Greene), que é uma simplificação útil.</div>'+
+      '<button id="mo-again" style="margin-top:12px">Refazer</button>';
+    document.getElementById('mo-again').onclick=q1; }
+  q1();
+})();
+
+/* ===== M4: VIÉS DE INTERPRETAÇÃO + CBM ===== */
+(function(){
+  const ITEMS=[
+    {s:'Você manda uma mensagem e a pessoa demora a responder.', a:'Ela está te ignorando ou ficou brava.', b:'Ela está ocupada e responde depois.'},
+    {s:'Seu chefe diz que quer falar com você amanhã.', a:'Vou ser repreendido.', b:'Pode ser algo de rotina, ou até um elogio.'},
+    {s:'Você sente o coração acelerar de repente.', a:'Algo muito errado está acontecendo comigo.', b:'É ansiedade ou cafeína; passa logo.'},
+    {s:'Pessoas riem do outro lado da sala.', a:'Estão rindo de mim.', b:'Estão rindo de algo entre elas.'}
+  ];
+  const stage=document.getElementById('bi-stage'), res=document.getElementById('bi-res');
+  let i=0, threat=0, train=false;
+  function show(){ if(i>=ITEMS.length) return done();
+    const it=ITEMS[i]; const opts = Math.random()<0.5? [['a',it.a],['b',it.b]] : [['b',it.b],['a',it.a]];
+    stage.innerHTML='<div style="font-size:13px;color:var(--text-secondary)">Situação '+(i+1)+' de '+ITEMS.length+(train?' · modo treino (CBM)':'')+'</div><div style="font-size:15px;margin:8px 0">'+it.s+'</div><div style="display:flex;gap:8px;flex-direction:column">'+
+      opts.map(o=>'<button class="bi-opt" data-k="'+o[0]+'" style="text-align:left">'+o[1]+'</button>').join('')+'</div><div id="bi-fb" style="font-size:13px;margin-top:8px;min-height:1.2em"></div>';
+    document.querySelectorAll('.bi-opt').forEach(btn=>btn.onclick=()=>{ const k=btn.dataset.k;
+      if(train){ document.getElementById('bi-fb').innerHTML = k==='b'? '<span style="color:var(--text-success)">boa: leitura benigna.</span>' : '<span style="color:var(--text-warning)">no treino, busque a leitura benigna.</span>'; if(k==='b'){ i++; setTimeout(show,500);} return; }
+      if(k==='a') threat++; i++; setTimeout(show,180); }); }
+  function done(){ stage.innerHTML='<div style="font-weight:500">Resultado</div><div style="font-size:14px;color:var(--text-secondary);margin-top:6px">Você escolheu a leitura de <b>ameaça</b> em '+threat+' de '+ITEMS.length+' situações.</div>';
+    res.innerHTML='<p style="font-size:13px;color:var(--text-muted)">Quanto mais leituras de ameaça, mais forte o viés interpretativo (típico da ansiedade). A modificação do viés (CBM) treina a leitura benigna repetidas vezes.</p><div style="display:flex;gap:8px"><button id="bi-train">Fazer treino (CBM)</button><button id="bi-reset">Refazer</button></div>';
+    document.getElementById('bi-train').onclick=()=>{ train=true; i=0; threat=0; res.innerHTML='<p style="font-size:13px;color:var(--text-muted)">No treino, só a leitura benigna avança. Repetir isso enfraquece o viés de ameaça.</p>'; show(); };
+    document.getElementById('bi-reset').onclick=()=>{ train=false; i=0; threat=0; res.innerHTML=''; show(); }; }
+  show();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Pensamento e raciocínio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  input[type=number]{font-family:inherit; font-size:.9rem; padding:6px 8px; border-radius:8px; background:var(--bg-soft); color:var(--ink); border:1px solid var(--line)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <span class="stage active">Pensamento e raciocínio<span class="arrow"> ›</span></span>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Pensamento e raciocínio</h2>
+  <p class="muted">Pensar é <b>manipular representações</b> internas: simular, categorizar e decidir. Este módulo tem três partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · Representações</button>
+    <button data-tab="m2" aria-pressed="false">2 · Conceitos</button>
+    <button data-tab="m3" aria-pressed="false">3 · Decisão e vieses</button>
+  </div>
+
+  <!-- ===================== MÓDULO 1 ===================== -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Pensar é manipular representações</div>
+      O conhecimento fica na mente como <b>representações</b> (estruturas internas que correspondem ao mundo), e pensar é <b>operar</b> sobre elas: simular, antecipar, planejar, sem agir fisicamente. Há representações <b>analógicas</b> (imagens, mapas, que preservam a forma) e <b>simbólicas</b> (palavras, abstratas).
+    </div>
+
+    <h3>Rotação mental</h3>
+    <p class="how">Como fazer: a letra aparece girada e, às vezes, <b>espelhada</b> (invertida como num espelho). Gire-a mentalmente até a posição normal e diga se ela está <b>normal</b> ou <b>espelhada</b>, o mais rápido que conseguir.</p>
+    <div style="height:170px; display:flex; align-items:center; justify-content:center; background:var(--surface-1); border-radius:12px">
+      <div id="r-glyph" style="font-size:96px; font-weight:700; font-family:Georgia,serif; line-height:1">R</div>
+    </div>
+    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0">
+      <button id="r-normal">Normal</button><button id="r-mirror">Espelhada</button>
+    </div>
+    <div id="r-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
+    <div style="font-size:13px; color:var(--text-secondary); margin:1rem 0 6px">Tempo médio por ângulo de rotação:</div>
+    <div id="r-chart" style="display:flex; align-items:flex-end; gap:10px; height:120px; padding:0 4px"></div>
+    <div id="r-count" style="font-size:12px; color:var(--text-muted); margin-top:6px"></div>
+
+    <div class="why">
+      <div class="k">O que isso mostra sobre o pensamento</div>
+      <div class="v">Para julgar a letra, você gira uma <b>imagem mental</b> dela. O tempo cresce com o ângulo, como se girasse um objeto real: evidência de que o pensamento manipula <b>representações analógicas</b> (que preservam a forma), não apenas símbolos abstratos. Curiosidade: algumas pessoas relatam não "ver" imagens na mente (afantasia).</div>
+    </div>
+
+    <div class="sources">Fontes: rotação mental, Shepard e Metzler (1971); afantasia, Zeman et al. A imagética mental é só um dos formatos possíveis de representação.</div>
+  </section>
+
+  <!-- ===================== MÓDULO 2 ===================== -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Categorização e conceitos</div>
+      A mente não guarda cada objeto isolado: agrupa por propriedades compartilhadas. <b>Conceitos</b> são representações que organizam categorias, reduzem a complexidade do mundo e permitem <b>inferências rápidas</b> (ativar "cachorro" já traz "tem pelo", "late", "pode morder").
+    </div>
+
+    <h3>Tipicidade</h3>
+    <p class="how">Como fazer: para cada palavra, responda rápido se é uma <b>ave</b> ou não. No fim, compare o tempo entre aves típicas e atípicas.</p>
+    <div style="height:120px; display:flex; align-items:center; justify-content:center; background:var(--surface-1); border-radius:12px">
+      <div id="t-word" style="font-size:40px; font-weight:500; font-family:Georgia,serif">—</div>
+    </div>
+    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0">
+      <button id="t-yes">É ave</button><button id="t-no">Não é</button>
+    </div>
+    <div id="t-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
+    <div id="t-res" style="margin-top:1rem"></div>
+
+    <div class="why">
+      <div class="k">O que isso mostra sobre o pensamento</div>
+      <div class="v">Confirmamos mais rápido os exemplos próximos do <b>protótipo</b> (pardal) do que os distantes (pinguim). Pertencer a uma categoria é <b>graduado</b>, não tudo-ou-nada. É essa estrutura que deixa o pensamento inferir depressa, sem analisar cada caso do zero.</div>
+    </div>
+
+    <div class="sources">Fonte: protótipos e tipicidade, Rosch (1975).</div>
+  </section>
+
+  <!-- ===================== MÓDULO 3 ===================== -->
+  <section id="m3" class="hidden">
+    <div class="def">
+      <div class="k">Decisão: pensamento em ação</div>
+      Decidir é escolher entre alternativas sob incerteza. O modelo <b>normativo</b> descreve como deveríamos decidir (a escolha de maior utilidade); o <b>descritivo</b>, como de fato decidimos: com tempo, informação e cálculo limitados, usando <b>heurísticas</b> (atalhos) que geram <b>vieses</b> sistemáticos.
+    </div>
+
+    <h3>Galeria de vieses</h3>
+    <p class="how">Como fazer: navegue pelos cinco; em cada um, responda primeiro e depois veja a explicação.</p>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+      <button id="prev">‹ anterior</button>
+      <span id="ind" style="font-size:13px; color:var(--text-secondary)"></span>
+      <button id="next">próximo ›</button>
+    </div>
+    <div id="stage" style="background:var(--surface-1); border-radius:12px; padding:1.1rem; min-height:240px"></div>
+
+    <div class="why">
+      <div class="k">O que isso mostra sobre o pensamento</div>
+      <div class="v">O pensamento real usa atalhos que economizam esforço e quase sempre funcionam, mas produzem erros <b>previsíveis</b> (não aleatórios). Reconhecê-los é o primeiro passo para decidir melhor. Decidir não é só calcular: é lidar com incerteza com recursos limitados.</div>
+    </div>
+
+    <div class="sources">Fontes: heurísticas e vieses, Tversky e Kahneman; racionalidade limitada, Simon; previsão afetiva, Gilbert e Wilson.</div>
+  </section>
+
+  <footer>Protótipo · módulo de Pensamento e raciocínio · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== TABS ===== */
+(function(){
+  const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); });
+})();
+
+/* ===== M1: ROTAÇÃO MENTAL ===== */
+(function(){
+  const ANG=[0,45,90,135,180,225,270,315], MAGS=[0,45,90,135,180];
+  const glyph=document.getElementById('r-glyph'), fb=document.getElementById('r-fb'), chart=document.getElementById('r-chart'), count=document.getElementById('r-count');
+  let a=0,m=false,t0=0,trials=[];
+  function next(){ a=ANG[Math.floor(Math.random()*ANG.length)]; m=Math.random()<0.5; glyph.style.transform='rotate('+a+'deg) scaleX('+(m?-1:1)+')'; fb.textContent=''; t0=performance.now(); }
+  function answer(saysMirror){ if(!t0)return; const rt=performance.now()-t0; t0=0; const correct=(saysMirror===m), mag=Math.min(a,360-a); trials.push({mag,rt,correct});
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(m?'espelhada':'normal')+'</span>'; draw(); setTimeout(next,650); }
+  function draw(){ const ok=trials.filter(t=>t.correct); chart.innerHTML='';
+    const means=MAGS.map(g=>{ const r=ok.filter(t=>t.mag===g).map(t=>t.rt); return r.length? r.reduce((x,y)=>x+y,0)/r.length:0; });
+    const max=Math.max(600,...means);
+    MAGS.forEach((g,i)=>{ const col=document.createElement('div'); col.style.cssText='flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%';
+      const val=document.createElement('div'); val.style.cssText='font-size:11px; color:var(--text-secondary); margin-bottom:2px'; val.textContent=means[i]?Math.round(means[i]):'';
+      const bar=document.createElement('div'); bar.style.cssText='width:100%; border-radius:6px 6px 0 0; background:var(--text-accent); height:'+(means[i]?Math.max(6,means[i]/max*100):0)+'%';
+      const lab=document.createElement('div'); lab.style.cssText='font-size:11px; color:var(--text-muted); margin-top:4px'; lab.textContent=g+'°';
+      col.appendChild(val); col.appendChild(bar); col.appendChild(lab); chart.appendChild(col); });
+    count.textContent='tentativas: '+trials.length+(trials.length>=8?' · repare a subida do tempo conforme o ângulo cresce.':''); }
+  document.getElementById('r-normal').onclick=()=>answer(false);
+  document.getElementById('r-mirror').onclick=()=>answer(true);
+  draw(); next();
+})();
+
+/* ===== M2: TIPICIDADE ===== */
+(function(){
+  const ITEMS=[ {w:'pardal',b:true,typ:'alta'},{w:'pombo',b:true,typ:'alta'},{w:'sabiá',b:true,typ:'alta'},{w:'andorinha',b:true,typ:'alta'},
+    {w:'pinguim',b:true,typ:'baixa'},{w:'avestruz',b:true,typ:'baixa'},{w:'galinha',b:true,typ:'baixa'},{w:'ema',b:true,typ:'baixa'},
+    {w:'morcego',b:false},{w:'baleia',b:false},{w:'abelha',b:false},{w:'cobra',b:false} ];
+  const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+  const wordEl=document.getElementById('t-word'), fb=document.getElementById('t-fb'), res=document.getElementById('t-res');
+  let order=shuf(ITEMS.slice()), idx=0, t0=0, data=[];
+  function show(){ if(idx>=order.length)return finish(); wordEl.textContent=order[idx].w; fb.textContent=''; t0=performance.now(); }
+  function answer(saysBird){ if(!t0)return; const it=order[idx], rt=performance.now()-t0; t0=0; const correct=(saysBird===it.b); data.push({it,rt,correct});
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">ok</span>':'<span style="color:var(--text-danger)">'+(it.b?'é ave':'não é ave')+'</span>'; idx++; setTimeout(show,450); }
+  function mean(a){ return a.length? Math.round(a.reduce((x,y)=>x+y,0)/a.length):0; }
+  function finish(){ wordEl.textContent='Fim'; fb.textContent='';
+    const alta=data.filter(d=>d.correct&&d.it.b&&d.it.typ==='alta').map(d=>d.rt), baixa=data.filter(d=>d.correct&&d.it.b&&d.it.typ==='baixa').map(d=>d.rt);
+    res.innerHTML='<div style="display:flex; gap:10px"><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Aves típicas</div><div style="font-size:22px; font-weight:500; color:var(--text-success)">'+mean(alta)+' ms</div></div><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Aves atípicas</div><div style="font-size:22px; font-weight:500; color:var(--text-warning)">'+mean(baixa)+' ms</div></div></div>'+
+      '<p style="font-size:13px; color:var(--text-muted); margin-top:.8rem">Típicas (pardal, pombo) costumam ser confirmadas mais rápido que atípicas (pinguim, avestruz). Morcego e baleia eram as pegadinhas.</p><button id="t-again" style="margin-top:6px">Repetir</button>';
+    document.getElementById('t-again').onclick=()=>{ order=shuf(ITEMS.slice()); idx=0; data=[]; res.innerHTML=''; show(); }; }
+  document.getElementById('t-yes').onclick=()=>answer(true); document.getElementById('t-no').onclick=()=>answer(false); show();
+})();
+
+/* ===== M3: GALERIA DE VIESES ===== */
+(function(){
+  const g=id=>document.getElementById(id), stage=g('stage'), ind=g('ind'), R=Math.random;
+  const DEMOS=[
+    {t:'Ancoragem', go:function(){ const anc=R()<0.5?60:320;
+      stage.innerHTML='<div style="font-weight:500; margin-bottom:8px">Ancoragem</div><div style="font-size:15px">O Brasil tem mais ou menos que <b>'+anc+' milhões</b> de habitantes?</div><div style="display:flex; gap:8px; margin:10px 0"><button id="a-mais">mais</button><button id="a-menos">menos</button></div><div style="font-size:14px; color:var(--text-secondary)">Sua estimativa (milhões): <input id="a-est" type="number" style="width:90px"></div><button id="a-go" style="margin-top:10px">Revelar</button><div id="a-out" style="font-size:14px; margin-top:10px"></div>';
+      g('a-mais').onclick=g('a-menos').onclick=()=>{}; g('a-go').onclick=()=>{ g('a-out').innerHTML='População real: ~<b>203 milhões</b>. Você viu a âncora <b>'+anc+'</b> (sorteada). A estimativa tende a gravitar para a âncora, mesmo arbitrária: <b>ancoragem</b>.'; }; }},
+    {t:'Disponibilidade', go:function(){
+      stage.innerHTML='<div style="font-weight:500; margin-bottom:8px">Disponibilidade</div><div style="font-size:15px">O que mata mais pessoas por ano: <b>tubarões</b> ou <b>vacas</b>?</div><div style="display:flex; gap:8px; margin:10px 0"><button id="d-t">tubarões</button><button id="d-v">vacas</button></div><div id="d-out" style="font-size:14px"></div>';
+      const rv=()=>{ g('d-out').innerHTML='<b>Vacas</b> matam muito mais (coices, pisões) que tubarões. Julgamos pelo que vem fácil à mente (ataques de tubarão são vívidos e noticiados), não pela frequência real: <b>disponibilidade</b>.'; }; g('d-t').onclick=rv; g('d-v').onclick=rv; }},
+    {t:'Representatividade', go:function(){
+      stage.innerHTML='<div style="font-weight:500; margin-bottom:8px">Representatividade</div><div style="font-size:14px; color:var(--text-secondary)">Helena é inteligente, ambiciosa, gosta de enigmas matemáticos e de leitura.</div><div style="font-size:15px; margin-top:8px">É mais provável que Helena seja:</div><div style="display:flex; gap:8px; margin:10px 0; flex-wrap:wrap"><button id="r-a">psicóloga cognitiva</button><button id="r-b">funcionária dos correios</button></div><div id="r-out" style="font-size:14px"></div>';
+      const rv=()=>{ g('r-out').innerHTML='Há <b>muito mais</b> funcionárias dos correios do que psicólogas cognitivas. Julgar pela semelhança com o protótipo e ignorar essa <b>taxa de base</b> é a <b>representatividade</b>.'; }; g('r-a').onclick=rv; g('r-b').onclick=rv; }},
+    {t:'Enquadramento', go:function(){ const gain=R()<0.5;
+      const txt=gain?'Uma doença ameaça 600 pessoas. <b>Programa A</b>: salva 200 com certeza. <b>Programa B</b>: 1/3 de chance de salvar as 600, 2/3 de salvar ninguém.':'Uma doença ameaça 600 pessoas. <b>Programa A</b>: 400 morrem com certeza. <b>Programa B</b>: 1/3 de chance de ninguém morrer, 2/3 de 600 morrerem.';
+      stage.innerHTML='<div style="font-weight:500; margin-bottom:8px">Enquadramento</div><div style="font-size:15px">'+txt+'</div><div style="display:flex; gap:8px; margin:10px 0"><button id="e-a">Programa A</button><button id="e-b">Programa B</button></div><div id="e-out" style="font-size:14px"></div>';
+      const rv=()=>{ g('e-out').innerHTML='As duas versões são <b>idênticas</b> (200 vivos = 400 mortos). No enquadramento de <b>ganho</b> tendemos ao seguro (A); no de <b>perda</b>, ao arriscado (B). A escolha muda só pela forma: <b>enquadramento</b>. (Você viu a versão de '+(gain?'ganho':'perda')+'.)'; }; g('e-a').onclick=rv; g('e-b').onclick=rv; }},
+    {t:'Afeto (previsão afetiva)', go:function(){
+      stage.innerHTML='<div style="font-weight:500; margin-bottom:8px">Afeto · previsão afetiva</div><div style="font-size:15px">Imagine que você ganha um grande prêmio na loteria.</div><div style="margin:12px 0"><div style="font-size:14px; color:var(--text-secondary)">Quão mais feliz, de 0 a 10? <span id="af-h">7</span></div><input id="af-hr" type="range" min="0" max="10" value="7" style="width:100%"></div><div style="margin:12px 0"><div style="font-size:14px; color:var(--text-secondary)">Por quantos meses isso dura? <span id="af-m">12</span></div><input id="af-mr" type="range" min="0" max="36" value="12" style="width:100%"></div><button id="af-go">Revelar</button><div id="af-out" style="font-size:14px; margin-top:10px"></div>';
+      g('af-hr').oninput=e=>g('af-h').textContent=e.target.value; g('af-mr').oninput=e=>g('af-m').textContent=e.target.value;
+      g('af-go').onclick=()=>{ g('af-out').innerHTML='Ganhadores de loteria tendem a voltar a níveis de felicidade próximos do habitual em poucos meses (<b>adaptação hedônica</b>). Superestimamos a intensidade e a duração das emoções futuras: <b>falha de previsão afetiva</b>.'; }; }}
+  ];
+  let i=0; function show(){ ind.textContent=(i+1)+' / '+DEMOS.length+' · '+DEMOS[i].t; DEMOS[i].go(); }
+  g('prev').onclick=()=>{ i=(i-1+DEMOS.length)%DEMOS.length; show(); }; g('next').onclick=()=>{ i=(i+1)%DEMOS.length; show(); }; show();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processos Básicos · Atenção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <span class="stage active">Atenção<span class="arrow"> ›</span></span>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
+  </nav>
+
+  <h2>Atenção</h2>
+
+  <div class="def">
+    <div class="k">Definição</div>
+    A atenção é o processo que <b>seleciona</b> e <b>prioriza</b> parte da informação disponível e a <b>sustenta no tempo</b>, diante da capacidade limitada do sistema cognitivo. É regulada de cima para baixo (<i>top-down</i>, pelos objetivos) e de baixo para cima (<i>bottom-up</i>, pela saliência do estímulo).
+  </div>
+
+  <h3>Componentes neurocognitivos</h3>
+  <p class="dim" style="margin-top:0">Três redes atencionais relativamente independentes (modelo de Posner e Petersen).</p>
+  <div class="cards">
+    <div class="card">
+      <h4><span class="dot" style="background:var(--teal)"></span>Alerta (vigilância)</h4>
+      <div>Preparar e manter o estado de prontidão.</div>
+      <div class="meta"><b>Substrato:</b> locus coeruleus, córtex frontoparietal direito, tálamo</div>
+      <div class="meta"><b>Modulação:</b> noradrenalina</div>
+    </div>
+    <div class="card">
+      <h4><span class="dot" style="background:var(--amber)"></span>Orientação</h4>
+      <div>Direcionar e deslocar o foco para estímulos ou locais.</div>
+      <div class="meta"><b>Substrato:</b> lobo parietal superior, junção temporoparietal, campos oculares frontais</div>
+      <div class="meta"><b>Modulação:</b> acetilcolina</div>
+    </div>
+    <div class="card">
+      <h4><span class="dot" style="background:#d85a30"></span>Controle executivo</h4>
+      <div>Detectar e resolver conflito, inibir o irrelevante.</div>
+      <div class="meta"><b>Substrato:</b> córtex cingulado anterior, pré-frontal lateral, gânglios da base</div>
+      <div class="meta"><b>Modulação:</b> dopamina</div>
+    </div>
+  </div>
+
+  <h3>Papel na rede de processamento da informação</h3>
+  <div class="flow">
+    <div class="box">Entrada sensorial<br><span class="dim">muita informação</span></div>
+    <div class="arr">→</div>
+    <div class="box mid">Atenção<br><span class="dim">filtro de capacidade limitada</span></div>
+    <div class="arr">→</div>
+    <div class="box">Memória e pensamento<br><span class="dim">processamento profundo</span></div>
+  </div>
+  <p class="dim">Chega mais informação do que cabe processar; a atenção decide o que passa adiante. Por isso, uma falha aqui afeta tudo o que vem depois na cadeia.</p>
+
+  <h3 style="margin-top:2rem">Experimente</h3>
+  <p class="muted">Siga o ponto verde com o cursor (se largar, ele entra em piloto automático) e veja como cada fator muda sua concentração. <span class="dim">No experimento: a <b>orientação</b> é mover o foco; o <b>controle executivo</b> é o botão de inibição; o <b>alerta</b> é sustentar ao longo do tempo; e a <b>identificação</b> é o quanto o alvo se destaca do resto.</span></p>
+
+  <div id="att-canvas">
+    <div id="att-light"></div>
+    <div id="att-status">procurando o alvo</div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric foco"><div class="label">Foco no alvo agora</div><div class="value" id="m-foco">0%</div></div>
+    <div class="metric"><div class="label">Tempo no alvo</div><div class="value" id="m-tempo">0%</div></div>
+    <button id="m-reset">Reiniciar medição</button>
+  </div>
+
+  <div class="example">
+    <div><div class="k">No dia a dia</div><div class="v" id="ex-text">Ambiente calmo e cabeça tranquila: seguir o alvo é fácil.</div></div>
+  </div>
+
+  <div class="sliders">
+    <div class="slider">
+      <div class="row"><span>Distração externa (ambiente)</span><span class="val" id="lab-ext">média</span></div>
+      <input type="range" id="s-ext" min="0" max="100" value="45" step="1">
+      <div class="help">Vem de fora: barulho, notificações, gente passando.</div>
+    </div>
+    <div class="slider">
+      <div class="row"><span>Distração interna (mente)</span><span class="val" id="lab-int">baixa</span></div>
+      <input type="range" id="s-int" min="0" max="100" value="20" step="1">
+      <div class="help">Vem de dentro: preocupação, sono, divagação.</div>
+    </div>
+    <div class="slider">
+      <div class="row"><span>Controle inibitório</span><span class="val" id="lab-inh">médio</span></div>
+      <input type="range" id="s-inh" min="0" max="100" value="45" step="1">
+      <div class="help">Sua trava: barra o que não importa e traz o foco de volta.</div>
+    </div>
+    <div class="slider">
+      <div class="row"><span>Foco (focada ↔ difusa)</span><span class="val" id="lab-foc">intermediária</span></div>
+      <input type="range" id="s-foc" min="0" max="100" value="40" step="1">
+      <div class="help">Largura do holofote: nitidez x abrangência.</div>
+    </div>
+    <div class="slider">
+      <div class="row"><span>Identificação do alvo (evidente ↔ camuflado)</span><span class="val" id="lab-ident">parecido</span></div>
+      <input type="range" id="s-ident" min="0" max="100" value="55" step="1">
+      <div class="help">Semelhança do alvo com os distratores: quanto mais parecido, mais difícil achá-lo (busca visual).</div>
+    </div>
+  </div>
+
+  <!-- TESTE SUA ATENÇÃO -->
+  <div class="toggle-tests">
+    <p class="muted" style="margin-top:0">Agora vire o sujeito do experimento e sinta a atenção por dentro.</p>
+    <button class="primary" id="btn-tests">Teste sua atenção</button>
+  </div>
+
+  <div class="tests-panel hidden" id="tests-panel">
+
+    <div class="demo">
+      <span class="tag">Teste 1 · interferência</span>
+      <h3>Teste de Stroop</h3>
+      <p class="muted">Clique na <b>cor da tinta</b> de cada palavra, ignorando o que está escrito. Quando o texto contradiz a cor, a leitura automática atrapalha o controle voluntário. Vamos medir esse atraso.</p>
+      <div class="stage-area" id="stroopArea">
+        <p class="muted" style="text-align:center">12 palavras vão aparecer. Responda o mais rápido que conseguir.</p>
+        <button id="stroopStart">Começar</button>
+      </div>
+      <div id="stroopResults"></div>
+    </div>
+
+    <div class="demo">
+      <span class="tag">Teste 2 · capacidade e transientes</span>
+      <h3>Cegueira à mudança</h3>
+      <p class="muted">Um quadrado muda de cor a cada ciclo. A piscada cinza apaga o "movimento" que normalmente puxaria sua atenção, e a mudança fica quase invisível. Desligue a piscada e veja-a saltar aos olhos.</p>
+
+      <div class="disclaimer" id="cbDisclaimer">
+        <div>
+          <span class="warn">Aviso:</span> esta demonstração mostra <b>quadrados piscando</b> em intervalos rápidos. Se você tem sensibilidade a imagens que piscam (fotossensibilidade), tendência a enjoo ou desconforto visual, não ative. Ela só começa quando você clicar.
+          <div style="margin-top:.9rem"><button class="primary" id="cbActivate">Ativar demonstração</button></div>
+        </div>
+      </div>
+
+      <div id="cbStage" class="hidden">
+        <div class="cb-grid" id="cbGrid"></div>
+        <div class="feedback" id="cbFeedback"></div>
+        <div class="controls">
+          <label><input type="checkbox" id="cbBlink" checked style="width:auto"> com piscada (difícil)</label>
+          <button id="cbReset">Nova mudança</button>
+          <button id="cbStop">Parar</button>
+          <span class="dim" id="cbCycles"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Protótipo · módulo de Atenção · processos básicos da cognição</footer>
+</div>
+
+<script>
+/* ===== MODELO MANIPULÁVEL: rastreamento do alvo ===== */
+(function(){
+  const cv=document.getElementById('att-canvas'), light=document.getElementById('att-light'), status=document.getElementById('att-status');
+  const sE=document.getElementById('s-ext'), sI=document.getElementById('s-int'), sInh=document.getElementById('s-inh'), sF=document.getElementById('s-foc'), sIdent=document.getElementById('s-ident');
+  const lE=document.getElementById('lab-ext'), lI=document.getElementById('lab-int'), lInh=document.getElementById('lab-inh'), lF=document.getElementById('lab-foc'), lIdent=document.getElementById('lab-ident');
+  const mFoco=document.getElementById('m-foco'), mTempo=document.getElementById('m-tempo'), exText=document.getElementById('ex-text');
+  const ss=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const WARM=['#e24b4a','#e0a91b','#d85a30'];
+
+  const target=document.createElement('div');
+  target.style.cssText='position:absolute;width:24px;height:24px;border-radius:50%;border:3px solid #6ff0c0;transform:translate(-50%,-50%);pointer-events:none';
+  cv.appendChild(target);
+  const tgt={ax:0.30,ay:0.26,px:0,py:1.7,sx:0.31,sy:0.41};
+
+  const D=14, dots=[];
+  for(let i=0;i<D;i++){
+    const el=document.createElement('div'); const sz=12+Math.random()*8;
+    el.style.cssText='position:absolute;width:'+sz+'px;height:'+sz+'px;border-radius:50%;transform:translate(-50%,-50%);background:'+WARM[i%3]+';pointer-events:none';
+    cv.appendChild(el);
+    dots.push({el,bx:0.12+Math.random()*0.76,by:0.14+Math.random()*0.72,ax:0.06+Math.random()*0.1,ay:0.06+Math.random()*0.1,sx:0.3+Math.random()*0.6,sy:0.3+Math.random()*0.6,px:Math.random()*6.28,py:Math.random()*6.28,sal:0.5+Math.random()*0.5,pp:Math.random()*6.28});
+  }
+
+  let cx=0.5,cy=0.5,ax=0.5,ay=0.5,lastMove=0;
+  cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();cx=(e.clientX-r.left)/r.width;cy=(e.clientY-r.top)/r.height;lastMove=performance.now();});
+  cv.addEventListener('touchmove',e=>{const r=cv.getBoundingClientRect(),t=e.touches[0];cx=(t.clientX-r.left)/r.width;cy=(t.clientY-r.top)/r.height;lastMove=performance.now();e.preventDefault();},{passive:false});
+
+  let qAvg=0, lockF=0, totF=0, lapsing=false, lapseUntil=0, lpx=0.5, lpy=0.5, exTick=0;
+  document.getElementById('m-reset').onclick=()=>{lockF=0;totF=0;};
+
+  function example(ext,int,inh,foc,distinct){
+    const E=ext*(1-inh*0.8), I=int*(1-inh*0.8);
+    if(distinct<0.22) return "Alvo camuflado: como achar um amigo de camiseta vermelha numa multidão de vermelho.";
+    if(E<0.18&&I<0.18&&distinct>0.6) return "Ambiente calmo, cabeça tranquila e alvo evidente: seguir é fácil.";
+    if(I>0.42&&I>E+0.12) return "Caos interno: você relê a mesma linha porque a mente foi para a conta a pagar.";
+    if(E>0.42&&E>I+0.12) return "Caos ambiental: estudar com a TV ligada e o celular vibrando o tempo todo.";
+    if(E>0.38&&I>0.38) return "Caos por todo lado: sala barulhenta e mente a mil ao mesmo tempo.";
+    if(inh>0.62&&(ext>0.4||int>0.4)) return "Você percebe a distração, mas inibe e volta ao alvo.";
+    if(foc>0.72) return "Foco difuso demais: você abrange tudo e perde o detalhe do alvo.";
+    if(foc<0.16&&ext>0.4) return "Foco estreito demais: tão preso a um ponto que algo passa do lado.";
+    return "Pequenas distrações, mas ainda dá para sustentar o foco.";
+  }
+
+  function loop(){
+    const W=cv.clientWidth,H=cv.clientHeight,t=performance.now()/1000,now=performance.now();
+    const ext=+sE.value/100, int=+sI.value/100, inh=+sInh.value/100, foc=+sF.value/100, distinct=+sIdent.value/100;
+    lE.textContent=ext<0.25?'calma':ext<0.6?'média':'intensa';
+    lI.textContent=int<0.25?'baixa':int<0.6?'média':'intensa';
+    lInh.textContent=inh<0.3?'baixo':inh<0.7?'médio':'alto';
+    lF.textContent=foc<0.33?'focada':foc<0.7?'intermediária':'difusa';
+    lIdent.textContent=distinct>0.66?'evidente':distinct>0.33?'parecido':'camuflado';
+
+    const tx=clamp(0.5+tgt.ax*Math.sin(t*tgt.sx+tgt.px),0.07,0.93), ty=clamp(0.5+tgt.ay*Math.sin(t*tgt.sy+tgt.py),0.1,0.9);
+
+    if(now-lastMove<1200){ ax=cx;ay=cy; }
+    else {
+      let nx=0,ny=0,nd=9;
+      for(const d of dots){const ddx=(d._x||0.5)-ax,ddy=(d._y||0.5)-ay,dd=Math.hypot(ddx,ddy);if(dd<nd){nd=dd;nx=ddx;ny=ddy;}}
+      const pull=ext*(1-inh)*0.03, noise=(ext*0.5+int*0.5)*(1-inh);
+      ax += (tx-ax)*0.05 + (nd<0.3?nx*pull:0) + (Math.sin(t*7+1)*noise*0.012);
+      ay += (ty-ay)*0.05 + (nd<0.3?ny*pull:0) + (Math.cos(t*6)*noise*0.012);
+      cx=ax;cy=ay;
+    }
+
+    if(!lapsing && Math.random() < int*(1-inh)*0.014){ lapsing=true; lapseUntil=now+600+Math.random()*700; lpx=0.15+Math.random()*0.7; lpy=0.15+Math.random()*0.7; }
+    if(lapsing && now>lapseUntil) lapsing=false;
+    const sx = lapsing? lerp(cx,lpx,0.8): cx, sy = lapsing? lerp(cy,lpy,0.8): cy;
+
+    const radFrac=lerp(0.12,0.42,foc), peak=lerp(1.0,0.55,foc), lockPx=lerp(0.06,0.15,foc)*W, radPx=radFrac*W;
+    light.style.width=light.style.height=(2*radPx)+'px';
+    light.style.left=(sx*100)+'%'; light.style.top=(sy*100)+'%'; light.style.opacity=lerp(0.9,0.55,foc);
+
+    let clutter=0;
+    for(const d of dots){
+      d._x=clamp(d.bx+d.ax*Math.sin(t*d.sx+d.px),0.04,0.96); d._y=clamp(d.by+d.ay*Math.sin(t*d.sy+d.py),0.06,0.94);
+      const cl=peak*ss(1-Math.hypot((d._x-sx)*W,(d._y-sy)*H)/radPx);
+      const pulse=d.sal*ext*(1-inh)*(0.5+0.5*Math.sin(t*3+d.pp));
+      const vis=Math.max(cl,pulse*0.85);
+      d.el.style.left=(d._x*100)+'%'; d.el.style.top=(d._y*100)+'%';
+      d.el.style.opacity=(0.1+vis*0.9).toFixed(2);
+      d.el.style.transform='translate(-50%,-50%) scale('+(0.6+vis*0.55).toFixed(2)+')';
+      d.el.style.filter='grayscale('+(inh*0.85).toFixed(2)+')';
+      const dt=Math.hypot((d._x-tx)*W,(d._y-ty)*H)/W;
+      if(dt<0.13) clutter += (0.13-dt)/0.13 * (0.4+0.6*Math.max(0,pulse));
+    }
+    const clutterPen=clamp(clutter*0.6*(1-inh*0.7)*(1+(1-distinct)*0.9),0,0.85);
+
+    const tClar=peak*ss(1-Math.hypot((tx-sx)*W,(ty-sy)*H)/radPx);
+    const prox=ss(1-Math.hypot((tx-cx)*W,(ty-cy)*H)/lockPx);
+    let q=prox*tClar*(1-clutterPen); if(lapsing) q*=0.2;
+    qAvg=qAvg*0.9+q*0.1; totF++; if(q>0.5) lockF++;
+
+    target.style.left=(tx*100)+'%'; target.style.top=(ty*100)+'%';
+    const mix=k=>'rgb('+Math.round(lerp(226,111,k))+','+Math.round(lerp(75,240,k))+','+Math.round(lerp(74,192,k))+')';
+    target.style.borderColor=mix(distinct);
+    target.style.background = distinct>0.97? 'transparent' : 'rgba(226,75,74,'+((1-distinct)*0.85).toFixed(2)+')';
+    target.style.opacity=Math.min(1, lerp(0.1,0.25,distinct)+tClar*0.78).toFixed(2);
+    target.style.boxShadow=q>0.55?'0 0 16px rgba(111,240,192,'+(q*0.9*distinct).toFixed(2)+')':'none';
+    target.style.transform='translate(-50%,-50%) scale('+(lerp(0.7,1.0,distinct)*(0.9+tClar*0.35)).toFixed(2)+')';
+
+    status.textContent = lapsing? 'divagando…' : q>0.55? 'no alvo' : 'procurando o alvo';
+    status.style.color = lapsing? '#e0a91b' : q>0.55? '#6ff0c0' : '#9fb1b8';
+    mFoco.textContent=Math.round(qAvg*100)+'%';
+    mTempo.textContent=Math.round(100*lockF/Math.max(1,totF))+'%';
+    if(now>exTick){ exText.textContent=example(ext,int,inh,foc,distinct); exTick=now+700; }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ===== TOGGLE: teste sua atenção ===== */
+(function(){
+  const btn=document.getElementById('btn-tests'), panel=document.getElementById('tests-panel');
+  btn.onclick=()=>{
+    const opening=panel.classList.contains('hidden');
+    panel.classList.toggle('hidden');
+    btn.textContent = opening? 'Ocultar testes' : 'Teste sua atenção';
+    if(opening) panel.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+})();
+
+/* ===== TESTE 1: STROOP ===== */
+(function(){
+  const COLORS=[{name:'Vermelho',hex:'#e24b4a'},{name:'Verde',hex:'#4faa3a'},{name:'Azul',hex:'#3f93e0'},{name:'Amarelo',hex:'#e0b020'}];
+  const area=document.getElementById('stroopArea'), results=document.getElementById('stroopResults');
+  let trials=[],idx=0,shownAt=0,data=[];
+  function build(){const t=[];for(let i=0;i<6;i++){const c=COLORS[i%4];t.push({word:c.name,ink:c,congruent:true});}
+    for(let i=0;i<6;i++){const w=COLORS[i%4];let ink;do{ink=COLORS[Math.floor(Math.random()*4)];}while(ink.name===w.name);t.push({word:w.name,ink,congruent:false});}
+    for(let i=t.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[t[i],t[j]]=[t[j],t[i]];}return t;}
+  function show(){if(idx>=trials.length)return finish();const tr=trials[idx];area.innerHTML='';
+    const w=document.createElement('div');w.className='stroop-word';w.textContent=tr.word;w.style.color=tr.ink.hex;
+    const a=document.createElement('div');a.className='answers';
+    COLORS.forEach(c=>{const b=document.createElement('button');b.className='ans';b.textContent=c.name;b.onclick=()=>resp(c,tr);a.appendChild(b);});
+    const p=document.createElement('div');p.className='dim';p.textContent=(idx+1)+' de '+trials.length;
+    area.appendChild(w);area.appendChild(a);area.appendChild(p);shownAt=performance.now();}
+  function resp(ch,tr){data.push({rt:performance.now()-shownAt,correct:ch.name===tr.ink.name,congruent:tr.congruent});idx++;show();}
+  function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0;}
+  function finish(){const c=data.filter(d=>d.congruent&&d.correct).map(d=>d.rt),i=data.filter(d=>!d.congruent&&d.correct).map(d=>d.rt);
+    const mc=Math.round(mean(c)),mi=Math.round(mean(i)),eff=Math.max(0,mi-mc),acc=Math.round(100*data.filter(d=>d.correct).length/data.length);
+    area.innerHTML='<p class="muted" style="text-align:center">Concluído. Veja o seu efeito Stroop.</p>';
+    const again=document.createElement('button');again.textContent='Repetir';again.onclick=start;area.appendChild(again);
+    const card=(l,v,hi)=>'<div class="metric'+(hi?' hi':'')+'"><div class="label">'+l+'</div><div class="value">'+v+'</div></div>';
+    results.innerHTML='<div class="metrics-grid">'+card('Cor = texto',mc+' ms')+card('Texto em conflito',mi+' ms',true)+card('Efeito Stroop','+'+eff+' ms')+card('Acertos',acc+'%')+'</div>'+
+      '<p class="dim" style="margin-top:.8rem">O atraso nas palavras em conflito é a interferência: você não consegue desligar a leitura automática.</p>';}
+  function start(){trials=build();idx=0;data=[];results.innerHTML='';show();}
+  document.getElementById('stroopStart').onclick=start;
+})();
+
+/* ===== TESTE 2: CEGUEIRA À MUDANÇA (com ativação) ===== */
+(function(){
+  const PAL=['#e24b4a','#4faa3a','#3f93e0','#e0b020','#9b6dd6','#2bb48a','#d85a30','#5b7ca8'],N=12;
+  const grid=document.getElementById('cbGrid'),fb=document.getElementById('cbFeedback'),cyc=document.getElementById('cbCycles'),blink=document.getElementById('cbBlink');
+  const disc=document.getElementById('cbDisclaimer'),stageEl=document.getElementById('cbStage'),BLANK='#26343b';
+  let A=[],B=[],ch=-1,cells=[],timer=null,cycles=0,solved=false,step=0,running=false;
+  function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+  function setup(){clearTimeout(timer);running=true;cycles=0;solved=false;step=0;A=[];for(let i=0;i<N;i++)A.push(rnd(PAL));B=A.slice();ch=Math.floor(Math.random()*N);
+    let nc;do{nc=rnd(PAL);}while(nc===A[ch]);B[ch]=nc;grid.innerHTML='';cells=[];
+    for(let i=0;i<N;i++){const c=document.createElement('div');c.className='cb-cell';c.onclick=()=>guess(i);grid.appendChild(c);cells.push(c);}
+    fb.textContent='Observe e clique no quadrado que muda.';fb.style.color='var(--ink-soft)';cyc.textContent='';loop();}
+  function paint(s){for(let i=0;i<N;i++)cells[i].style.background=s[i];}
+  function blk(){for(let i=0;i<N;i++)cells[i].style.background=BLANK;}
+  function loop(){if(solved||!running)return;const seq=blink.checked?[['A',650],['x',180],['B',650],['x',180]]:[['A',500],['B',500]];
+    const[w,d]=seq[step%seq.length];if(w==='A')paint(A);else if(w==='B'){paint(B);cycles++;cyc.textContent='ciclos: '+cycles;}else blk();step++;timer=setTimeout(loop,d);}
+  function guess(i){if(solved||!running)return;if(i===ch){solved=true;clearTimeout(timer);paint(B);cells[i].style.border='2px solid var(--teal-bright)';cells[i].style.boxShadow='0 0 0 3px rgba(43,180,138,.35)';
+    fb.innerHTML='Achou! Foram '+cycles+' ciclos. Sem a piscada teria sido quase instantâneo.';fb.style.color='var(--teal-bright)';}
+    else{cells[i].style.border='2px solid #e24b4a';setTimeout(()=>{cells[i].style.border='2px solid transparent';},500);fb.textContent='Não é esse. Continue olhando.';fb.style.color='#e24b4a';}}
+  document.getElementById('cbActivate').onclick=()=>{disc.classList.add('hidden');stageEl.classList.remove('hidden');setup();};
+  document.getElementById('cbReset').onclick=setup;
+  document.getElementById('cbStop').onclick=()=>{running=false;clearTimeout(timer);stageEl.classList.add('hidden');disc.classList.remove('hidden');};
+  blink.onchange=()=>{if(running)setup();};
+})();
+</script>
+</body>
+</html>

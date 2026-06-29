@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temas Transversais · Desenvolvimento cognitivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
+    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
+    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
+    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
+  }
+  button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
+  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
+  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
+  .why .v{font-size:14px; color:var(--ink-soft)}
+  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+  #dc-card ul{margin:.4rem 0 0; padding-left:1.1rem} #dc-card li{font-size:14px; color:var(--ink-soft); margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <a class="home" href="index.html"><h1>Processos básicos da cognição</h1></a>
+  <p class="lead">Mexa nos componentes de cada processo e veja, na hora, o que muda.</p>
+
+  <p class="navlabel">Processos básicos</p>
+  <nav class="pipeline" aria-label="Etapas do processamento da informação">
+    <a class="stage" href="sensacao-percepcao.html">Sensação e percepção<span class="arrow"> ›</span></a>
+    <a class="stage" href="atencao.html">Atenção<span class="arrow"> ›</span></a>
+    <a class="stage" href="memoria.html">Memória<span class="arrow"> ›</span></a>
+    <a class="stage" href="linguagem.html">Linguagem<span class="arrow"> ›</span></a>
+    <a class="stage" href="pensamento.html">Pensamento e raciocínio<span class="arrow"> ›</span></a>
+    <a class="stage" href="emocao.html">Emoção<span class="arrow"> ›</span></a>
+    <a class="stage" href="cognicao-social.html">Cognição social</a>
+  </nav>
+  <p class="navlabel">Temas transversais</p>
+  <nav class="pipeline themes" aria-label="Temas transversais">
+    <a class="stage theme" href="evolucao-cognicao.html">Evolução da cognição</a>
+    <span class="stage theme active">Desenvolvimento cognitivo</span>
+  </nav>
+
+  <h2>Desenvolvimento cognitivo</h2>
+  <p class="muted">A cognição muda <b>ao longo da vida</b>, do útero à velhice, com plasticidade e períodos sensíveis. Duas partes.</p>
+
+  <div class="subnav">
+    <button data-tab="m1" aria-pressed="true">1 · A vida cognitiva</button>
+    <button data-tab="m2" aria-pressed="false">2 · Fluida × cristalizada</button>
+  </div>
+
+  <!-- M1 -->
+  <section id="m1">
+    <div class="def">
+      <div class="k">Uma trajetória, não um interruptor</div>
+      O desenvolvimento não termina na infância: cada fase tem ganhos e mudanças próprias. Arraste o cursor pela vida e veja o que a ciência mostra em cada etapa.
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; margin:1rem 0"><span style="font-size:14px; color:var(--text-secondary)">Fase da vida</span><input type="range" id="dc-age" min="0" max="4" value="0" step="1" style="flex:1"></div>
+    <div id="dc-card" style="background:var(--surface-1); border-radius:10px; padding:1rem; min-height:170px"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">Cada fase tem seu desenho: o feto já aprende; a infância poda o excesso de sinapses; o cérebro adolescente tem o acelerador (recompensa) pronto antes do freio (pré-frontal); na vida adulta o conhecimento acumula; e a velhice perde velocidade, mas mantém o que foi consolidado. Desenvolver-se é mudar de forma, não só "crescer" ou "declinar".</div></div>
+    <div class="sources">Fontes: voz materna no feto, DeCasper e Fifer (1980); conhecimento nuclear, Baillargeon; estágios, Piaget (com ressalvas modernas); sistemas duais na adolescência, Steinberg.</div>
+  </section>
+
+  <!-- M2 -->
+  <section id="m2" class="hidden">
+    <div class="def">
+      <div class="k">Dois tipos de inteligência</div>
+      A inteligência <b>fluida</b> (raciocinar com o novo, velocidade) atinge o auge cedo e depois declina; a <b>cristalizada</b> (conhecimento, vocabulário) sobe e se mantém. Por isso "envelhecer" não é declínio uniforme.
+    </div>
+    <div style="background:var(--surface-1); border-radius:12px; padding:1rem">
+      <svg id="dc-chart" viewBox="0 0 320 200" style="width:100%; display:block"></svg>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; margin:12px 0"><span style="font-size:14px; color:var(--text-secondary)">Idade</span><input type="range" id="dc-cage" min="5" max="90" value="22" step="1" style="flex:1"><span id="dc-cage-out" style="font-size:14px; min-width:60px; text-align:right">22 anos</span></div>
+    <div id="dc-read" style="font-size:14px; color:var(--text-secondary)"></div>
+
+    <div class="why"><div class="k">O que isso mostra</div><div class="v">As duas curvas se cruzam: quando a fluida começa a cair, a cristalizada ainda está subindo. "Ficar mais velho" troca velocidade por conhecimento acumulado. A reserva cognitiva e a plasticidade ao longo da vida podem mudar bastante essa trajetória.</div></div>
+    <div class="sources">Fontes: inteligência fluida e cristalizada, Cattell e Horn; envelhecimento cognitivo, Salthouse; reserva cognitiva, Stern. Curvas ilustrativas, com grande variação entre pessoas.</div>
+  </section>
+
+  <footer>Protótipo · tema transversal · Desenvolvimento cognitivo</footer>
+</div>
+
+<script>
+/* TABS */
+(function(){ const b=document.querySelectorAll('.subnav button'), s={m1:document.getElementById('m1'),m2:document.getElementById('m2')};
+  b.forEach(x=>x.onclick=()=>{ const t=x.dataset.tab; b.forEach(y=>y.setAttribute('aria-pressed',y===x)); for(const k in s) s[k].classList.toggle('hidden',k!==t); }); })();
+
+/* M1 LINHA DA VIDA */
+(function(){
+  const ST=[
+    {n:'Útero', t:'gestação', b:['O feto habitua a sons repetidos.','Reconhece a voz e o ritmo da língua da mãe (DeCasper e Fifer, 1980).','Ordem do desenvolvimento sensorial: tato → audição → visão.']},
+    {n:'Infância', t:'0 a 11 anos', b:['Explosão de sinapses seguida de poda do que não se usa.','Conhecimento nuclear: permanência do objeto aparece antes do que Piaget supunha (Baillargeon).','Explosão da linguagem; teoria da mente por volta dos 4 anos.']},
+    {n:'Adolescência', t:'12 a 18 anos', b:['Poda sináptica e mielinização continuam.','O sistema de recompensa amadurece cedo; o pré-frontal, tarde → mais busca de risco e sensação (Steinberg).','O raciocínio abstrato e hipotético melhora.']},
+    {n:'Vida adulta', t:'19 a 60 anos', b:['A inteligência fluida está no auge no início da fase.','A inteligência cristalizada (conhecimento, vocabulário) segue subindo.','Consolida-se a expertise em domínios praticados.']},
+    {n:'Velhice', t:'60 anos em diante', b:['Caem a velocidade de processamento, a fluida e a memória de trabalho.','A cristalizada permanece relativamente estável.','Reserva cognitiva e plasticidade seguem ativas; ganha-se em experiência e sabedoria.']}
+  ];
+  const sl=document.getElementById('dc-age'), card=document.getElementById('dc-card');
+  function render(){ const s=ST[+sl.value];
+    card.innerHTML='<div style="display:flex; justify-content:space-between; align-items:baseline"><div style="font-size:18px; font-weight:500; font-family:Newsreader,serif">'+s.n+'</div><div style="font-size:13px; color:var(--text-muted)">'+s.t+'</div></div><ul>'+s.b.map(x=>'<li>'+x+'</li>').join('')+'</ul>'; }
+  sl.oninput=render; render();
+})();
+
+/* M2 FLUIDA x CRISTALIZADA */
+(function(){
+  const AGES=[5,10,15,20,25,30,40,50,60,70,80,90];
+  const GF=[.18,.55,.78,.93,.95,.92,.85,.75,.66,.57,.49,.42];
+  const GC=[.18,.34,.5,.62,.7,.76,.83,.86,.87,.85,.82,.78];
+  const svg=document.getElementById('dc-chart'), W=320,H=200,pad=28;
+  const x=a=>pad+(a-5)/85*(W-2*pad), y=v=>H-pad-v*(H-2*pad);
+  function poly(arr,col){ const pts=AGES.map((a,i)=>x(a)+','+y(arr[i])).join(' '); return '<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2.5"/>'; }
+  const sl=document.getElementById('dc-cage'), out=document.getElementById('dc-cage-out'), read=document.getElementById('dc-read');
+  function interp(arr,age){ if(age<=AGES[0])return arr[0]; if(age>=AGES[AGES.length-1])return arr[arr.length-1]; for(let i=0;i<AGES.length-1;i++){ if(age>=AGES[i]&&age<=AGES[i+1]){ const f=(age-AGES[i])/(AGES[i+1]-AGES[i]); return arr[i]+f*(arr[i+1]-arr[i]); } } }
+  function lvl(v){ return v>0.8?'alta':v>0.55?'média':'mais baixa'; }
+  function render(){ const age=+sl.value; out.textContent=age+' anos'; const gf=interp(GF,age), gc=interp(GC,age);
+    let base='<line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" stroke="var(--border)"/>'+
+      '<text x="'+pad+'" y="'+(H-8)+'" font-size="9" fill="var(--text-muted)">5</text><text x="'+(W-pad)+'" y="'+(H-8)+'" font-size="9" fill="var(--text-muted)" text-anchor="end">90 anos</text>'+
+      poly(GF,'#3f93e0')+poly(GC,'#e0a91b')+
+      '<text x="'+(x(25))+'" y="'+(y(GF[4])-6)+'" font-size="10" fill="#3f93e0">fluida</text>'+
+      '<text x="'+(x(55))+'" y="'+(y(GC[8])-6)+'" font-size="10" fill="#e0a91b">cristalizada</text>';
+    const mx=x(age); base+='<line x1="'+mx+'" y1="'+pad+'" x2="'+mx+'" y2="'+(H-pad)+'" stroke="var(--text-secondary)" stroke-dasharray="3 3"/>'+
+      '<circle cx="'+mx+'" cy="'+y(gf)+'" r="4" fill="#3f93e0"/><circle cx="'+mx+'" cy="'+y(gc)+'" r="4" fill="#e0a91b"/>';
+    svg.innerHTML=base;
+    read.innerHTML='Aos '+age+' anos: fluida <b style="color:#3f93e0">'+lvl(gf)+'</b>, cristalizada <b style="color:#e0a91b">'+lvl(gc)+'</b>.'+(age>60?' A cristalizada sustenta o desempenho onde a fluida já recuou.':age<25?' A fluida está no auge; a cristalizada ainda vai crescer muito.':''); }
+  sl.oninput=render; render();
+})();
+</script>
+</body>
+</html>
