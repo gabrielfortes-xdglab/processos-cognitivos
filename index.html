@@ -6,23 +6,27 @@
 <title>Processos básicos da cognição</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilos.css">
 <style>
-  .wrap{padding:3rem 1.25rem 4rem}
-  h1{font-size:2.4rem}
-  h2{font-size:1.4rem; margin-top:2.5rem}
-  .lead{font-size:1.1rem; max-width:60ch}
-  .navlabel{margin:1.5rem 0 .5rem}
-  .pipeline.themes{margin-bottom:1rem}
-  footer{margin-top:3.5rem; text-align:left}
+  .wrap{max-width:1040px; padding:3rem 1.25rem 4rem}
+  .kicker{font-size:.72rem; text-transform:uppercase; letter-spacing:.14em; color:var(--teal-bright); margin-bottom:.6rem}
+  h1{font-size:2.7rem; letter-spacing:-.01em}
+  .lead{font-size:1.12rem; max-width:64ch}
+  .sec-h{font-size:1.2rem; margin:2.4rem 0 .2rem}
+  .modcards{grid-template-columns:1fr 1fr}
+  @media(max-width:720px){ .modcards{grid-template-columns:1fr} }
+  footer{text-align:left}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>Processos básicos da cognição</h1>
-  <p class="lead">Uma ferramenta interativa para estudar como a mente capta, filtra e organiza a informação. Escolha um módulo: em cada um, você mexe nos componentes do processo e vê, na hora, o que muda.</p>
+  <div class="hero">
+    <div class="kicker">Psicologia · Processos psicológicos básicos</div>
+    <h1>Processos básicos da cognição</h1>
+    <p class="lead">Uma ferramenta interativa para estudar como a mente capta, filtra e organiza a informação. Em cada módulo você mexe nos componentes do processo e vê, na hora, o que muda.</p>
+  </div>
 
   <p class="navlabel">Processos básicos</p>
   <nav class="pipeline" aria-label="Etapas do processamento da informação">
@@ -40,56 +44,47 @@
     <a class="stage theme" href="desenvolvimento-cognitivo.html">Desenvolvimento cognitivo</a>
   </nav>
 
-  <h2>Comece por aqui</h2>
+  <h2 class="sec-h">Comece por aqui</h2>
   <div class="modcards">
-    <a class="modcard" href="sensacao-percepcao.html">
-      <div class="t">Sensação e percepção</div>
-      <div class="d">A transdução do estímulo (do físico ao bioquímico) e como cada animal percebe o mesmo mundo de um jeito (Umwelt).</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-sensacao" href="sensacao-percepcao.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
+      <span class="body"><div class="t">Sensação e percepção</div><div class="d">A transdução do estímulo (do físico ao bioquímico) e como cada animal percebe o mesmo mundo de um jeito (Umwelt).</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="atencao.html">
-      <div class="t">Atenção</div>
-      <div class="d">Seleção, foco e inibição: rastreie um alvo enquanto ajusta distração e controle, e teste sua atenção.</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-atencao" href="atencao.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></span>
+      <span class="body"><div class="t">Atenção</div><div class="d">Seleção, foco e inibição: rastreie um alvo enquanto ajusta distração e controle, e teste sua atenção.</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="memoria.html">
-      <div class="t">Memória</div>
-      <div class="d">Arquitetura da memória, o hub da memória de trabalho e jogos de estudo, falsas memórias e tipos de memória.</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-memoria" href="memoria.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="M3 12l9 4.5L21 12"/><path d="M3 16.5 12 21l9-4.5"/></svg></span>
+      <span class="body"><div class="t">Memória</div><div class="d">Arquitetura da memória, o hub da memória de trabalho e jogos de estudo, falsas memórias e tipos de memória.</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="linguagem.html">
-      <div class="t">Linguagem</div>
-      <div class="d">Microprocessamento (decodificar e codificar), afasias de Broca e Wernicke, e as metáforas que estruturam o sentido.</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-linguagem" href="linguagem.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H10l-4 4v-4H4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></span>
+      <span class="body"><div class="t">Linguagem</div><div class="d">Microprocessamento (decodificar e codificar), afasias de Broca e Wernicke, e as metáforas que estruturam o sentido.</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="pensamento.html">
-      <div class="t">Pensamento e raciocínio</div>
-      <div class="d">Pensar como manipular representações (rotação mental), conceitos e tipicidade, e a galeria de vieses na tomada de decisão.</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-pensamento" href="pensamento.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.5 18h5"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.8 10.7c.7.6 1.3 1.4 1.3 2.3h5c0-.9.6-1.7 1.3-2.3A6 6 0 0 0 12 3Z"/></svg></span>
+      <span class="body"><div class="t">Pensamento e raciocínio</div><div class="d">Pensar como manipular representações (rotação mental), conceitos e tipicidade, e a galeria de vieses na tomada de decisão.</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="emocao.html">
-      <div class="t">Emoção</div>
-      <div class="d">Como a emoção nasce da avaliação, como regulá-la, e como o afeto molda atenção, memória e decisão (mais vieses na ansiedade e depressão).</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-emocao" href="emocao.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20S3.5 14.5 3.5 8.8A4.3 4.3 0 0 1 12 6a4.3 4.3 0 0 1 8.5 2.8C20.5 14.5 12 20 12 20Z"/></svg></span>
+      <span class="body"><div class="t">Emoção</div><div class="d">Como a emoção nasce da avaliação, como regulá-la, e como o afeto molda atenção, memória e decisão (mais vieses na ansiedade e depressão).</div><div class="go">Abrir módulo →</div></span>
     </a>
-    <a class="modcard" href="cognicao-social.html">
-      <div class="t">Cognição social</div>
-      <div class="d">A marca colaborativa do humano (intencionalidade compartilhada), atenção conjunta e teoria da mente (Sally-Anne), e as três empatias.</div>
-      <div class="go">Abrir módulo →</div>
+    <a class="modcard m-social" href="cognicao-social.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17.5" cy="9" r="2.2"/><path d="M15.5 14.3A4.6 4.6 0 0 1 21 18.7"/></svg></span>
+      <span class="body"><div class="t">Cognição social</div><div class="d">A marca colaborativa do humano (intencionalidade compartilhada), atenção conjunta e teoria da mente (Sally-Anne), e as três empatias.</div><div class="go">Abrir módulo →</div></span>
     </a>
   </div>
 
-  <h2>Temas transversais</h2>
+  <h2 class="sec-h">Temas transversais</h2>
   <div class="modcards">
-    <a class="modcard" href="evolucao-cognicao.html">
-      <div class="t">Evolução da cognição</div>
-      <div class="d">Seleção natural e pressão evolutiva: um jogo de sobrevivência e a linha do tempo do cérebro humano.</div>
-      <div class="go">Abrir tema →</div>
+    <a class="modcard m-evolucao" href="evolucao-cognicao.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21c0-8 4.5-13.5 14-15"/><path d="M19 6c-4.5.5-6.8 2.8-7 7.5"/></svg></span>
+      <span class="body"><div class="t">Evolução da cognição</div><div class="d">Seleção natural e pressão evolutiva: um jogo de sobrevivência e a linha do tempo do cérebro humano.</div><div class="go">Abrir tema →</div></span>
     </a>
-    <a class="modcard" href="desenvolvimento-cognitivo.html">
-      <div class="t">Desenvolvimento cognitivo</div>
-      <div class="d">A cognição do útero à velhice e as curvas de inteligência fluida e cristalizada ao longo da vida.</div>
-      <div class="go">Abrir tema →</div>
+    <a class="modcard m-desenvolvimento" href="desenvolvimento-cognitivo.html">
+      <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20v-4"/><path d="M12 20v-9"/><path d="M18 20V7"/></svg></span>
+      <span class="body"><div class="t">Desenvolvimento cognitivo</div><div class="d">A cognição do útero à velhice e as curvas de inteligência fluida e cristalizada ao longo da vida.</div><div class="go">Abrir tema →</div></span>
     </a>
   </div>
 
