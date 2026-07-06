@@ -167,4 +167,11 @@ a.modcard:hover{border-color:var(--accent); transform:translateY(-3px); box-shad
   *{animation-duration:.001ms !important; transition-duration:.001ms !important}
 }
 
+/* alvo de toque maior em telas sensíveis a toque (Fitts's Law / WCAG 2.5.5) */
+@media (pointer: coarse){
+  input[type=range]{height:8px}
+  input[type=range]::-webkit-slider-thumb{width:28px; height:28px}
+  input[type=range]::-moz-range-thumb{width:28px; height:28px}
+}
+
 footer{margin-top:3rem; color:var(--ink-dim); font-size:.85rem; text-align:center}
