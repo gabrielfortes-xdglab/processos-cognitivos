@@ -113,7 +113,7 @@
         }
         if (Array.isArray(a.medidas) && a.medidas.length) {
           const t = criar('table', 'med'), cab = criar('tr');
-          ['Medida', 'Seu resultado', 'Esperado na literatura'].forEach(x => { const th = criar('th', null, x); th.scope = 'col'; cab.appendChild(th); });
+          ['Medida', 'Seu resultado', 'Esperado'].forEach(x => { const th = criar('th', null, x); th.scope = 'col'; cab.appendChild(th); });
           t.appendChild(cab);
           a.medidas.forEach(m => {
             if (!ehObjeto(m)) return;
@@ -127,7 +127,7 @@
         }
         if (ehObjeto(a.quiz)) {
           const p = criar('p');
-          p.appendChild(criar('span', 'rot', 'Questões de revisão: '));
+          p.appendChild(criar('span', 'rot', 'Acertos: '));
           p.appendChild(document.createTextNode(a.quiz.acertos + ' de ' + a.quiz.total + ' corretas'));
           sec.appendChild(p);
         }
@@ -158,7 +158,7 @@
           if (!ehObjeto(m)) return;
           L.push('    ' + (m.nome || '') + ': ' + (m.valor === undefined || m.valor === null ? 'sem dados suficientes' : m.valor) + (m.esperado ? ' (esperado: ' + m.esperado + ')' : ''));
         });
-        if (ehObjeto(a.quiz)) L.push('    Questões de revisão: ' + a.quiz.acertos + ' de ' + a.quiz.total + ' corretas');
+        if (ehObjeto(a.quiz)) L.push('    Acertos: ' + a.quiz.acertos + ' de ' + a.quiz.total + ' corretas');
         if (typeof a.texto === 'string' && a.texto.trim()) L.push('    Resposta: ' + a.texto);
       });
       L.push('');
