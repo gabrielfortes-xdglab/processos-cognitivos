@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Processos Básicos · Testes de comum.js</title>
+<link rel="stylesheet" href="estilos.css">
+<style>
+  .t{font-size:.92rem; padding:.35rem .6rem; border-bottom:1px solid var(--line)}
+  .t.ok::before{content:"✓ passou: "; color:#8fdc7d}
+  .t.nao::before{content:"✗ falhou: "; color:#f08a89}
+  .t .det{color:var(--ink-dim); font-size:.82rem}
+  #resumo{font-size:1.1rem; margin:1rem 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="index.html">← Início</a></div>
+  <h1>Testes de comum.js</h1>
+  <p class="muted">Página para quem mantém o site. Verifica, com dados fixos, as funções de <code>PB.stats</code>, as regras de exclusão de <code>PB.rt</code>, o <code>PB.store</code> e a renderização de <code>PB.predict</code>, <code>PB.quiz</code> e <code>PB.tabs</code>. Não usa nem altera os resultados guardados do estudante.</p>
+  <div id="resumo" role="status" aria-live="polite">Rodando...</div>
+  <div id="lista"></div>
+  <div id="palco" hidden></div>
+</div>
+
+<script src="comum.js"></script>
+<script>
+(async function () {
+  const lista = document.getElementById('lista'), palco = document.getElementById('palco');
+  let total = 0, passou = 0;
+
+  function teste(nome, fn) {
+    total++;
+    const linha = document.createElement('div');
+    let ok = false, det = '';
+    try { fn(); ok = true; } catch (e) { det = e.message; }
+    if (ok) passou++;
+    linha.className = 't ' + (ok ? 'ok' : 'nao');
+    linha.textContent = nome;
+    if (det) { const d = document.createElement('div'); d.className = 'det'; d.textContent = det; linha.appendChild(d); }
+    lista.appendChild(linha);
+  }
+  function igual(a, b, msg) {
+    if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error((msg || 'valor') + ': esperado ' + JSON.stringify(b) + ', obtido ' + JSON.stringify(a));
+  }
+  function perto(a, b, msg) {
+    if (a === null || Math.abs(a - b) > 1e-6) throw new Error((msg || 'valor') + ': esperado ' + b + ', obtido ' + a);
+  }
+  function verdade(c, msg) { if (!c) throw new Error(msg || 'condição falsa'); }
+
+  /* ---------------- PB.stats ---------------- */
+  const S = PB.stats;
+  teste('stats.media de [2, 4, 6] é 4', () => perto(S.media([2, 4, 6]), 4));
+  teste('stats.media de lista vazia é null (não 0)', () => igual(S.media([]), null));
+  teste('stats.mediana com número ímpar de valores', () => perto(S.mediana([9, 1, 5]), 5));
+  teste('stats.mediana com número par de valores', () => perto(S.mediana([1, 2, 3, 10]), 2.5));
+  teste('stats.mediana de lista vazia é null', () => igual(S.mediana([]), null));
+  teste('stats.dp amostral de [2,4,4,4,5,5,7,9]', () => perto(S.dp([2, 4, 4, 4, 5, 5, 7, 9]), Math.sqrt(32 / 7)));
+  teste('stats.dp com menos de 2 valores é null', () => igual(S.dp([5]), null));
+  teste('stats.embaralhar devolve permutação e não altera a original', () => {
+    const a = [1, 2, 3, 4, 5, 6, 7, 8], b = S.embaralhar(a);
+    igual(a, [1, 2, 3, 4, 5, 6, 7, 8], 'original');
+    igual(b.slice().sort((x, y) => x - y), a, 'mesmos elementos');
+    verdade(b !== a, 'deve ser outra lista');
+  });
+  teste('stats.embaralhar é aproximadamente uniforme (2000 sorteios de 3 itens)', () => {
+    const c = {};
+    for (let i = 0; i < 2000; i++) { const k = S.embaralhar([1, 2, 3]).join(''); c[k] = (c[k] || 0) + 1; }
+    igual(Object.keys(c).length, 6, 'número de ordens distintas');
+    Object.keys(c).forEach(k => verdade(c[k] > 230 && c[k] < 440, 'ordem ' + k + ' saiu ' + c[k] + ' vezes'));
+  });
+
+  /* ---------------- PB.rt: regras de exclusão ---------------- */
+  const T = (rt, correta, cond, treino) => ({ rt, correta, cond, treino: !!treino });
+  teste('rt.filtrar descarta tentativas de treino', () => {
+    const f = PB.rt.filtrar([T(500, true, 'a', true), T(510, true, 'a'), T(520, true, 'a')]);
+    igual(f.excluidas.treino, 1); igual(f.validas.length, 2);
+  });
+  teste('rt.filtrar exclui RT menor que 200 ms (199 sai, 200 fica)', () => {
+    const f = PB.rt.filtrar([T(199, true, 'a'), T(200, true, 'a'), T(450, true, 'a')]);
+    igual(f.excluidas.rapidas, 1); igual(f.validas.map(t => t.rt), [200, 450]);
+  });
+  teste('rt.filtrar tira os erros das médias', () => {
+    const f = PB.rt.filtrar([T(500, false, 'a'), T(510, true, 'a')]);
+    igual(f.excluidas.erros, 1); igual(f.validas.length, 1);
+  });
+  teste('rt.filtrar exclui RT acima de média + 3 DP (20 x 500 ms e um de 5000 ms)', () => {
+    const d = []; for (let i = 0; i < 20; i++) d.push(T(500, true, 'a')); d.push(T(5000, true, 'a'));
+    const f = PB.rt.filtrar(d);
+    igual(f.excluidas.lentas, 1); igual(f.validas.length, 20);
+  });
+  teste('rt.filtrar não exclui valor alto dentro de 3 DP', () => {
+    const f = PB.rt.filtrar([T(400, true, 'a'), T(500, true, 'a'), T(600, true, 'a'), T(700, true, 'a'), T(800, true, 'a')]);
+    igual(f.excluidas.lentas, 0); igual(f.validas.length, 5);
+  });
+  teste('rt.filtrar aplica o limite de 3 DP dentro de cada condição', () => {
+    const d = [];
+    for (let i = 0; i < 20; i++) d.push(T(400, true, 'rapida'));
+    for (let i = 0; i < 20; i++) d.push(T(1500 + (i % 2) * 20, true, 'lenta'));
+    const f = PB.rt.filtrar(d);
+    igual(f.excluidas.lentas, 0, 'a condição lenta não é punida pela rápida'); igual(f.validas.length, 40);
+  });
+  teste('rt.resumo calcula média, mediana e taxa de erro por condição', () => {
+    const r = PB.rt.resumo([T(400, true, 'a'), T(500, true, 'a'), T(600, true, 'a'), T(700, true, 'a'), T(800, true, 'a'), T(900, false, 'a'),
+      T(300, true, 'b'), T(350, true, 'b')], { minValidas: 5 }).condicoes;
+    perto(r.a.media, 600); perto(r.a.mediana, 600); igual(r.a.n, 6); igual(r.a.validas, 5); perto(r.a.taxaErro, 1 / 6);
+    igual(r.a.suficiente, true);
+  });
+  teste('rt.resumo não mostra média abaixo do mínimo de tentativas válidas', () => {
+    const r = PB.rt.resumo([T(300, true, 'b'), T(350, true, 'b')], { minValidas: 5 }).condicoes;
+    igual(r.b.media, null); igual(r.b.suficiente, false); igual(r.b.validas, 2);
+  });
+  teste('rt.resumo ignora o treino na taxa de erro', () => {
+    const r = PB.rt.resumo([T(500, false, 'a', true), T(500, true, 'a'), T(500, true, 'a')], { minValidas: 1 }).condicoes;
+    igual(r.a.n, 2); perto(r.a.taxaErro, 0);
+  });
+  teste('rt.formatar: número vira "512 ms"; null vira "sem dados suficientes"', () => {
+    igual(PB.rt.formatar(511.6), '512 ms'); igual(PB.rt.formatar(null), 'sem dados suficientes');
+  });
+
+  /* ---------------- PB.rt.medir (com cliques simulados) ---------------- */
+  const espera = ms => new Promise(r => setTimeout(r, ms));
+  const b1 = document.createElement('button'), b2 = document.createElement('button');
+  palco.appendChild(b1); palco.appendChild(b2);
+  let mostrou = false;
+  const p1 = PB.rt.medir({ mostrar: () => { mostrou = true; b1.click(); /* resposta antes do tempo zero: ignorada */ },
+    botoes: [{ el: b1, valor: 'x' }, { el: b2, valor: 'y' }], correta: 'y' });
+  await espera(200); b2.click();
+  const r1 = await p1;
+  teste('rt.medir chama mostrar() e ignora resposta dada antes do estímulo ser pintado', () => {
+    verdade(mostrou, 'mostrar não foi chamada'); igual(r1.resposta, 'y'); igual(r1.correta, true);
+  });
+  teste('rt.medir devolve RT positivo e plausível', () => verdade(r1.rt > 30 && r1.rt < 2000, 'rt = ' + r1.rt));
+  const p2 = PB.rt.medir({ mostrar: () => {}, teclas: { f: 'esq', j: 'dir' }, correta: v => v === 'esq' });
+  await espera(200);
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k' }));
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'J' }));
+  const r2 = await p2;
+  teste('rt.medir aceita teclado, ignora tecla fora do mapa e não diferencia maiúscula', () => { igual(r2.resposta, 'dir'); igual(r2.correta, false); });
+  const p3 = PB.rt.medir({ mostrar: () => {}, botoes: [{ el: b1, valor: 1 }] });
+  p3.cancelar();
+  const r3 = await p3;
+  teste('rt.medir cancelada resolve com null', () => igual(r3, null));
+
+  /* ---------------- PB.store (em chave separada, só de teste) ---------------- */
+  const st = PB._criarStore('pb:teste');
+  st.apagar();
+  teste('store.ler devolve null quando não há nada', () => igual(st.ler('memoria', 'amplitude'), null));
+  teste('store.salvar grava, acrescenta a data e mescla campos', () => {
+    st.salvar('memoria', 'amplitude', { previsao: { pergunta: 'p', resposta: '7' } });
+    const e = st.salvar('memoria', 'amplitude', { medidas: [{ nome: 'Amplitude', valor: '6', esperado: 'perto de 7' }] });
+    igual(e.previsao.resposta, '7'); igual(e.medidas[0].valor, '6'); verdade(/^\d{4}-\d{2}-\d{2}T/.test(e.data), 'data ISO');
+    igual(st.ler('memoria', 'amplitude').medidas[0].nome, 'Amplitude');
+  });
+  teste('store.tudo lista módulos e atividades', () => igual(Object.keys(st.tudo()), ['memoria']));
+  teste('store.apagar limpa tudo', () => { st.apagar(); igual(st.tudo(), {}); });
+  teste('store de teste não toca na chave real do estudante', () => verdade(PB.store.chave === 'pb:v1' && st.chave === 'pb:teste'));
+
+  /* ---------------- PB.predict ---------------- */
+  const pv = document.createElement('div'); palco.appendChild(pv);
+  const promPrev = PB.predict(pv, { pergunta: 'Qual condição será mais lenta?', opcoes: ['Congruente', 'Incongruente', 'Iguais'] });
+  teste('predict renderiza a pergunta e as opções', () => {
+    igual(pv.querySelector('.pergunta').textContent, 'Qual condição será mais lenta?'); igual(pv.querySelectorAll('button').length, 3);
+  });
+  pv.querySelectorAll('button')[1].click();
+  const prev = await promPrev;
+  teste('predict registra a escolha, trava as opções e não corrige', () => {
+    igual(prev.indice, 1); igual(prev.texto, 'Incongruente');
+    verdade([...pv.querySelectorAll('button')].every(b => b.disabled), 'opções deveriam travar');
+    verdade(!/corret|errad/i.test(pv.querySelector('.registro').textContent), 'não deve corrigir');
+    igual(pv.querySelector('.registro').getAttribute('aria-live'), 'polite');
+  });
+
+  /* ---------------- PB.quiz ---------------- */
+  const qz = document.createElement('div'); palco.appendChild(qz);
+  let fimQuiz = null;
+  PB.quiz(qz, [
+    { id: 't-01', tipo: 'conceito', aula: 'Aula de teste', enunciado: 'Quanto é 1 + 1?', opcoes: ['1', '2', '3'], correta: 1, devolutiva: ['Falta um.', 'Isso.', 'Passou.'] },
+    { id: 't-02', tipo: 'aplicacao', aula: 'Aula de teste', enunciado: '<b>marcação</b> deve aparecer como texto', opcoes: ['sim', 'não'], correta: 0, devolutiva: ['Certo.', 'Deveria.'] }
+  ], { aoTerminar: r => { fimQuiz = r; } });
+  teste('quiz renderiza as questões e cita a aula de origem', () => {
+    igual(qz.querySelectorAll('.questao').length, 2); igual(qz.querySelector('.origem').textContent, 'Conteúdo: Aula de teste');
+  });
+  teste('quiz insere o enunciado como texto, não como HTML', () => igual(qz.querySelectorAll('.questao b').length, 0));
+  qz.querySelectorAll('.questao')[0].querySelectorAll('button')[0].click();
+  teste('quiz: resposta errada mostra "Incorreta", a devolutiva da alternativa e a resposta certa', () => {
+    const d = qz.querySelectorAll('.devolutiva')[0].textContent;
+    verdade(d.indexOf('Incorreta. Falta um.') === 0, d); verdade(d.indexOf('Resposta correta: 2. Isso.') > 0, d);
+  });
+  qz.querySelectorAll('.questao')[1].querySelectorAll('button')[0].click();
+  teste('quiz conta acertos e avisa ao terminar', () => {
+    igual(fimQuiz.acertos, 1); igual(fimQuiz.total, 2);
+    igual(qz.querySelector('.placar').textContent, 'Respondidas: 2 de 2. Acertos: 1.');
+  });
+
+  /* ---------------- PB.tabs ---------------- */
+  const abas = document.createElement('div');
+  abas.innerHTML = '<div class="subnav"><button data-tab="x1" aria-pressed="true">Um</button><button data-tab="x2" aria-pressed="false">Dois</button></div><section id="x1"></section><section id="x2" class="hidden"></section>';
+  palco.appendChild(abas);
+  let evento = null;
+  document.addEventListener('pb:tab', e => { evento = e.detail; });
+  PB.tabs(abas);
+  const [a1, a2] = abas.querySelectorAll('button');
+  teste('tabs aplica role="tab", aria-selected e remove aria-pressed', () => {
+    igual(a1.getAttribute('role'), 'tab'); igual(a1.getAttribute('aria-selected'), 'true'); igual(a2.getAttribute('aria-selected'), 'false');
+    igual(a1.hasAttribute('aria-pressed'), false); igual(abas.querySelector('.subnav').getAttribute('role'), 'tablist');
+    igual(document.getElementById('x2').getAttribute('role'), 'tabpanel');
+  });
+  a2.click();
+  teste('tabs troca o painel no clique e dispara o evento pb:tab com o id', () => {
+    igual(evento, 'x2'); verdade(document.getElementById('x1').classList.contains('hidden')); verdade(!document.getElementById('x2').classList.contains('hidden'));
+  });
+  a2.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  teste('tabs navega por setas (da última volta para a primeira)', () => { igual(evento, 'x1'); igual(a1.getAttribute('aria-selected'), 'true'); igual(a1.tabIndex, 0); igual(a2.tabIndex, -1); });
+
+  /* ---------------- PB.announce ---------------- */
+  teste('announce escreve em região aria-live="polite"', () => {
+    const d = document.createElement('div'); PB.announce(d, 'olá');
+    igual(d.getAttribute('aria-live'), 'polite'); igual(d.textContent, 'olá');
+  });
+
+  const resumo = document.getElementById('resumo');
+  resumo.textContent = passou + ' de ' + total + ' testes passaram.';
+  resumo.style.color = passou === total ? '#8fdc7d' : '#f08a89';
+  resumo.dataset.passou = passou; resumo.dataset.total = total;
+})();
+</script>
+</body>
+</html>
