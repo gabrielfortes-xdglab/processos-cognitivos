@@ -251,6 +251,8 @@ Pronto quando: nenhum resultado aparece antes de o estudante fazer a atividade; 
 | novo, parte de percepção | Hoje o módulo não tem percepção além do Umwelt. Acrescentar, conforme `aulas/`: ilusão com ajuste mensurável (Müller-Lyer: o estudante ajusta uma linha até parecer igual, e o erro é registrado); figuras ambíguas e efeito de contexto (processamento descendente); princípios de organização (Gestalt) como classificação de exemplos. |
 | travessões | 15 ocorrências (4.1.7). |
 
+**Situação em 14/11/2026 (decisões do docente):** módulo refeito no padrão do piloto, a partir de `aulas/sensacao-percepcao.pptx` (Sternberg, cap. 3). Transdução mantida com os quatro sentidos e previsão; Umwelt mantido curto, na aba "Para ir além"; experimento de ajuste com Müller-Lyer, Ponzo e Ebbinghaus; demonstrações de Kanizsa, Hermann e THE CAT; quatro classificações (percurso do Quadro 3.1, Gestalt, pistas de profundidade, vias e agnosias); 8 questões de revisão. Limiar de Weber fora (não está na aula). Mapa em `aulas/LEIAME.md`.
+
 ### 5.4 `linguagem.html`
 
 | Onde | Mudança |

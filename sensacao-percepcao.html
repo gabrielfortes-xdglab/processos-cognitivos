@@ -9,23 +9,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilos.css?v=2026-11-14">
 <style>
-  :root{
-    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
-    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
-    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
-    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
-  }
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
-  .why{background:rgba(43,180,138,.08); border:1px solid rgba(43,180,138,.25); border-radius:10px; padding:.9rem 1.1rem; margin-top:1rem}
-  .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
-  .why .v{font-size:14px; color:var(--ink-soft)}
-  .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
-  .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:1.75rem 0 .2rem}
+  .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
+  .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2rem 0 .2rem}
+  .regua{display:flex; align-items:center; gap:12px; margin:10px 0; font-size:14px; color:var(--text-secondary)}
+  .regua input{flex:1}
+  .regua .leitura{min-width:120px; text-align:right; color:var(--ink)}
+  #sig{width:100%; height:92px; display:block; background:var(--bg-soft); border-radius:10px}
+  #spk{width:100%; height:46px; display:block}
+  #sig-meio{font-size:13px; color:var(--text-secondary); margin:.2rem 0 .5rem}
+  .amostra{display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:6px}
+  /* ajuste das ilusões */
+  #il-svg{width:100%; max-width:640px; display:block; margin:.4rem auto; color:var(--ink); background:var(--bg-soft); border:1px solid var(--line); border-radius:12px}
+  #il-area .linha-resp input[type=range]{flex:1; min-width:180px}
+  /* demonstrações sobre fundo claro (as figuras clássicas são pretas sobre branco) */
+  .demo{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem 1.2rem; margin:0 0 1rem}
+  .demo h4{margin:0 0 .5rem; font-size:1rem; font-weight:500}
+  .demo .clara{background:#f4f1ea; border-radius:10px; padding:14px; display:flex; justify-content:center; margin:.4rem 0 .8rem}
+  .demo .clara svg{width:100%; max-width:300px; height:auto; display:block}
+  .demo .clara.larga svg{max-width:420px}
+  .demo .opcoes{display:flex; flex-direction:column; gap:8px}
+  .demo .opcoes button{text-align:left; line-height:1.4}
+  .demo .revela{font-size:.92rem; color:var(--ink-soft); margin-top:.7rem}
+  .glifo.marca{stroke:#c2410c}
+  /* figuras dentro das questões de classificação */
+  .q-fig{color:var(--ink); background:var(--bg-soft); border:1px solid var(--line); border-radius:10px; margin:.2rem 0 .8rem; padding:6px; max-width:320px}
+  .q-fig svg{width:100%; height:auto; display:block}
+  /* cena do Umwelt */
   .scene-stack{position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line); margin:.5rem 0}
   #scene-base{width:100%; display:block; transition:filter .3s}
   #scene-ov{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
-  #sig{width:100%; height:92px; display:block; background:var(--bg-soft); border-radius:10px}
-  #spk{width:100%; height:46px; display:block}
 </style>
 </head>
 <body>
@@ -52,22 +65,47 @@
   </nav>
 
   <h2>Sensação e percepção</h2>
-  <p class="muted"><b>Sensação</b> é captar o estímulo e convertê-lo em sinal neural (transdução). <b>Percepção</b> é organizar e interpretar esse sinal. Este módulo tem duas partes.</p>
+  <p class="muted">O cérebro não recebe o mundo diretamente: recebe sinais elétricos produzidos pelos sentidos. <b>Sensação</b> é a captação de energia física pelos órgãos dos sentidos. <b>Percepção</b> é o processo ativo de organizar, interpretar e dar sentido a esses sinais. Em cada atividade você primeiro prevê, depois faz e só então confere. No fim da página há questões de revisão.</p>
 
-  <div class="subnav">
-    <button data-tab="m1" aria-pressed="true">1 · Sensação (transdução)</button>
-    <button data-tab="m2" aria-pressed="false">2 · Percepção (sentidos animais)</button>
+  <div class="modhead">
+    <div class="k">Ao final deste módulo, você deve conseguir</div>
+    <ul>
+      <li>Distinguir sensação de percepção e descrever o percurso do objeto distal ao objeto perceptual, incluindo a transdução.</li>
+      <li>Explicar por que perceber envolve inferência, usando as constâncias, as pistas de profundidade e as ilusões.</li>
+      <li>Reconhecer os princípios de organização perceptiva (Gestalt) e comparar as explicações do reconhecimento de padrões, dos dados sensoriais ao efeito do contexto.</li>
+      <li>Relacionar as duas vias do sistema visual aos quadros em que a sensação está preservada e o reconhecimento falha.</li>
+    </ul>
+    <div class="ref"><b>Aula:</b> Sensação e Percepção. <b>Texto-base:</b> Sternberg, <i>Psicologia cognitiva</i>, cap. 3.</div>
   </div>
 
-  <!-- ===================== MÓDULO 1 ===================== -->
+  <div class="subnav">
+    <button data-tab="m1">1 · Sensação</button>
+    <button data-tab="m2">2 · Perceber é inferir</button>
+    <button data-tab="m3">3 · Organizar e reconhecer</button>
+    <button data-tab="m4">Para ir além</button>
+  </div>
+
+  <!-- ===================== PARTE 1 ===================== -->
   <section id="m1">
     <div class="def">
-      <div class="k">Do meio físico ao meio bioquímico</div>
-      Cada receptor é sintonizado a um tipo de estímulo e converte o <b>meio físico</b> (onda de luz, onda de som, moléculas, pressão) em <b>sinal bioquímico</b> dentro da célula. Escolha um sentido e veja o sinal e a sequência de transdução.
+      <div class="k">Do objeto distal ao objeto perceptual</div>
+      O percurso da informação tem quatro termos: o <b>objeto distal</b> (a árvore no jardim), o <b>meio informacional</b> (a luz refletida pelas folhas), o <b>estímulo proximal</b> (a imagem na retina) e o <b>objeto perceptual</b> (a árvore que vemos). O estímulo proximal é a única informação de que o sistema nervoso dispõe.
     </div>
 
-    <h3>Escolha um sentido</h3>
-    <div class="selrow">
+    <p class="subtitle">Classificação</p>
+    <h3 style="margin-top:.2rem">Em que ponto do percurso?</h3>
+    <p class="how">Como fazer: classifique cada item em um dos quatro termos, sem consultar o material.</p>
+    <div id="cl-percurso"></div>
+
+    <p class="subtitle">Ilustração</p>
+    <h3 style="margin-top:.2rem">Transdução: da energia física ao sinal neural</h3>
+    <div class="def">
+      <div class="k">Transdução</div>
+      É o processo pelo qual a energia física do ambiente é convertida em sinais elétricos que o cérebro pode processar. Na visão: a luz refletida atinge os olhos, chega à retina, cones e bastonetes convertem a luz, e impulsos elétricos seguem pelo nervo óptico.
+    </div>
+    <p class="how">Como fazer: escolha um sentido e veja o sinal e a sequência. Depois responda à previsão para liberar a régua de intensidade. Isto é uma <b>ilustração</b>, desenhada pelo autor do site: os traçados não são medidas suas. A aula detalha a sequência da visão; os outros três sentidos estão aqui para comparação.</p>
+
+    <div class="selrow" role="group" aria-label="Sentido">
       <button class="sx" data-s="visao" aria-pressed="true">Visão</button>
       <button class="sx" data-s="audicao" aria-pressed="false">Audição</button>
       <button class="sx" data-s="olfato" aria-pressed="false">Olfato</button>
@@ -75,38 +113,166 @@
     </div>
 
     <p class="subtitle">O sinal</p>
-    <div id="sig-meio" style="font-size:13px; color:var(--text-secondary); margin:.2rem 0 .5rem"></div>
-    <canvas id="sig"></canvas>
-    <div id="freq-wrap" style="display:flex; align-items:center; gap:12px; margin:10px 0">
-      <span style="font-size:14px; color:var(--text-secondary)" id="freq-label">Frequência</span>
-      <input type="range" id="freq" min="0" max="100" value="40" style="flex:1">
-      <span id="freq-read" style="font-size:14px; min-width:120px; text-align:right"></span>
+    <div id="sig-meio"></div>
+    <canvas id="sig" role="img" aria-label="Desenho do estímulo físico do sentido escolhido: onda, moléculas ou pressão"></canvas>
+    <div id="freq-wrap" class="regua">
+      <label for="freq" id="freq-label">Frequência</label>
+      <input type="range" id="freq" min="0" max="100" value="40">
+      <span id="freq-read" class="leitura"></span>
     </div>
 
     <p class="subtitle">A sequência de transdução</p>
     <div id="chain" class="chain"></div>
 
-    <p class="subtitle">A intensidade vira disparos</p>
-    <p class="how">Estímulo mais forte → mais amplitude → o receptor dispara mais rápido → você percebe mais intenso.</p>
-    <canvas id="spk"></canvas>
-    <div style="display:flex; align-items:center; gap:12px; margin:8px 0">
-      <span style="font-size:14px; color:var(--text-secondary)">Intensidade</span>
-      <input type="range" id="inten" min="0" max="100" value="50" style="flex:1">
-      <span id="inten-read" style="font-size:14px; min-width:120px; text-align:right">média</span>
+    <p class="subtitle">A intensidade e os disparos</p>
+    <div id="tr-prev"></div>
+    <canvas id="spk" role="img" aria-label="Traçado dos disparos do receptor ao longo do tempo"></canvas>
+    <div class="regua">
+      <label for="inten">Intensidade</label>
+      <input type="range" id="inten" min="0" max="100" value="50" disabled>
+      <span id="inten-read" class="leitura">média</span>
     </div>
 
-    <div class="why"><div class="k">O que isso mostra</div><div class="v">A <b>frequência</b> do sinal define a <i>qualidade</i> (a cor na visão, a altura no som); a <b>intensidade</b> define a <i>quantidade</i> (a taxa de disparos). O receptor não "copia" o mundo: ele traduz uma faixa específica de energia em código neural.</div></div>
-    <div class="sources">Fontes: transdução sensorial (MSU, Foundations of Neuroscience); fototransdução e mecanotransdução (revisões clássicas).</div>
+    <div class="why" id="tr-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>Nesta ilustração, a <b>frequência</b> do sinal define a qualidade (a cor na visão, a altura no som) e a <b>intensidade</b> muda a taxa de disparos: cada disparo tem a mesma altura, e o que varia é quantos ocorrem por segundo. O receptor não copia o mundo: ele converte uma faixa específica de energia em sinal neural.</p>
+      <p>Cada etapa do percurso transforma o estímulo original. O córtex visual nunca "vê" a luz: ele interpreta padrões de ativação neural, e não o objeto em si.</p></div>
+    </div>
+
+    <div class="def" style="margin-top:1.5rem">
+      <div class="k">Adaptação sensorial</div>
+      A percepção depende de variação no estímulo. Quando a estimulação permanece constante, a resposta dos receptores diminui e a experiência se apaga: o odor de um ambiente deixa de ser notado, a roupa sobre a pele sai do foco. Na visão, micromovimentos oculares mantêm a imagem em variação; uma imagem que incide sempre na mesma região da retina desaparece da experiência em poucos segundos.
+    </div>
+
+    <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 3 (Quadro 3.1; adaptação sensorial). Aula Sensação e Percepção. Para a ilustração da transdução: MSU, <i>Foundations of Neuroscience</i> (transdução sensorial).</div>
   </section>
 
-  <!-- ===================== MÓDULO 2 ===================== -->
+  <!-- ===================== PARTE 2 ===================== -->
   <section id="m2" class="hidden">
     <div class="def">
-      <div class="k">Umwelt</div>
-      Cada espécie vive em seu mundo perceptivo, montado a partir dos receptores que possui (von Uexküll, 1934). A mesma cena vira coisas diferentes: a percepção constrói, não copia a realidade.
+      <div class="k">O cérebro precisa inferir</div>
+      Os sinais que chegam ao cérebro são brutos, ambíguos e incompletos. A <b>constância perceptiva</b> mostra a inferência em ação: um colega que se afasta continua do mesmo tamanho, embora a imagem na retina encolha (o sistema combina imagem retiniana e distância estimada); uma porta que abre projeta uma série de trapézios e continua retangular. As ilusões geométricas são casos em que esses mecanismos operam sobre pistas enganosas.
     </div>
 
-    <h3>Veja a mesma cena com outros sentidos</h3>
+    <p class="subtitle">Experimento</p>
+    <h3 style="margin-top:.2rem">Três ilusões, com o seu ajuste</h3>
+    <p class="how">Como fazer: em cada figura, use a régua (ou as setas do teclado) para ajustar uma parte até ela parecer <b>igual</b> à outra, e confirme. São 4 ajustes por figura, 12 no total. Você já está avisado: as três figuras são ilusões de tamanho. Use um computador ou deixe o celular deitado.</p>
+    <div id="il-prev"></div>
+    <div id="il-palco" class="palco">Responda à previsão para liberar o início.</div>
+    <div class="acoes"><button id="il-go" class="primary" disabled>Começar</button></div>
+    <div id="il-area" hidden>
+      <p id="il-instr" class="how"></p>
+      <svg id="il-svg" viewBox="0 0 600 230" role="img" aria-label="Figura da ilusão, com uma parte fixa e uma parte ajustável"></svg>
+      <div class="linha-resp">
+        <label for="il-range">Ajuste</label>
+        <input type="range" id="il-range">
+        <button id="il-ok" type="button">Parece igual</button>
+      </div>
+    </div>
+    <div id="il-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="il-res"></div>
+    <div class="why" id="il-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>Nos três casos o sistema aplica um ajuste que funciona em cenas naturais; em figuras planas construídas para esse fim, o mesmo ajuste produz erro. Em <b>Ponzo</b>, as linhas convergentes funcionam como pista de profundidade, e a barra de cima parece maior. Em <b>Ebbinghaus</b>, pesa o contexto imediato. Para a <b>Müller-Lyer</b>, a explicação permanece em aberto: Coren e Girgus (1978) propuseram que as pontas funcionam como pistas de profundidade, à maneira de quinas de parede, e essa hipótese cobre parte dos dados.</p>
+      <p>A ilusão persiste mesmo quando sabemos que as medidas são iguais: a percepção opera de forma automática e resiste à correção consciente. Limite desta medida: são 4 ajustes por figura, feitos em uma tela; o tamanho do seu erro pode mudar de uma tentativa para outra.</p></div>
+    </div>
+
+    <p class="subtitle">Demonstrações</p>
+    <h3 style="margin-top:.2rem">O que você vê?</h3>
+    <p class="how">Como fazer: olhe cada figura e responda antes de ler a explicação. Não há resposta certa: registra-se o que você viu.</p>
+
+    <div class="demo" id="dm-kanizsa">
+      <h4>1. O que você vê no centro da figura?</h4>
+      <div class="clara">
+        <svg viewBox="0 0 300 250" role="img" aria-label="Três círculos pretos, cada um com uma fatia a menos, dispostos nos vértices de um triângulo">
+          <circle cx="150" cy="55" r="38" fill="#111"/><circle cx="60" cy="200" r="38" fill="#111"/><circle cx="240" cy="200" r="38" fill="#111"/>
+          <polygon points="150,55 60,200 240,200" fill="#f4f1ea"/>
+        </svg>
+      </div>
+      <div class="opcoes" role="group" aria-label="O que você vê no centro da figura?"></div>
+      <div class="revela" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="demo" id="dm-hermann">
+      <h4>2. Passeie o olhar pela grade. Aparecem manchas cinza nos cruzamentos das faixas claras?</h4>
+      <div class="clara">
+        <svg id="hermann" viewBox="0 0 280 280" role="img" aria-label="Grade de quadrados pretos separados por faixas claras"></svg>
+      </div>
+      <div class="opcoes" role="group" aria-label="Aparecem manchas cinza nos cruzamentos?"></div>
+      <div class="revela" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="demo" id="dm-thecat">
+      <h4>3. O que está escrito?</h4>
+      <div class="clara larga">
+        <svg viewBox="0 0 420 100" role="img" aria-label="Duas palavras de três letras em caixa alta, com a letra do meio desenhada de forma ambígua" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20,20 H64 M42,20 V80"/>
+          <path class="glifo" d="M87,80 L92,20 M125,80 L120,20 M90,50 H122"/>
+          <path d="M150,20 V80 M150,20 H188 M150,50 H180 M150,80 H188"/>
+          <path d="M276,26 C258,14 232,22 232,50 C232,78 258,86 276,74"/>
+          <path class="glifo" d="M299,80 L304,20 M337,80 L332,20 M302,50 H334"/>
+          <path d="M356,20 H400 M378,20 V80"/>
+        </svg>
+      </div>
+      <div class="opcoes" role="group" aria-label="O que está escrito?"></div>
+      <div class="revela" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="why" id="dm-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>As três figuras mostram, em níveis diferentes, que a percepção vai além do estímulo. Na grade de Hermann, o próprio funcionamento do sistema visual transforma o sinal desde os primeiros estágios. No triângulo de Kanizsa, o sistema acrescenta um contorno que não está no estímulo. Em THE CAT, o contexto decide a leitura de um mesmo desenho.</p></div>
+    </div>
+
+    <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 3; Coren e Girgus (1978); Müller-Lyer (1889); Kanizsa (1955); Hermann (1870). Aula Sensação e Percepção.</div>
+  </section>
+
+  <!-- ===================== PARTE 3 ===================== -->
+  <section id="m3" class="hidden">
+    <div class="def">
+      <div class="k">Organização perceptiva</div>
+      Para a Psicologia da Gestalt, percebemos padrões organizados: <b>o todo é diferente da soma das partes</b> (diferente, e não "mais": a propriedade nova existe no arranjo, e não nos elementos isolados). A lei de Prägnanz organiza os demais princípios: o sistema adota a interpretação mais simples e estável compatível com o estímulo.
+    </div>
+
+    <p class="subtitle">Classificação</p>
+    <h3 style="margin-top:.2rem">Que princípio organiza a figura?</h3>
+    <p class="how">Como fazer: olhe cada figura e escolha o princípio. Proximidade (agrupamos o que está perto), semelhança (o que se parece), continuidade (seguimos o traçado mais suave), fechamento (completamos a figura aberta), figura e fundo (separamos objeto e contexto), simetria (agrupamos partes simétricas).</p>
+    <div id="cl-gestalt"></div>
+
+    <div class="def" style="margin-top:2rem">
+      <div class="k">Profundidade</div>
+      A imagem na retina é plana. A distância é estimada por pistas: as <b>monoculares</b> funcionam com um olho só (e são as que a pintura em perspectiva usa); as <b>binoculares</b> dependem de dois olhos em posições diferentes.
+    </div>
+    <p class="subtitle">Classificação</p>
+    <h3 style="margin-top:.2rem">Que pista de profundidade é?</h3>
+    <p class="how">Como fazer: classifique cada situação sem consultar o material.</p>
+    <div id="cl-prof"></div>
+
+    <div class="def" style="margin-top:2rem">
+      <div class="k">Reconhecimento e as duas vias</div>
+      O processamento <b>ascendente</b> (bottom-up) parte dos dados sensoriais; o <b>descendente</b> (top-down) parte de expectativas, memórias e contexto. No córtex, duas vias saem da região occipital: a <b>ventral</b>, para o lobo temporal (o quê: objetos, cores e rostos), e a <b>dorsal</b>, para o lobo parietal (onde, ou, em outra leitura, como: o controle da ação). Nas agnosias, a sensação permanece preservada e o reconhecimento falha.
+    </div>
+    <p class="subtitle">Classificação</p>
+    <h3 style="margin-top:.2rem">Onde está o comprometimento?</h3>
+    <p class="how">Como fazer: leia cada descrição e escolha. As descrições vêm de quadros documentados por lesão; a atividade serve para estudar a divisão entre as vias, e não para identificar quadros em pessoas.</p>
+    <div id="cl-vias"></div>
+
+    <div class="why">
+      <div class="k">A ideia central</div>
+      <div class="v"><p>A aula termina com a tese da complementaridade: os dados sensoriais restringem as interpretações possíveis, e o conhecimento prévio seleciona entre elas. Um sistema apoiado apenas em inferência acumularia erros; as ilusões são casos em que a restrição sensorial e a expectativa entram em conflito.</p></div>
+    </div>
+
+    <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 3; Penrose e Penrose (1958); Farah e colaboradores (reconhecimento de rostos e casas). Aula Sensação e Percepção.</div>
+  </section>
+
+  <!-- ===================== PARA IR ALÉM ===================== -->
+  <section id="m4" class="hidden">
+    <div class="def">
+      <div class="k">Para ir além: Umwelt</div>
+      Este trecho não faz parte da aula e não entra nas questões. Cada espécie vive em seu mundo perceptivo, montado a partir dos receptores que possui (von Uexküll, 1934). A cena abaixo é uma ilustração: escolha um animal e veja o que muda.
+    </div>
     <div class="scene-stack">
       <svg id="scene-base" viewBox="0 0 600 340">
         <defs>
@@ -172,7 +338,7 @@
       </svg>
     </div>
 
-    <div class="selrow">
+    <div class="selrow" role="group" aria-label="Animal">
       <button class="obs" data-m="humano" aria-pressed="true">Humano</button>
       <button class="obs" data-m="abelha" aria-pressed="false">Abelha</button>
       <button class="obs" data-m="cobra" aria-pressed="false">Cobra</button>
@@ -184,111 +350,415 @@
       <div class="fact" id="o-fact">A cena como referência: luz visível, cores normais.</div>
       <div class="src" id="o-src"></div>
     </div>
-
-    <div class="sources">Fontes: abelha: NC State (2024), J. Plant Ecology (2020); cobra: Gracheva et al., Nature (2010); morcego: Scientific American; cão: Wikipedia (dog olfaction); Umwelt: von Uexküll.</div>
+    <div class="sources">Fontes: von Uexküll (1934); abelha: NC State (2024), J. Plant Ecology (2020); cobra: Gracheva et al., Nature (2010); morcego: Scientific American; cão: Neitz, Geist e Jacobs (1989), Visual Neuroscience (visão de cores); Kokocińska-Kusiak et al. (2021), Animals (olfato).</div>
   </section>
 
-  <footer>Protótipo · módulo de Sensação e percepção · processos básicos da cognição</footer>
+  <!-- ===================== REVISÃO ===================== -->
+  <section aria-labelledby="rev-titulo">
+    <div id="quiz">
+      <h2 id="rev-titulo">Questões de revisão</h2>
+      <p class="muted">Responda sem consultar o material: tentar lembrar é prática de recuperação. Cada alternativa tem uma devolutiva. Não vale nota.</p>
+      <div id="quiz-lista"></div>
+    </div>
+    <p style="margin-top:1.5rem"><a href="resultados.html">Ver minha folha de resultados</a> <span class="dim">(fica só neste navegador)</span></p>
+  </section>
+
+  <footer>Módulo de Sensação e percepção · processos básicos da cognição</footer>
 </div>
 
+<script src="comum.js?v=2026-11-14"></script>
+<script src="dados/questoes-sensacao-percepcao.js?v=2026-11-14"></script>
 <script>
-/* ===== TABS ===== */
-(function(){ const b=document.querySelectorAll('.subnav button'), s={m1:document.getElementById('m1'),m2:document.getElementById('m2')};
-  b.forEach(x=>x.onclick=()=>{ const t=x.dataset.tab; b.forEach(y=>y.setAttribute('aria-pressed',y===x)); for(const k in s) s[k].classList.toggle('hidden',k!==t); }); })();
+/* ===== Utilitários da página ===== */
+const $ = id => document.getElementById(id);
+const MOD = 'sensacao-percepcao';
+const Q = window.PB_QUESTOES;
 
-/* ===== M1: SINAL + TRANSDUÇÃO + INTENSIDADE ===== */
-(function(){
-  const SENSES={
-    visao:{meio:'Luz: onda eletromagnética', sig:'wave', freqLab:'Frequência (cor: vermelho → violeta)', perc:'cor e brilho',
-      stages:['Onda de luz','Retina','Fotorreceptor: o retinal muda na rodopsina','Sinal elétrico','Nervo óptico']},
-    audicao:{meio:'Som: onda de pressão no ar', sig:'wave', freqLab:'Frequência (altura: grave → agudo)', perc:'altura e volume',
-      stages:['Onda sonora (ar)','Tímpano vibra','Cóclea: meio aquoso (endolinfa)','Estereocílios entortam','Nervo auditivo']},
-    olfato:{meio:'Moléculas voláteis: estímulo químico', sig:'mol', perc:'tipo e intensidade do cheiro',
-      stages:['Moléculas no ar','Muco do epitélio (meio aquoso)','Receptor olfatório encaixa a molécula','Sinal','Bulbo olfatório']},
-    tato:{meio:'Pressão e deformação: estímulo mecânico', sig:'press', perc:'força e textura',
-      stages:['Pressão na pele','Mecanorreceptor deforma','Canais mecanossensíveis abrem','Sinal','Medula e córtex']}
+/* Mostra o resultado do estudante ao lado do esperado (sempre por textContent). */
+function colunas(el, cols) {
+  el.textContent = '';
+  el.className = 'expected';
+  cols.forEach(c => {
+    const d = document.createElement('div'); d.className = 'col' + (c.seu ? ' seu' : '');
+    const l = document.createElement('div'); l.className = 'label'; l.textContent = c.label;
+    const v = document.createElement('div'); v.className = 'value'; v.textContent = c.valor;
+    d.append(l, v);
+    if (c.nota) { const n = document.createElement('div'); n.className = 'nota'; n.textContent = c.nota; d.appendChild(n); }
+    el.appendChild(d);
+  });
+}
+
+/* "O que isso mostra" só aparece depois da atividade, comentando o resultado obtido. */
+function revelar(id, texto) {
+  const w = $(id);
+  w.querySelector('.seu-res').textContent = texto || '';
+  w.hidden = false;
+}
+
+/* Classificação com as mesmas alternativas para todos os itens (categorias). */
+function classificar(elId, T, chave, rotulo) {
+  const questoes = T.itens.map(it => ({
+    id: it.id, tipo: 'aplicacao', aula: T.aula, enunciado: it.texto,
+    opcoes: T.categorias.map(c => c.nome),
+    correta: T.categorias.findIndex(c => c.id === it.cat),
+    devolutiva: T.categorias.map(c => c.id === it.cat ? it.porque : c.nome + ': ' + c.def + '. Não é o que o item descreve.')
+  }));
+  const el = $(elId);
+  el.classList.add('plano');
+  PB.quiz(el, questoes, { aoTerminar: r => PB.store.salvar(MOD, chave, { rotulo: rotulo, quiz: { acertos: r.acertos, total: r.total } }) });
+  return el;
+}
+
+PB.tabs();
+
+/* ===== PARTE 1: PERCURSO (Quadro 3.1) ===== */
+classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que ponto do percurso?');
+
+/* ===== PARTE 1: TRANSDUÇÃO (ilustração) ===== */
+(function () {
+  const SENSES = {
+    visao: { meio: 'Luz: onda eletromagnética', sig: 'wave', freqLab: 'Frequência (cor: vermelho → violeta)',
+      stages: ['Luz refletida', 'Retina', 'Fotorreceptores: cones e bastonetes convertem a luz', 'Impulsos elétricos', 'Nervo óptico'] },
+    audicao: { meio: 'Som: onda de pressão no ar', sig: 'wave', freqLab: 'Frequência (altura: grave → agudo)',
+      stages: ['Onda sonora (ar)', 'Tímpano vibra', 'Cóclea: meio aquoso (endolinfa)', 'Estereocílios entortam', 'Nervo auditivo'] },
+    olfato: { meio: 'Moléculas voláteis: estímulo químico', sig: 'mol',
+      stages: ['Moléculas no ar', 'Muco do epitélio (meio aquoso)', 'Receptor olfatório encaixa a molécula', 'Sinal', 'Bulbo olfatório'] },
+    tato: { meio: 'Pressão e deformação: estímulo mecânico', sig: 'press',
+      stages: ['Pressão na pele', 'Mecanorreceptor deforma', 'Canais mecanossensíveis abrem', 'Sinal', 'Medula e córtex'] }
   };
-  const g=id=>document.getElementById(id);
-  const sig=g('sig'), sctx=sig.getContext('2d'), spk=g('spk'), pctx=spk.getContext('2d');
-  const freq=g('freq'), inten=g('inten'), freqWrap=g('freq-wrap');
-  let sense='visao', mols=[], spikes=[], last=0;
-  for(let i=0;i<40;i++) mols.push({x:Math.random(),y:Math.random(),s:0.2+Math.random()*0.8});
+  const sig = $('sig'), sctx = sig.getContext('2d'), spk = $('spk'), pctx = spk.getContext('2d');
+  const freq = $('freq'), inten = $('inten'), freqWrap = $('freq-wrap');
+  const acc = getComputedStyle(document.documentElement).getPropertyValue('--teal-bright').trim() || '#6ff0c0';
+  let sense = 'visao', spikes = [], ultimoDisparo = 0, tAtual = 0;
+  const mols = [];
+  for (let i = 0; i < 40; i++) mols.push({ x: Math.random(), y: Math.random(), s: 0.2 + Math.random() * 0.8 });
 
-  function nmToRGB(wl){ let r=0,gc=0,b=0; if(wl<440){r=-(wl-440)/60;b=1;} else if(wl<490){gc=(wl-440)/50;b=1;} else if(wl<510){gc=1;b=-(wl-510)/20;} else if(wl<580){r=(wl-510)/70;gc=1;} else if(wl<645){r=1;gc=-(wl-645)/65;} else {r=1;} return 'rgb('+Math.round(r*255)+','+Math.round(gc*255)+','+Math.round(b*255)+')'; }
-  function colorName(wl){ return wl<450?'violeta':wl<490?'azul':wl<560?'verde':wl<590?'amarelo':wl<625?'laranja':'vermelho'; }
-
-  function setSense(s){ sense=s; const d=SENSES[s];
-    document.querySelectorAll('.sx').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===s));
-    g('sig-meio').textContent='Meio físico: '+d.meio;
-    freqWrap.style.display = (d.sig==='wave')?'flex':'none';
-    if(d.sig==='wave') g('freq-label').textContent=d.freqLab;
-    g('chain').innerHTML=d.stages.map((st,i)=>{ const bio=i===2; return '<div class="box'+(bio?' bio':'')+'"><div class="c">'+st+'</div></div>'+(i<d.stages.length-1?'<div class="arr">→</div>':''); }).join('');
-    render();
+  function nmToRGB(wl) {
+    let r = 0, g = 0, b = 0;
+    if (wl < 440) { r = -(wl - 440) / 60; b = 1; }
+    else if (wl < 490) { g = (wl - 440) / 50; b = 1; }
+    else if (wl < 510) { g = 1; b = -(wl - 510) / 20; }
+    else if (wl < 580) { r = (wl - 510) / 70; g = 1; }
+    else if (wl < 645) { r = 1; g = -(wl - 645) / 65; }
+    else { r = 1; }
+    return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
   }
-  function render(){ const v=+inten.value/100;
-    g('inten-read').textContent=v<0.33?'fraca':v<0.66?'média':'forte';
-    if(SENSES[sense].sig==='wave'){ const f=+freq.value/100;
-      if(sense==='visao'){ const wl=700-300*f; g('freq-read').innerHTML='<span style="display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;background:'+nmToRGB(wl)+'"></span>'+colorName(wl); }
-      else { const hz=Math.round(80*Math.pow(50,f)); g('freq-read').textContent=(f<0.33?'grave':f<0.66?'médio':'agudo')+' (~'+hz+' Hz)'; }
+  function colorName(wl) { return wl < 450 ? 'violeta' : wl < 490 ? 'azul' : wl < 560 ? 'verde' : wl < 590 ? 'amarelo' : wl < 625 ? 'laranja' : 'vermelho'; }
+
+  function setSense(s) {
+    sense = s;
+    const d = SENSES[s];
+    document.querySelectorAll('.sx').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s));
+    $('sig-meio').textContent = 'Meio físico: ' + d.meio;
+    freqWrap.style.display = d.sig === 'wave' ? 'flex' : 'none';
+    if (d.sig === 'wave') $('freq-label').textContent = d.freqLab;
+    const chain = $('chain');
+    chain.textContent = '';
+    d.stages.forEach((st, i) => {
+      const box = document.createElement('div'); box.className = 'box' + (i === 2 ? ' bio' : '');
+      const c = document.createElement('div'); c.className = 'c'; c.textContent = st;
+      box.appendChild(c); chain.appendChild(box);
+      if (i < d.stages.length - 1) { const a = document.createElement('div'); a.className = 'arr'; a.textContent = '→'; a.setAttribute('aria-hidden', 'true'); chain.appendChild(a); }
+    });
+    leituras();
+    desenhar(0, tAtual);
+  }
+  function leituras() {
+    const v = +inten.value / 100;
+    $('inten-read').textContent = v < 0.33 ? 'fraca' : v < 0.66 ? 'média' : 'forte';
+    if (SENSES[sense].sig !== 'wave') return;
+    const f = +freq.value / 100, out = $('freq-read');
+    out.textContent = '';
+    if (sense === 'visao') {
+      const wl = 700 - 300 * f, am = document.createElement('span');
+      am.className = 'amostra'; am.style.background = nmToRGB(wl);
+      out.append(am, colorName(wl));
+    } else {
+      out.textContent = (f < 0.33 ? 'grave' : f < 0.66 ? 'médio' : 'agudo') + ' (~' + Math.round(80 * Math.pow(50, f)) + ' Hz)';
     }
   }
-  document.querySelectorAll('.sx').forEach(b=>b.onclick=()=>setSense(b.dataset.s));
-  freq.oninput=render; inten.oninput=render;
 
-  function loop(t){
-    const W=sig.width=sig.clientWidth, H=sig.height=sig.clientHeight, v=+inten.value/100, f=+freq.value/100, d=SENSES[sense];
-    sctx.clearRect(0,0,W,H);
-    const acc=getComputedStyle(document.documentElement).getPropertyValue('--teal-bright').trim()||'#6ff0c0';
-    if(d.sig==='wave'){ const cycles=2+f*16, amp=6+v*(H*0.36), col=sense==='visao'?nmToRGB(700-300*f):'#6cc6ff';
-      sctx.strokeStyle=col; sctx.lineWidth=2.5; sctx.beginPath();
-      for(let x=0;x<=W;x++){ const y=H/2 + amp*Math.sin((x/W)*cycles*6.283 + t/300); x?sctx.lineTo(x,y):sctx.moveTo(x,y); } sctx.stroke();
-    } else if(d.sig==='mol'){
-      const rx=W-34, ry=H/2; // receptor (encaixe) à direita
-      sctx.strokeStyle='#2bb48a'; sctx.lineWidth=3;
-      sctx.beginPath(); sctx.moveTo(rx,ry-22); sctx.lineTo(rx,ry-7); sctx.arc(rx,ry,7,-Math.PI/2,Math.PI/2,true); sctx.lineTo(rx,ry+22); sctx.stroke();
-      sctx.beginPath(); sctx.moveTo(rx+14,ry-22); sctx.lineTo(rx+14,ry+22); sctx.stroke();
-      const n=Math.round(6+v*30); // moléculas fluindo para o receptor
-      for(let i=0;i<n;i++){ const m=mols[i]; m.x+=0.003+0.004*m.s; if(m.x>0.9)m.x=0; const x=m.x*(W-60)+6, y=(m.y*0.6+0.2)*H;
-        sctx.fillStyle='rgba(120,210,160,'+(0.45+m.s*0.5)+')';
-        sctx.beginPath(); sctx.arc(x,y,3+m.s*2,0,6.283); sctx.fill();
-        sctx.beginPath(); sctx.arc(x+4,y-3,2,0,6.283); sctx.fill();
-        sctx.beginPath(); sctx.arc(x+4,y+3,2,0,6.283); sctx.fill(); }
-    } else { // tato: sonda pressiona a pele; mecanorreceptor se achata
-      const baseY=H*0.40, depth=v*(H*0.34), cx=W/2, tipY=baseY+depth-2+Math.sin(t/300)*1.5;
-      sctx.strokeStyle='#c9a07a'; sctx.lineWidth=3; sctx.beginPath();
-      for(let x=0;x<=W;x++){ const dd=Math.exp(-Math.pow((x-cx)/(W*0.13),2)); const y=baseY+depth*dd; x?sctx.lineTo(x,y):sctx.moveTo(x,y); } sctx.stroke();
-      sctx.fillStyle='#8aa0b0'; sctx.fillRect(cx-7, tipY-36, 14, 30); sctx.beginPath(); sctx.arc(cx,tipY-6,7,0,6.283); sctx.fill();
-      const mrY=Math.min(H-8, baseY+H*0.36), rxr=12+depth*0.55, ryr=Math.max(3,12-depth*0.55);
-      sctx.fillStyle='rgba(43,180,138,'+(0.4+v*0.5)+')'; sctx.beginPath(); sctx.ellipse(cx,mrY,rxr,ryr,0,0,6.283); sctx.fill(); }
-    // spikes
-    const Ws=spk.width=spk.clientWidth, Hs=spk.height=spk.clientHeight, ff=Math.round(2+v*38);
-    if(t-last>=1000/ff){ spikes.push(Ws); last=t; }
-    pctx.clearRect(0,0,Ws,Hs); pctx.strokeStyle=acc; pctx.lineWidth=2;
-    pctx.globalAlpha=.25; pctx.beginPath(); pctx.moveTo(0,Hs*0.72); pctx.lineTo(Ws,Hs*0.72); pctx.stroke(); pctx.globalAlpha=1;
-    spikes=spikes.filter(x=>x>-4); spikes.forEach((x,i)=>{ spikes[i]-=2.6; const xx=spikes[i]; pctx.beginPath(); pctx.moveTo(xx,Hs*0.72); pctx.lineTo(xx,Hs*0.16); pctx.stroke(); });
-    requestAnimationFrame(loop);
+  /* O buffer do canvas só é refeito quando o tamanho na tela muda (não a cada quadro). */
+  function ajustar(cv, ctx) {
+    const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return [w, h];
   }
-  setSense('visao'); requestAnimationFrame(loop);
+
+  function desenhar(dt, total) {
+    tAtual = total;
+    const t = total * 1000, v = +inten.value / 100, f = +freq.value / 100, d = SENSES[sense];
+    const [W, H] = ajustar(sig, sctx);
+    if (!W) return;
+    sctx.clearRect(0, 0, W, H);
+    if (d.sig === 'wave') {
+      const cycles = 2 + f * 16, amp = 6 + v * (H * 0.36);
+      sctx.strokeStyle = sense === 'visao' ? nmToRGB(700 - 300 * f) : '#6cc6ff';
+      sctx.lineWidth = 2.5; sctx.beginPath();
+      for (let x = 0; x <= W; x++) { const y = H / 2 + amp * Math.sin((x / W) * cycles * 6.283 + t / 300); if (x) sctx.lineTo(x, y); else sctx.moveTo(x, y); }
+      sctx.stroke();
+    } else if (d.sig === 'mol') {
+      const rx = W - 34, ry = H / 2; /* receptor (encaixe) à direita */
+      sctx.strokeStyle = '#2bb48a'; sctx.lineWidth = 3;
+      sctx.beginPath(); sctx.moveTo(rx, ry - 22); sctx.lineTo(rx, ry - 7); sctx.arc(rx, ry, 7, -Math.PI / 2, Math.PI / 2, true); sctx.lineTo(rx, ry + 22); sctx.stroke();
+      sctx.beginPath(); sctx.moveTo(rx + 14, ry - 22); sctx.lineTo(rx + 14, ry + 22); sctx.stroke();
+      const n = Math.round(6 + v * 30);
+      for (let i = 0; i < n; i++) {
+        const m = mols[i];
+        m.x += (0.003 + 0.004 * m.s) * 60 * dt; if (m.x > 0.9) m.x = 0;
+        const x = m.x * (W - 60) + 6, y = (m.y * 0.6 + 0.2) * H;
+        sctx.fillStyle = 'rgba(120,210,160,' + (0.45 + m.s * 0.5) + ')';
+        sctx.beginPath(); sctx.arc(x, y, 3 + m.s * 2, 0, 6.283); sctx.fill();
+        sctx.beginPath(); sctx.arc(x + 4, y - 3, 2, 0, 6.283); sctx.fill();
+        sctx.beginPath(); sctx.arc(x + 4, y + 3, 2, 0, 6.283); sctx.fill();
+      }
+    } else { /* tato: uma sonda pressiona a pele; o mecanorreceptor se achata */
+      const baseY = H * 0.40, depth = v * (H * 0.34), cx = W / 2, tipY = baseY + depth - 2 + Math.sin(t / 300) * 1.5;
+      sctx.strokeStyle = '#c9a07a'; sctx.lineWidth = 3; sctx.beginPath();
+      for (let x = 0; x <= W; x++) { const dd = Math.exp(-Math.pow((x - cx) / (W * 0.13), 2)), y = baseY + depth * dd; if (x) sctx.lineTo(x, y); else sctx.moveTo(x, y); }
+      sctx.stroke();
+      sctx.fillStyle = '#8aa0b0'; sctx.fillRect(cx - 7, tipY - 36, 14, 30); sctx.beginPath(); sctx.arc(cx, tipY - 6, 7, 0, 6.283); sctx.fill();
+      const mrY = Math.min(H - 8, baseY + H * 0.36), rxr = 12 + depth * 0.55, ryr = Math.max(3, 12 - depth * 0.55);
+      sctx.fillStyle = 'rgba(43,180,138,' + (0.4 + v * 0.5) + ')'; sctx.beginPath(); sctx.ellipse(cx, mrY, rxr, ryr, 0, 0, 6.283); sctx.fill();
+    }
+    /* disparos: a taxa cresce com a intensidade; a altura é sempre a mesma */
+    const [Ws, Hs] = ajustar(spk, pctx), taxa = Math.round(2 + v * 38);
+    if (t - ultimoDisparo >= 1000 / taxa) { spikes.push(Ws); ultimoDisparo = t; }
+    pctx.clearRect(0, 0, Ws, Hs); pctx.strokeStyle = acc; pctx.lineWidth = 2;
+    pctx.globalAlpha = .25; pctx.beginPath(); pctx.moveTo(0, Hs * 0.72); pctx.lineTo(Ws, Hs * 0.72); pctx.stroke(); pctx.globalAlpha = 1;
+    spikes = spikes.map(x => x - 156 * dt).filter(x => x > -4);
+    spikes.forEach(x => { pctx.beginPath(); pctx.moveTo(x, Hs * 0.72); pctx.lineTo(x, Hs * 0.16); pctx.stroke(); });
+  }
+
+  document.querySelectorAll('.sx').forEach(b => b.onclick = () => setSense(b.dataset.s));
+  freq.oninput = () => { leituras(); desenhar(0, tAtual); };
+
+  /* Previsão antes de liberar a régua de intensidade. */
+  const opcoes = ['Os disparos ficam mais frequentes', 'Cada disparo fica mais alto', 'Nada muda nos disparos'];
+  let previsao = null, mexeu = false;
+  PB.predict($('tr-prev'), {
+    pergunta: 'Quando o estímulo fica mais intenso, o que você espera que mude nos disparos do receptor?',
+    opcoes: opcoes
+  }).then(p => {
+    previsao = p;
+    inten.disabled = false;
+    PB.store.salvar(MOD, 'transducao', { rotulo: 'Transdução (ilustração)', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+  });
+  inten.oninput = () => {
+    leituras(); desenhar(0, tAtual);
+    if (mexeu || !previsao) return;
+    mexeu = true;
+    revelar('tr-why', 'Você previu: "' + previsao.texto + '". Mexa a régua de intensidade e compare a distância entre os disparos e a altura de cada um.');
+  };
+
+  setSense('visao');
+  PB.anim(desenhar, sig);
 })();
 
-/* ===== M2: UMWELT (base filtrada + overlays vívidos) ===== */
-(function(){
-  const M={
-    humano:{f:'none', cap:'Humano: visão tricromática', fact:'A cena como referência: luz visível, cores normais.', src:'', show:[]},
-    abelha:{f:'saturate(1.5) hue-rotate(205deg)', cap:'Abelha: ultravioleta, sem vermelho', fact:'A flor vermelha vira escura; padrões UV viram guias que apontam o néctar.', src:'NC State (2024); J. Plant Ecology (2020)', show:['ov-uv']},
-    cobra:{f:'brightness(.4) saturate(.6)', cap:'Cobra (jararaca): calor (infravermelho)', fact:'O rato, o sol e o pássaro de sangue quente brilham; o resto, frio, some no escuro.', src:'Gracheva et al., Nature (2010)', show:['ov-thermal']},
-    morcego:{f:'grayscale(1) brightness(.5)', cap:'Morcego: ecolocalização', fact:'Sem cor: o morcego emite pulsos e lê os ecos; os objetos surgem como contornos.', src:'Scientific American', show:['ov-sonar']},
-    cao:{f:'saturate(.25) brightness(.95)', cap:'Cão: olfato dominante, visão dicromática', fact:'Cores desbotadas e plumas de cheiro subindo das fontes (rato, flores).', src:'Wikipedia (dog olfaction)', show:['ov-scent']}
+/* ===== PARTE 2: TRÊS ILUSÕES COM AJUSTE ===== */
+(function () {
+  const svg = $('il-svg'), range = $('il-range'), ok = $('il-ok'), go = $('il-go');
+  const palco = $('il-palco'), area = $('il-area'), msg = $('il-msg'), instr = $('il-instr');
+  const N = 4, A = 16; /* ajustes por figura; tamanho das pontas */
+  const linha = (x1, y1, x2, y2, w, op) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="currentColor" stroke-width="' + (w || 3) + '" stroke-linecap="round"' + (op ? ' opacity="' + op + '"' : '') + '/>';
+  const circ = (cx, cy, r, attr) => '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r + '" ' + attr + '/>';
+
+  const IL = [
+    { id: 'ml', nome: 'Müller-Lyer', ref: 200, min: 120, max: 300, passo: 1, jit: 15, inicios: [140, 270, 155, 255],
+      instr: 'Ajuste a linha de baixo até ela parecer do mesmo comprimento da linha de cima. Compare só os traços horizontais.',
+      partes: ['a linha de baixo', 'a de cima'], adj: ['mais comprida', 'mais curta'],
+      desenha: (v, d) => {
+        const a1 = 300 + d - 100, b1 = 300 + d + 100, y1 = 62, a2 = 300 - d - v / 2, b2 = 300 - d + v / 2, y2 = 168;
+        return linha(a1, y1, b1, y1) + linha(a1, y1, a1 - A, y1 - A) + linha(a1, y1, a1 - A, y1 + A) + linha(b1, y1, b1 + A, y1 - A) + linha(b1, y1, b1 + A, y1 + A) +
+               linha(a2, y2, b2, y2) + linha(a2, y2, a2 + A, y2 - A) + linha(a2, y2, a2 + A, y2 + A) + linha(b2, y2, b2 - A, y2 - A) + linha(b2, y2, b2 - A, y2 + A);
+      } },
+    { id: 'ponzo', nome: 'Ponzo', ref: 110, min: 60, max: 200, passo: 1, jit: 10, inicios: [72, 172, 86, 152],
+      instr: 'Ajuste a barra de baixo até ela parecer do mesmo comprimento da barra de cima.',
+      partes: ['a barra de baixo', 'a de cima'], adj: ['mais comprida', 'mais curta'],
+      desenha: v => linha(120, 220, 272, 8, 2, .6) + linha(480, 220, 328, 8, 2, .6) + linha(245, 55, 355, 55, 5) + linha(300 - v / 2, 178, 300 + v / 2, 178, 5) },
+    { id: 'ebb', nome: 'Ebbinghaus', ref: 22, min: 12, max: 34, passo: 0.5, jit: 1.5, inicios: [14, 32, 16, 29],
+      instr: 'Ajuste o círculo amarelo da direita até ele parecer do mesmo tamanho do círculo amarelo da esquerda.',
+      partes: ['o círculo da direita', 'o da esquerda'], adj: ['maior', 'menor'],
+      desenha: v => {
+        let s = circ(150, 115, 22, 'fill="var(--amber)"') + circ(430, 115, v, 'fill="var(--amber)"');
+        for (let i = 0; i < 8; i++) s += circ(150 + 38 * Math.cos(i * Math.PI / 4), 115 + 38 * Math.sin(i * Math.PI / 4), 8, 'fill="currentColor" opacity=".5"');
+        for (let i = 0; i < 6; i++) s += circ(430 + 80 * Math.cos(i * Math.PI / 3), 115 + 80 * Math.sin(i * Math.PI / 3), 34, 'fill="currentColor" opacity=".5"');
+        return s;
+      } }
+  ];
+
+  let previsao = null, qual = 0, tent = 0, desloc = 0, valores = {};
+
+  PB.predict($('il-prev'), {
+    pergunta: 'Você já sabe que as três figuras são ilusões. Sabendo disso, acha que consegue ajustar sem erro?',
+    opcoes: ['Sim: sabendo que é ilusão, dá para acertar', 'Não: mesmo sabendo, vou errar', 'Vou acertar em algumas figuras e errar em outras']
+  }).then(p => {
+    previsao = p;
+    go.disabled = false;
+    palco.textContent = 'Previsão registrada. Clique em Começar.';
+    PB.store.salvar(MOD, 'ilusoes', { rotulo: 'Três ilusões, com o seu ajuste', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+  });
+
+  function desenha() { svg.innerHTML = IL[qual].desenha(+range.value, desloc); }
+
+  function proximo() {
+    const il = IL[qual];
+    /* A posição do botão da régua não serve de pista: os limites mudam um pouco a cada ajuste. */
+    const s = (Math.random() * 2 - 1) * il.jit;
+    range.min = il.min + s; range.max = il.max + s; range.step = il.passo;
+    range.value = il.inicios[tent];
+    desloc = il.id === 'ml' ? (Math.random() < 0.5 ? -1 : 1) * (20 + Math.random() * 20) : 0;
+    instr.textContent = il.instr;
+    range.setAttribute('aria-label', 'Tamanho de ' + il.partes[0]);
+    desenha();
+    PB.announce(msg, 'Figura ' + (qual + 1) + ' de ' + IL.length + ' (' + il.nome + '), ajuste ' + (tent + 1) + ' de ' + N + '.');
+  }
+
+  go.onclick = () => {
+    qual = 0; tent = 0; valores = {};
+    go.hidden = true; palco.hidden = true; area.hidden = false;
+    $('il-res').textContent = ''; $('il-res').className = ''; $('il-why').hidden = true;
+    proximo();
+    range.focus();
   };
-  const base=document.getElementById('scene-base');
-  const cap=document.getElementById('o-cap'), fact=document.getElementById('o-fact'), src=document.getElementById('o-src');
-  const ovs=['ov-uv','ov-thermal','ov-sonar','ov-scent'].map(id=>document.getElementById(id));
-  function set(m){ const d=M[m]; base.style.filter=d.f;
-    ovs.forEach(o=>o.setAttribute('opacity','0')); d.show.forEach(id=>document.getElementById(id).setAttribute('opacity','1'));
-    cap.textContent=d.cap; fact.textContent=d.fact; src.textContent=d.src?('Fonte: '+d.src):'';
-    document.querySelectorAll('.obs').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); }
-  document.querySelectorAll('.obs').forEach(b=>b.onclick=()=>set(b.dataset.m)); set('humano');
+  range.oninput = desenha;
+  ok.onclick = () => {
+    const il = IL[qual];
+    (valores[il.id] = valores[il.id] || []).push(+range.value);
+    tent++;
+    if (tent >= N) { tent = 0; qual++; }
+    if (qual >= IL.length) return fim();
+    proximo();
+  };
+
+  const pct = x => { const r = Math.round(x); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r) + ' %'; };
+
+  function fim() {
+    area.hidden = true;
+    const erros = IL.map(il => (PB.stats.media(valores[il.id]) - il.ref) / il.ref * 100);
+    const cols = IL.map((il, i) => ({ seu: true, label: il.nome + ': seu erro médio', valor: pct(erros[i]), nota: il.partes[0] + ' em comparação com ' + il.partes[1] }));
+    cols.push({ label: 'Sem ilusão', valor: '0 %', nota: 'Nas figuras clássicas, as partes iguais parecem diferentes. Em Ponzo, a barra de cima parece maior.' });
+    colunas($('il-res'), cols);
+    const frases = IL.map((il, i) => {
+      const e = Math.round(erros[i]);
+      return e === 0 ? 'em ' + il.nome + ', deixou ' + il.partes[0] + ' praticamente do mesmo tamanho que ' + il.partes[1]
+                     : 'em ' + il.nome + ', deixou ' + il.partes[0] + ' ' + Math.abs(e) + ' % ' + il.adj[e > 0 ? 0 : 1] + ' que ' + il.partes[1];
+    });
+    revelar('il-why', 'Você previu: "' + previsao.texto + '". Na média dos seus ajustes: ' + frases.join('; ') + '. Um ajuste exato daria 0 %.');
+    PB.store.salvar(MOD, 'ilusoes', { medidas: IL.map((il, i) => ({
+      nome: il.nome + ': erro médio do ajuste (' + il.partes[0] + ' em comparação com ' + il.partes[1] + ')',
+      valor: pct(erros[i]),
+      esperado: il.id === 'ponzo' ? 'acima de 0 % (a barra de cima parece maior)' : 'diferente de 0 % (partes iguais parecem diferentes)'
+    })) });
+    PB.announce(msg, 'Ajustes concluídos. Veja o resultado abaixo.');
+    go.textContent = 'Refazer'; go.hidden = false;
+  }
 })();
+
+/* ===== PARTE 2: DEMONSTRAÇÕES (Kanizsa, Hermann, THE CAT) ===== */
+(function () {
+  /* grade de Hermann: 5 x 5 quadrados pretos */
+  let g = '';
+  for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) g += '<rect x="' + (4 + j * 55) + '" y="' + (4 + i * 55) + '" width="44" height="44" fill="#111"/>';
+  $('hermann').innerHTML = g;
+
+  const DEMOS = [
+    { id: 'dm-kanizsa', nome: 'Triângulo de Kanizsa: o que você viu no centro', esperado: 'um triângulo sem contorno desenhado',
+      opcoes: ['Um triângulo claro, por cima de três círculos', 'Só três círculos, cada um com uma fatia a menos', 'Outra coisa'],
+      revela: 'O triângulo não existe no estímulo: não há linhas que o delimitem, apenas três fatias retiradas de círculos. O cérebro aplica o princípio de fechamento e completa a informação ausente, criando contornos subjetivos (Kanizsa, 1955).' },
+    { id: 'dm-hermann', nome: 'Grade de Hermann: manchas nos cruzamentos', esperado: 'manchas cinza nos cruzamentos, menos no ponto fixado',
+      opcoes: ['Sim, nos cruzamentos para onde não estou olhando diretamente', 'Sim, em todos os cruzamentos, inclusive no que estou fixando', 'Não vejo manchas'],
+      revela: 'A maioria das pessoas percebe pontos cinza nas interseções, exceto no ponto em que o olhar está fixado. Eles não existem na imagem: são produto da inibição lateral. Neurônios vizinhos na retina inibem uns aos outros; as células nas interseções recebem mais inibição e sinalizam menos brilho (Hermann, 1870).' },
+    { id: 'dm-thecat', nome: 'THE CAT: o que você leu', esperado: 'THE CAT (o mesmo desenho lido como H e como A)',
+      opcoes: ['THE CAT', 'TAE CAT', 'THE CHT', 'TAE CHT'],
+      revela: 'A letra do meio é exatamente o mesmo desenho nas duas palavras (agora em destaque). O contexto de cada palavra decide se ele é lido como H ou como A: é o processamento descendente agindo sobre um estímulo ambíguo.' }
+  ];
+  const respostas = {};
+  DEMOS.forEach(d => {
+    const bloco = $(d.id), grupo = bloco.querySelector('.opcoes'), rev = bloco.querySelector('.revela');
+    const botoes = d.opcoes.map(op => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = op; b.setAttribute('aria-pressed', 'false');
+      b.onclick = () => {
+        botoes.forEach(x => { x.disabled = true; });
+        b.setAttribute('aria-pressed', 'true');
+        respostas[d.id] = op;
+        PB.announce(rev, d.revela);
+        if (d.id === 'dm-thecat') bloco.querySelectorAll('.glifo').forEach(x => x.classList.add('marca'));
+        if (Object.keys(respostas).length === DEMOS.length) fim();
+      };
+      grupo.appendChild(b);
+      return b;
+    });
+  });
+  function fim() {
+    PB.store.salvar(MOD, 'demonstracoes', { rotulo: 'O que você vê? (Kanizsa, Hermann, THE CAT)',
+      medidas: DEMOS.map(d => ({ nome: d.nome, valor: respostas[d.id], esperado: d.esperado })) });
+    revelar('dm-why', 'Suas respostas ficaram registradas na folha de resultados. Se você não viu o triângulo ou as manchas, anote: vale comparar com os colegas em sala.');
+  }
+})();
+
+/* ===== PARTE 3: CLASSIFICAÇÕES ===== */
+(function () {
+  const T = Q['sensacao-percepcao_gestalt'];
+  const el = classificar('cl-gestalt', T, 'gestalt', 'Que princípio organiza a figura?');
+  const P = (d, extra) => '<path d="' + d + '" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" ' + (extra || '') + '/>';
+  const ponto = (x, y, cheio) => '<circle cx="' + x + '" cy="' + y + '" r="6" ' + (cheio ? 'fill="currentColor"' : 'fill="none" stroke="currentColor" stroke-width="2"') + '/>';
+  const FIG = {
+    proximidade: () => { let s = ''; [40, 62, 130, 152, 220, 242].forEach(x => { for (let r = 0; r < 4; r++) s += ponto(x + 9, 20 + r * 23, true); }); return s; },
+    semelhanca: () => { let s = ''; for (let r = 0; r < 4; r++) for (let c = 0; c < 9; c++) s += ponto(46 + c * 26, 16 + r * 26, r % 2 === 0); return s; },
+    continuidade: () => P('M20,92 C110,92 190,18 280,18') + P('M20,18 C110,18 190,92 280,92'),
+    fechamento: () => '<circle cx="150" cy="55" r="42" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="40 15" stroke-linecap="round"/>',
+    'figura-fundo': () => { let s = ''; for (let y = 8; y < 110; y += 8) s += '<line x1="0" y1="' + y + '" x2="300" y2="' + y + '" stroke="currentColor" stroke-width="1" opacity=".35"/>'; return s + '<path d="M150,14 L172,44 L208,52 L182,78 L188,104 L150,90 L112,104 L118,78 L92,52 L128,44 Z" fill="currentColor"/>'; },
+    simetria: () => P('M55,25 H45 V85 H55') + P('M85,25 H95 V85 H85') + P('M135,25 L125,55 L135,85') + P('M165,25 L175,55 L165,85') + P('M215,25 Q201,55 215,85') + P('M245,25 Q259,55 245,85')
+  };
+  el.querySelectorAll('.questao').forEach((bloco, i) => {
+    const fig = document.createElement('div');
+    fig.className = 'q-fig';
+    fig.innerHTML = '<svg viewBox="0 0 300 110" role="img" aria-label="Figura do item ' + (i + 1) + '">' + FIG[T.itens[i].fig]() + '</svg>';
+    bloco.insertBefore(fig, bloco.querySelector('.opcoes'));
+  });
+})();
+
+classificar('cl-prof', Q['sensacao-percepcao_profundidade'], 'profundidade', 'Que pista de profundidade é?');
+
+(function () {
+  const T = Q['sensacao-percepcao_vias'];
+  const el = $('cl-vias');
+  el.classList.add('plano');
+  PB.quiz(el, T.itens.map(it => ({ id: it.id, tipo: 'aplicacao', aula: T.aula, enunciado: it.texto, opcoes: it.opcoes, correta: it.correta, devolutiva: it.devolutiva })),
+    { aoTerminar: r => PB.store.salvar(MOD, 'vias', { rotulo: 'Onde está o comprometimento?', quiz: { acertos: r.acertos, total: r.total } }) });
+})();
+
+/* ===== PARA IR ALÉM: UMWELT (cena filtrada e camadas) ===== */
+(function () {
+  const M = {
+    humano: { f: 'none', cap: 'Humano: visão tricromática', fact: 'A cena como referência: luz visível, cores normais.', src: '', show: [] },
+    abelha: { f: 'saturate(1.5) hue-rotate(205deg)', cap: 'Abelha: ultravioleta, sem vermelho', fact: 'A flor vermelha vira escura; padrões UV viram guias que apontam o néctar.', src: 'NC State (2024); J. Plant Ecology (2020)', show: ['ov-uv'] },
+    cobra: { f: 'brightness(.4) saturate(.6)', cap: 'Cobra (jararaca): calor (infravermelho)', fact: 'O rato, o sol e o pássaro de sangue quente brilham; o resto, frio, some no escuro.', src: 'Gracheva et al., Nature (2010)', show: ['ov-thermal'] },
+    morcego: { f: 'grayscale(1) brightness(.5)', cap: 'Morcego: ecolocalização', fact: 'Sem cor: o morcego emite pulsos e lê os ecos; os objetos surgem como contornos.', src: 'Scientific American', show: ['ov-sonar'] },
+    cao: { f: 'saturate(.25) brightness(.95)', cap: 'Cão: olfato dominante, visão dicromática', fact: 'Cores desbotadas e plumas de cheiro subindo das fontes (rato, flores).', src: 'Neitz, Geist e Jacobs (1989); Kokocińska-Kusiak et al. (2021)', show: ['ov-scent'] }
+  };
+  const base = $('scene-base'), cap = $('o-cap'), fact = $('o-fact'), src = $('o-src');
+  const ovs = ['ov-uv', 'ov-thermal', 'ov-sonar', 'ov-scent'].map($);
+  function set(m) {
+    const d = M[m];
+    base.style.filter = d.f;
+    ovs.forEach(o => o.setAttribute('opacity', '0'));
+    d.show.forEach(id => $(id).setAttribute('opacity', '1'));
+    cap.textContent = d.cap; fact.textContent = d.fact; src.textContent = d.src ? 'Fonte: ' + d.src : '';
+    document.querySelectorAll('.obs').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m));
+  }
+  document.querySelectorAll('.obs').forEach(b => b.onclick = () => set(b.dataset.m));
+  set('humano');
+})();
+
+/* ===== QUESTÕES DE REVISÃO ===== */
+$('quiz-lista').classList.add('plano');
+PB.quiz($('quiz-lista'), Q[MOD], { modulo: MOD });
 </script>
 </body>
 </html>
