@@ -30,6 +30,7 @@ Ferramenta web interativa para alunos de 2º período de Psicologia (UFAL) **vis
 - **Modelos 3D (Meshy → GLB → `<model-viewer>`)**: `.glb` não carrega por `file://` (bloqueio); testar via servidor/Pages. Colocar em `modelos/`.
 
 ## Fluxo de trabalho / verificação
+- **Versão nos links (cache)**: todas as páginas carregam `estilos.css`, `comum.js` e `dados/*.js` com `?v=AAAA-MM-DD`. O GitHub Pages deixa o navegador guardar cada arquivo por 10 minutos; sem trocar esse número, o aluno pode ver HTML novo com CSS ou JS antigo. **Ao alterar qualquer um desses arquivos, trocar o `?v=` em todas as páginas** (mesma data; se já foi usada no dia, acrescentar letra: `2026-11-14b`).
 - Rodar via **servidor local** (preview), não `file://`, quando for testar de verdade.
 - Preferir **verificação por DOM (`preview_eval`)** dado o ponto do rAF acima.
 - Preferências do usuário (Gabriel): explicar cada passo; **não usar travessão (—) para pausa/aposto** (usar parênteses, dois-pontos, ponto-e-vírgula); PT-BR.
