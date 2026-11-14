@@ -241,6 +241,8 @@ Pronto quando: nenhum resultado aparece antes de o estudante fazer a atividade; 
 | Cegueira à mudança (linha 142) | Manter. Registrar número de ciclos com e sem piscada e mostrar os dois. Células viram `button`. Manter o aviso de fotossensibilidade. |
 | painel "Teste sua atenção" | Os testes estão escondidos atrás de um botão. Passam a ser o conteúdo principal, em abas, como nos outros módulos. |
 
+**Situação em 14/11/2026 (decisões do docente):** módulo refeito no padrão do piloto. Base: `aulas/atencao-bases-cognitivas.pptx` (Sternberg, cap. 4); apoio: `aulas/atencao-e-consciencia.pdf`, só para escuta dicótica e gorila invisível. Rastreador e quadro das três redes removidos. Experimentos: busca visual (O e T), Stroop refeito com `PB.rt`, cegueira à mudança em duas rodadas. Quatro classificações (funções, processos e erros, detecção de sinais, gargalo) e 8 questões. Posner fora (não está nos materiais). Mapa em `aulas/LEIAME.md`.
+
 ### 5.3 `sensacao-percepcao.html`
 
 | Onde | Mudança |
