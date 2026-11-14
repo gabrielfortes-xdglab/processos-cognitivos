@@ -304,14 +304,15 @@
     const p=document.createElement('div');p.className='dim';p.textContent=(idx+1)+' de '+trials.length;
     area.appendChild(w);area.appendChild(a);area.appendChild(p);shownAt=performance.now();}
   function resp(ch,tr){data.push({rt:performance.now()-shownAt,correct:ch.name===tr.ink.name,congruent:tr.congruent});idx++;show();}
-  function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0;}
+  function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;} /* null = nenhuma tentativa válida */
+  const ND='<span style="font-size:14px">sem dados suficientes</span>';
   function finish(){const c=data.filter(d=>d.congruent&&d.correct).map(d=>d.rt),i=data.filter(d=>!d.congruent&&d.correct).map(d=>d.rt);
-    const mc=Math.round(mean(c)),mi=Math.round(mean(i)),eff=mi-mc,acc=Math.round(100*data.filter(d=>d.correct).length/data.length);
+    const has=c.length>0&&i.length>0, mc=c.length?Math.round(mean(c)):null, mi=i.length?Math.round(mean(i)):null, eff=has?mi-mc:null,acc=Math.round(100*data.filter(d=>d.correct).length/data.length);
     area.innerHTML='<p class="muted" style="text-align:center">Concluído. Veja o seu efeito Stroop.</p>';
     const again=document.createElement('button');again.textContent='Repetir';again.onclick=start;area.appendChild(again);
     const card=(l,v,hi)=>'<div class="metric'+(hi?' hi':'')+'"><div class="label">'+l+'</div><div class="value">'+v+'</div></div>';
-    results.innerHTML='<div class="metrics-grid">'+card('Cor = texto',mc+' ms')+card('Texto em conflito',mi+' ms',true)+card('Efeito Stroop',(eff<0?'\u2212':'+')+Math.abs(eff)+' ms')+card('Acertos',acc+'%')+'</div>'+
-      '<p class="dim" style="margin-top:.8rem">'+(eff>0?'O atraso nas palavras em conflito é a interferência: você não consegue desligar a leitura automática.':'Desta vez você não foi mais lento nas palavras em conflito. Com poucas tentativas isso pode acontecer; o efeito típico é positivo (atraso nas palavras em conflito).')+'</p>';}
+    results.innerHTML='<div class="metrics-grid">'+card('Cor = texto',mc===null?ND:mc+' ms')+card('Texto em conflito',mi===null?ND:mi+' ms',true)+card('Efeito Stroop',!has?ND:(eff<0?'\u2212':'+')+Math.abs(eff)+' ms')+card('Acertos',acc+'%')+'</div>'+
+      '<p class="dim" style="margin-top:.8rem">'+(!has?'Não houve acertos suficientes em uma das condições para calcular o efeito. Repita o teste.':eff>0?'O atraso nas palavras em conflito é a interferência: você não consegue desligar a leitura automática.':'Desta vez você não foi mais lento nas palavras em conflito. Com poucas tentativas isso pode acontecer; o efeito típico é positivo (atraso nas palavras em conflito).')+'</p>';}
   function start(){trials=build();idx=0;data=[];results.innerHTML='';show();}
   document.getElementById('stroopStart').onclick=start;
 })();
