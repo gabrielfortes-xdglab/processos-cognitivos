@@ -145,15 +145,20 @@
 
 /* ===== M1: ROTAÇÃO MENTAL ===== */
 (function(){
-  const ANG=[0,45,90,135,180,225,270,315], MAGS=[0,45,90,135,180];
+  const MAGS=[0,45,90,135,180], REPS=3;
+  /* Bloco balanceado: 5 ângulos x (normal, espelhada) x 3 repetições = 30 tentativas, em ordem embaralhada.
+     Para 45, 90 e 135 graus o sentido do giro (horário ou anti-horário) é sorteado. */
+  function build(){ const q=[]; MAGS.forEach(g=>[false,true].forEach(mir=>{ for(let r=0;r<REPS;r++) q.push({a:(g===0||g===180||Math.random()<0.5)?g:360-g, m:mir}); }));
+    for(let i=q.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [q[i],q[j]]=[q[j],q[i]]; } return q; }
   const glyph=document.getElementById('r-glyph'), fb=document.getElementById('r-fb'), chart=document.getElementById('r-chart'), count=document.getElementById('r-count');
   const startBtn=document.getElementById('r-start'), bN=document.getElementById('r-normal'), bM=document.getElementById('r-mirror');
-  let a=0,m=false,t0=0,trials=[],running=false,timer=0;
+  let a=0,m=false,t0=0,trials=[],running=false,timer=0,queue=build(),idx=0,done=false;
   /* O relógio só corre entre o clique em Começar e a resposta. Trocar de aba pausa e descarta a tentativa em curso. */
   function setRunning(on,label){ running=on; clearTimeout(timer); t0=0; startBtn.classList.toggle('hidden',on); if(label) startBtn.textContent=label;
     bN.disabled=bM.disabled=!on; glyph.style.visibility=on?'visible':'hidden'; if(on) next(); }
-  function next(){ if(!running)return; a=ANG[Math.floor(Math.random()*ANG.length)]; m=Math.random()<0.5; glyph.style.transform='rotate('+a+'deg) scaleX('+(m?-1:1)+')'; fb.textContent=''; t0=performance.now(); }
-  function answer(saysMirror){ if(!t0)return; const rt=performance.now()-t0; t0=0; const correct=(saysMirror===m), mag=Math.min(a,360-a); trials.push({mag,rt,correct});
+  function finish(){ done=true; setRunning(false,'Repetir'); fb.textContent='Bloco concluído. Veja o gráfico abaixo.'; }
+  function next(){ if(!running)return; if(idx>=queue.length)return finish(); a=queue[idx].a; m=queue[idx].m; glyph.style.transform='rotate('+a+'deg) scaleX('+(m?-1:1)+')'; fb.textContent=''; t0=performance.now(); }
+  function answer(saysMirror){ if(!t0)return; const rt=performance.now()-t0; t0=0; const correct=(saysMirror===m), mag=Math.min(a,360-a); trials.push({mag,rt,correct}); idx++;
     fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(m?'espelhada':'normal')+'</span>'; draw(); timer=setTimeout(next,650); }
   function draw(){ const ok=trials.filter(t=>t.correct); chart.innerHTML='';
     const means=MAGS.map(g=>{ const r=ok.filter(t=>t.mag===g).map(t=>t.rt); return r.length? r.reduce((x,y)=>x+y,0)/r.length:0; });
@@ -163,10 +168,10 @@
       const bar=document.createElement('div'); bar.style.cssText='width:100%; border-radius:6px 6px 0 0; background:var(--text-accent); height:'+(means[i]?Math.max(6,means[i]/max*100):0)+'%';
       const lab=document.createElement('div'); lab.style.cssText='font-size:11px; color:var(--text-muted); margin-top:4px'; lab.textContent=g+'°';
       col.appendChild(val); col.appendChild(bar); col.appendChild(lab); chart.appendChild(col); });
-    count.textContent='tentativas: '+trials.length+(trials.length>=8?' · repare a subida do tempo conforme o ângulo cresce.':''); }
+    count.textContent='tentativas: '+idx+' de '+queue.length+(trials.length>=8?' · repare a subida do tempo conforme o ângulo cresce.':''); }
   document.getElementById('r-normal').onclick=()=>answer(false);
   document.getElementById('r-mirror').onclick=()=>answer(true);
-  startBtn.onclick=()=>setRunning(true);
+  startBtn.onclick=()=>{ if(done){ trials=[]; queue=build(); idx=0; done=false; draw(); } setRunning(true); };
   document.addEventListener('pb:tab',e=>{ if(running&&e.detail!=='m1'){ setRunning(false,'Continuar'); fb.textContent='Pausado. Clique em Continuar.'; } });
   draw(); setRunning(false);
 })();
