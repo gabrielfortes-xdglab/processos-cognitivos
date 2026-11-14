@@ -324,7 +324,7 @@ Pronto quando: nenhum resultado aparece antes de o estudante fazer a atividade; 
 |---|---|---|---|
 | 1 | Bugs 4.1.1 a 4.1.7 | nada | Reproduzir cada bug antes; conferir por DOM depois. Um commit por bug. |
 | 2 | `comum.js`, `resultados.html`, estilos dos blocos novos, `teste.html` | 2.2, 2.3 | `teste.html` passa; nenhuma página existente quebra. |
-| 3a | Piloto em `memoria.html` (5.1) | 2.1 (aulas de memória), 2.4, 2.5 | Critério de pronto de 5.1. Parar e pedir aprovação do docente. |
+| 3a | Piloto em `memoria.html` (5.1) | 2.1 (aulas de memória), 2.4, 2.5 | Critério de pronto de 5.1. Parar e pedir aprovação do docente. **Aprovado pelo docente em 14/11/2026.** |
 | 3b | Questões de revisão dos demais módulos | 2.1, aprovação de 3a | Toda questão cita aula de origem. |
 | 4 | Replicar o padrão: `pensamento`, `atencao`, `cognicao-social`, `emocao`, `linguagem`, `sensacao-percepcao` | aprovação de 3a, 2.4 | Mesmo critério de 5.1, por módulo. |
 | 5 | Experimentos novos (Posner, busca visual, Weber, Müller-Lyer, Wason, priming, labirinto, posição serial) | 2.1 | Cada um com bloco balanceado, treino, regras de `PB.rt`. |
