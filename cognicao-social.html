@@ -130,7 +130,7 @@
       <path d="M285,132 Q300,142 315,132" stroke="var(--text-secondary)" stroke-width="3" fill="none"/>
     </svg>
     </div>
-    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0"><button id="ansL">◀ esquerda</button><button id="ansR">direita ▶</button></div>
+    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0"><button id="g-start">Começar</button><button id="ansL">◀ esquerda</button><button id="ansR">direita ▶</button></div>
     <div id="g-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
     <div id="g-res" style="margin-top:1rem"></div>
 
@@ -187,7 +187,7 @@
 <script>
 /* ===== TABS ===== */
 (function(){ const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
-  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); }); })();
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); document.dispatchEvent(new CustomEvent('pb:tab',{detail:t})); }); })();
 
 /* ===== M1: COMPARADOR DE INTENCIONALIDADE ===== */
 (function(){
@@ -226,16 +226,23 @@
 /* ===== M2a: SEGUIR O OLHAR ===== */
 (function(){
   const g=id=>document.getElementById(id), pL=g('pL'), pR=g('pR'), tgt=g('tgt'), fb=g('g-fb'), res=g('g-res');
-  let gaze='L', target='L', t0=0, ready=false, trials=[];
+  const startBtn=g('g-start');
+  let gaze='L', target='L', t0=0, ready=false, trials=[], running=false, timer=0;
+  /* O relógio só corre depois do clique em Começar. Trocar de aba pausa e descarta a tentativa em curso. */
+  function setRunning(on,label){ running=on; clearTimeout(timer); ready=false; t0=0; tgt.setAttribute('opacity','0'); startBtn.classList.toggle('hidden',on); if(label) startBtn.textContent=label;
+    g('ansL').disabled=g('ansR').disabled=!on; if(on) next(); }
   function gazeTo(d){ const off=d==='L'?-8:8; pL.setAttribute('cx',278+off); pR.setAttribute('cx',322+off); }
-  function next(){ ready=false; tgt.setAttribute('opacity','0'); fb.textContent=''; gaze=Math.random()<0.5?'L':'R'; gazeTo(gaze);
-    setTimeout(()=>{ target=Math.random()<0.5?'L':'R'; tgt.setAttribute('cx', target==='L'?55:545); tgt.setAttribute('opacity','1'); t0=performance.now(); ready=true; }, 650+Math.random()*300); }
+  function next(){ if(!running)return; ready=false; tgt.setAttribute('opacity','0'); fb.textContent=''; gaze=Math.random()<0.5?'L':'R'; gazeTo(gaze);
+    timer=setTimeout(()=>{ target=Math.random()<0.5?'L':'R'; tgt.setAttribute('cx', target==='L'?55:545); tgt.setAttribute('opacity','1'); t0=performance.now(); ready=true; }, 650+Math.random()*300); }
   function answer(side){ if(!ready)return; const rt=performance.now()-t0; ready=false; const correct=side===target, valid=gaze===target; trials.push({rt,correct,valid});
-    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(target==='L'?'esquerda':'direita')+'</span>'; draw(); setTimeout(next,600); }
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(target==='L'?'esquerda':'direita')+'</span>'; draw(); timer=setTimeout(next,600); }
   function mean(a){ return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0; }
   function draw(){ const ok=trials.filter(t=>t.correct), v=mean(ok.filter(t=>t.valid).map(t=>t.rt)), iv=mean(ok.filter(t=>!t.valid).map(t=>t.rt));
     res.innerHTML='<div style="display:flex; gap:10px"><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Olhar apontava p/ o alvo</div><div style="font-size:22px; font-weight:500; color:var(--text-success)">'+v+' ms</div></div><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Olhar p/ o lado oposto</div><div style="font-size:22px; font-weight:500; color:var(--text-warning)">'+iv+' ms</div></div></div>'+(trials.length>=8?'<p style="font-size:13px; color:var(--text-muted); margin-top:.8rem">Mesmo sem prever nada, o olhar do rosto puxa sua atenção: você responde mais rápido quando ele aponta para o alvo. É a base da atenção conjunta.</p>':'<p style="font-size:12px; color:var(--text-muted); margin-top:.6rem">faça algumas tentativas para ver a diferença</p>'); }
-  g('ansL').onclick=()=>answer('L'); g('ansR').onclick=()=>answer('R'); draw(); next();
+  g('ansL').onclick=()=>answer('L'); g('ansR').onclick=()=>answer('R');
+  startBtn.onclick=()=>setRunning(true);
+  document.addEventListener('pb:tab',e=>{ if(running&&e.detail!=='m2'){ setRunning(false,'Continuar'); fb.textContent='Pausado. Clique em Continuar.'; } });
+  draw(); setRunning(false);
 })();
 
 /* ===== M2b: SALLY-ANNE ===== */

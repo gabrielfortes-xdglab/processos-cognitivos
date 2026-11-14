@@ -175,3 +175,6 @@ a.modcard:hover{border-color:var(--accent); transform:translateY(-3px); box-shad
 }
 
 footer{margin-top:3rem; color:var(--ink-dim); font-size:.85rem; text-align:center}
+
+/* Botões desabilitados (tarefas que ainda não começaram ou estão pausadas) */
+button:disabled{opacity:.45;cursor:not-allowed}

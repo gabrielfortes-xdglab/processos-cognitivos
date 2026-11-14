@@ -68,7 +68,7 @@
       <div id="r-glyph" style="font-size:96px; font-weight:700; font-family:Georgia,serif; line-height:1">R</div>
     </div>
     <div style="display:flex; gap:8px; justify-content:center; margin:12px 0">
-      <button id="r-normal">Normal</button><button id="r-mirror">Espelhada</button>
+      <button id="r-start">Começar</button><button id="r-normal">Normal</button><button id="r-mirror">Espelhada</button>
     </div>
     <div id="r-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
     <div style="font-size:13px; color:var(--text-secondary); margin:1rem 0 6px">Tempo médio por ângulo de rotação:</div>
@@ -96,7 +96,7 @@
       <div id="t-word" style="font-size:40px; font-weight:500; font-family:Georgia,serif">—</div>
     </div>
     <div style="display:flex; gap:8px; justify-content:center; margin:12px 0">
-      <button id="t-yes">É ave</button><button id="t-no">Não é</button>
+      <button id="t-start">Começar</button><button id="t-yes">É ave</button><button id="t-no">Não é</button>
     </div>
     <div id="t-fb" style="text-align:center; font-size:14px; min-height:1.3em"></div>
     <div id="t-res" style="margin-top:1rem"></div>
@@ -140,17 +140,21 @@
 /* ===== TABS ===== */
 (function(){
   const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
-  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); });
+  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); document.dispatchEvent(new CustomEvent('pb:tab',{detail:t})); });
 })();
 
 /* ===== M1: ROTAÇÃO MENTAL ===== */
 (function(){
   const ANG=[0,45,90,135,180,225,270,315], MAGS=[0,45,90,135,180];
   const glyph=document.getElementById('r-glyph'), fb=document.getElementById('r-fb'), chart=document.getElementById('r-chart'), count=document.getElementById('r-count');
-  let a=0,m=false,t0=0,trials=[];
-  function next(){ a=ANG[Math.floor(Math.random()*ANG.length)]; m=Math.random()<0.5; glyph.style.transform='rotate('+a+'deg) scaleX('+(m?-1:1)+')'; fb.textContent=''; t0=performance.now(); }
+  const startBtn=document.getElementById('r-start'), bN=document.getElementById('r-normal'), bM=document.getElementById('r-mirror');
+  let a=0,m=false,t0=0,trials=[],running=false,timer=0;
+  /* O relógio só corre entre o clique em Começar e a resposta. Trocar de aba pausa e descarta a tentativa em curso. */
+  function setRunning(on,label){ running=on; clearTimeout(timer); t0=0; startBtn.classList.toggle('hidden',on); if(label) startBtn.textContent=label;
+    bN.disabled=bM.disabled=!on; glyph.style.visibility=on?'visible':'hidden'; if(on) next(); }
+  function next(){ if(!running)return; a=ANG[Math.floor(Math.random()*ANG.length)]; m=Math.random()<0.5; glyph.style.transform='rotate('+a+'deg) scaleX('+(m?-1:1)+')'; fb.textContent=''; t0=performance.now(); }
   function answer(saysMirror){ if(!t0)return; const rt=performance.now()-t0; t0=0; const correct=(saysMirror===m), mag=Math.min(a,360-a); trials.push({mag,rt,correct});
-    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(m?'espelhada':'normal')+'</span>'; draw(); setTimeout(next,650); }
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">certo ('+Math.round(rt)+' ms)</span>':'<span style="color:var(--text-danger)">era '+(m?'espelhada':'normal')+'</span>'; draw(); timer=setTimeout(next,650); }
   function draw(){ const ok=trials.filter(t=>t.correct); chart.innerHTML='';
     const means=MAGS.map(g=>{ const r=ok.filter(t=>t.mag===g).map(t=>t.rt); return r.length? r.reduce((x,y)=>x+y,0)/r.length:0; });
     const max=Math.max(600,...means);
@@ -162,7 +166,9 @@
     count.textContent='tentativas: '+trials.length+(trials.length>=8?' · repare a subida do tempo conforme o ângulo cresce.':''); }
   document.getElementById('r-normal').onclick=()=>answer(false);
   document.getElementById('r-mirror').onclick=()=>answer(true);
-  draw(); next();
+  startBtn.onclick=()=>setRunning(true);
+  document.addEventListener('pb:tab',e=>{ if(running&&e.detail!=='m1'){ setRunning(false,'Continuar'); fb.textContent='Pausado. Clique em Continuar.'; } });
+  draw(); setRunning(false);
 })();
 
 /* ===== M2: TIPICIDADE ===== */
@@ -172,17 +178,24 @@
     {w:'morcego',b:false},{w:'baleia',b:false},{w:'abelha',b:false},{w:'cobra',b:false} ];
   const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
   const wordEl=document.getElementById('t-word'), fb=document.getElementById('t-fb'), res=document.getElementById('t-res');
-  let order=shuf(ITEMS.slice()), idx=0, t0=0, data=[];
-  function show(){ if(idx>=order.length)return finish(); wordEl.textContent=order[idx].w; fb.textContent=''; t0=performance.now(); }
+  const startBtn=document.getElementById('t-start'), bY=document.getElementById('t-yes'), bNo=document.getElementById('t-no');
+  let order=shuf(ITEMS.slice()), idx=0, t0=0, data=[], running=false, timer=0;
+  /* O relógio só corre depois do clique em Começar. Trocar de aba pausa; a palavra em curso é reapresentada ao continuar. */
+  function setRunning(on,label){ running=on; clearTimeout(timer); t0=0; startBtn.classList.toggle('hidden',on); if(label) startBtn.textContent=label;
+    bY.disabled=bNo.disabled=!on; if(on) show(); else wordEl.textContent=''; }
+  function show(){ if(!running)return; if(idx>=order.length)return finish(); wordEl.textContent=order[idx].w; fb.textContent=''; t0=performance.now(); }
   function answer(saysBird){ if(!t0)return; const it=order[idx], rt=performance.now()-t0; t0=0; const correct=(saysBird===it.b); data.push({it,rt,correct});
-    fb.innerHTML=correct?'<span style="color:var(--text-success)">ok</span>':'<span style="color:var(--text-danger)">'+(it.b?'é ave':'não é ave')+'</span>'; idx++; setTimeout(show,450); }
+    fb.innerHTML=correct?'<span style="color:var(--text-success)">ok</span>':'<span style="color:var(--text-danger)">'+(it.b?'é ave':'não é ave')+'</span>'; idx++; timer=setTimeout(show,450); }
   function mean(a){ return a.length? Math.round(a.reduce((x,y)=>x+y,0)/a.length):0; }
-  function finish(){ wordEl.textContent='Fim'; fb.textContent='';
+  function finish(){ running=false; bY.disabled=bNo.disabled=true; wordEl.textContent='Fim'; fb.textContent='';
     const alta=data.filter(d=>d.correct&&d.it.b&&d.it.typ==='alta').map(d=>d.rt), baixa=data.filter(d=>d.correct&&d.it.b&&d.it.typ==='baixa').map(d=>d.rt);
     res.innerHTML='<div style="display:flex; gap:10px"><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Aves típicas</div><div style="font-size:22px; font-weight:500; color:var(--text-success)">'+mean(alta)+' ms</div></div><div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem"><div style="font-size:13px; color:var(--text-secondary)">Aves atípicas</div><div style="font-size:22px; font-weight:500; color:var(--text-warning)">'+mean(baixa)+' ms</div></div></div>'+
       '<p style="font-size:13px; color:var(--text-muted); margin-top:.8rem">Típicas (pardal, pombo) costumam ser confirmadas mais rápido que atípicas (pinguim, avestruz). Morcego e baleia eram as pegadinhas.</p><button id="t-again" style="margin-top:6px">Repetir</button>';
-    document.getElementById('t-again').onclick=()=>{ order=shuf(ITEMS.slice()); idx=0; data=[]; res.innerHTML=''; show(); }; }
-  document.getElementById('t-yes').onclick=()=>answer(true); document.getElementById('t-no').onclick=()=>answer(false); show();
+    document.getElementById('t-again').onclick=()=>{ order=shuf(ITEMS.slice()); idx=0; data=[]; res.innerHTML=''; setRunning(true); }; }
+  document.getElementById('t-yes').onclick=()=>answer(true); document.getElementById('t-no').onclick=()=>answer(false);
+  startBtn.onclick=()=>setRunning(true);
+  document.addEventListener('pb:tab',e=>{ if(running&&e.detail!=='m2'){ setRunning(false,'Continuar'); fb.textContent='Pausado. Clique em Continuar.'; } });
+  setRunning(false);
 })();
 
 /* ===== M3: GALERIA DE VIESES ===== */
