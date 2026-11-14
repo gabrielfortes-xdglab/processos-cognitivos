@@ -238,3 +238,28 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .quiz .opcoes button.errada::after{content:"  ✗ sua resposta"; color:#f08a89; font-size:.82rem}
 .quiz .devolutiva{font-size:.92rem; color:var(--ink-soft); margin-top:.7rem; min-height:1.2em}
 .quiz .placar{font-size:.9rem; color:var(--ink-soft)}
+
+/* ---- atividades do padrão novo: palco do estímulo, resposta e resultado ---- */
+.how{color:var(--ink-soft); font-size:.95rem; margin-top:0}
+.palco{min-height:110px; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; padding:1rem; color:var(--ink-soft); margin:.6rem 0}
+.palco.est{font-size:1.5rem; letter-spacing:.04em; color:var(--ink)}
+.palco.digitos.est{font-variant-numeric:tabular-nums; font-size:2.2rem; letter-spacing:.2em}
+.linha-resp{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:.6rem 0}
+.linha-resp.coluna{flex-direction:column; align-items:stretch}
+.linha-resp label{font-size:.9rem; color:var(--ink-soft)}
+.linha-resp input[type=text], .linha-resp textarea{flex:1; min-width:180px; font:inherit; font-size:1.05rem; padding:8px 10px; border-radius:8px; border:1px solid var(--line-strong); background:var(--bg); color:var(--ink)}
+.linha-resp textarea:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+.aviso-ativ{font-size:.92rem; color:var(--ink-soft); min-height:1.4em}
+.expected .col .nota{font-size:.8rem; color:var(--ink-dim); margin-top:4px; line-height:1.4}
+.why .v p{margin:.3rem 0}
+.why .seu-res{color:var(--ink); font-weight:500}
+.rec-linha{display:flex; align-items:center; gap:10px; padding:.35rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.rec-palavra{min-width:120px; font-size:1.05rem}
+.rec-linha button[aria-pressed="true"]{background:rgba(47,191,148,.18); border-color:var(--teal); color:var(--teal-bright)}
+.posicoes{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:6px; margin:.8rem 0}
+.posicoes .pos{background:var(--bg-soft); border:1px solid var(--line); border-radius:8px; padding:.4rem .5rem; font-size:.82rem; display:flex; flex-direction:column}
+.posicoes .pos .n{color:var(--ink-dim); font-size:.72rem}
+.posicoes .pos .m{color:var(--ink-dim)}
+.posicoes .pos.sim{border-color:#5bbf46}
+.posicoes .pos.sim .m{color:#8fdc7d}
+.quiz.plano{margin-top:0; border-top:0; padding-top:0}
