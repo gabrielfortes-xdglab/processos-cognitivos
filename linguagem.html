@@ -105,16 +105,16 @@
       <div class="ctag">Produção (formar a frase)</div>
       <div style="font-size:14px; color:var(--text-secondary); margin-bottom:8px">Monte a intenção clicando nas palavras:</div>
       <div id="bank" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px"></div>
-      <div style="font-size:13px; color:var(--text-secondary)">Intenção: <span id="intent" style="color:var(--text-primary)">—</span></div>
+      <div style="font-size:13px; color:var(--text-secondary)">Intenção: <span id="intent" style="color:var(--text-primary)">…</span></div>
       <div style="display:flex; gap:8px; margin:10px 0"><button id="speak">Falar</button><button id="clr">Limpar</button></div>
-      <div style="font-size:13px; color:var(--text-secondary)">Sai como fala: <span id="out" style="font-size:17px; color:var(--text-primary)">—</span></div>
+      <div style="font-size:13px; color:var(--text-secondary)">Sai como fala: <span id="out" style="font-size:17px; color:var(--text-primary)">…</span></div>
       <div id="outnote" style="font-size:12px; color:var(--text-muted); margin-top:4px"></div>
     </div>
 
     <div class="card2">
       <div class="ctag">Compreensão (entender a frase)</div>
       <div style="font-size:14px; color:var(--text-secondary)">Você ouve:</div>
-      <div id="heard" style="font-size:18px; margin:4px 0 10px">—</div>
+      <div id="heard" style="font-size:18px; margin:4px 0 10px">…</div>
       <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px">Quem realizou a ação (quem viu)?</div>
       <div id="copts" style="display:flex; gap:8px; flex-wrap:wrap"></div>
       <div id="cfb" style="font-size:13px; margin-top:10px; min-height:1.3em"></div>
@@ -135,9 +135,9 @@
 
     <div id="picker" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px"></div>
     <div style="display:flex; gap:10px; align-items:stretch; margin-bottom:14px">
-      <div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted)">Domínio-fonte</div><div id="fonte" style="font-size:18px; font-weight:500; margin-top:4px">—</div></div>
+      <div style="flex:1; background:var(--surface-1); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted)">Domínio-fonte</div><div id="fonte" style="font-size:18px; font-weight:500; margin-top:4px">…</div></div>
       <div style="display:flex; align-items:center; color:var(--text-accent); font-size:13px; text-align:center">estrutura →</div>
-      <div style="flex:1; background:var(--bg-accent); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-accent)">Domínio-alvo</div><div id="alvo" style="font-size:18px; font-weight:500; margin-top:4px; color:var(--text-accent)">—</div></div>
+      <div style="flex:1; background:var(--bg-accent); border-radius:10px; padding:.8rem; text-align:center"><div style="font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-accent)">Domínio-alvo</div><div id="alvo" style="font-size:18px; font-weight:500; margin-top:4px; color:var(--text-accent)">…</div></div>
     </div>
     <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px">Mapeamentos (fonte → alvo):</div>
     <div id="maps" style="display:grid; gap:6px; margin-bottom:14px"></div>
@@ -203,7 +203,7 @@
   let mode='normal', built=[]; const g=id=>document.getElementById(id);
   const bank=g('bank'), intent=g('intent'), out=g('out'), outnote=g('outnote'), prof=g('prof'), heard=g('heard'), copts=g('copts'), cfb=g('cfb');
   TILES.forEach((tl,i)=>{ const b=document.createElement('button'); b.textContent=tl.w; b.style.fontSize='14px'; b.onclick=()=>{ built.push(i); intent.textContent=built.map(j=>TILES[j].w).join(' '); }; bank.appendChild(b); });
-  g('clr').onclick=()=>{ built=[]; intent.textContent='—'; out.textContent='—'; outnote.textContent=''; };
+  g('clr').onclick=()=>{ built=[]; intent.textContent='…'; out.textContent='…'; outnote.textContent=''; };
   function speak(){ if(!built.length){ out.textContent='(monte a intenção primeiro)'; return; } const arr=built.map(j=>TILES[j]);
     if(mode==='normal'){ out.textContent=arr.map(t=>t.w).join(' '); outnote.textContent='Frase completa e bem formada.'; }
     else if(mode==='broca'){ const c=arr.filter(t=>t.t!=='f').map(t=>t.t==='cv'?t.inf:t.w); out.textContent='ãh… '+c.join(' … '); outnote.textContent='Telegráfico: caem artigos, preposições e flexões (agramatismo). Esforçado, mas a ideia central aparece.'; }

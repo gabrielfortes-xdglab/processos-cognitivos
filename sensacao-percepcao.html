@@ -180,12 +180,12 @@
       <button class="obs" data-m="cao" aria-pressed="false">Cão</button>
     </div>
     <div class="infobox">
-      <div class="cap" id="o-cap">Humano — visão tricromática</div>
+      <div class="cap" id="o-cap">Humano: visão tricromática</div>
       <div class="fact" id="o-fact">A cena como referência: luz visível, cores normais.</div>
       <div class="src" id="o-src"></div>
     </div>
 
-    <div class="sources">Fontes: abelha — NC State (2024), J. Plant Ecology (2020); cobra — Gracheva et al., Nature (2010); morcego — Scientific American; cão — Wikipedia (dog olfaction); Umwelt — von Uexküll.</div>
+    <div class="sources">Fontes: abelha: NC State (2024), J. Plant Ecology (2020); cobra: Gracheva et al., Nature (2010); morcego: Scientific American; cão: Wikipedia (dog olfaction); Umwelt: von Uexküll.</div>
   </section>
 
   <footer>Protótipo · módulo de Sensação e percepção · processos básicos da cognição</footer>
@@ -199,13 +199,13 @@
 /* ===== M1: SINAL + TRANSDUÇÃO + INTENSIDADE ===== */
 (function(){
   const SENSES={
-    visao:{meio:'Luz — onda eletromagnética', sig:'wave', freqLab:'Frequência (cor: vermelho → violeta)', perc:'cor e brilho',
+    visao:{meio:'Luz: onda eletromagnética', sig:'wave', freqLab:'Frequência (cor: vermelho → violeta)', perc:'cor e brilho',
       stages:['Onda de luz','Retina','Fotorreceptor: o retinal muda na rodopsina','Sinal elétrico','Nervo óptico']},
-    audicao:{meio:'Som — onda de pressão no ar', sig:'wave', freqLab:'Frequência (altura: grave → agudo)', perc:'altura e volume',
+    audicao:{meio:'Som: onda de pressão no ar', sig:'wave', freqLab:'Frequência (altura: grave → agudo)', perc:'altura e volume',
       stages:['Onda sonora (ar)','Tímpano vibra','Cóclea: meio aquoso (endolinfa)','Estereocílios entortam','Nervo auditivo']},
-    olfato:{meio:'Moléculas voláteis — estímulo químico', sig:'mol', perc:'tipo e intensidade do cheiro',
+    olfato:{meio:'Moléculas voláteis: estímulo químico', sig:'mol', perc:'tipo e intensidade do cheiro',
       stages:['Moléculas no ar','Muco do epitélio (meio aquoso)','Receptor olfatório encaixa a molécula','Sinal','Bulbo olfatório']},
-    tato:{meio:'Pressão e deformação — estímulo mecânico', sig:'press', perc:'força e textura',
+    tato:{meio:'Pressão e deformação: estímulo mecânico', sig:'press', perc:'força e textura',
       stages:['Pressão na pele','Mecanorreceptor deforma','Canais mecanossensíveis abrem','Sinal','Medula e córtex']}
   };
   const g=id=>document.getElementById(id);
@@ -274,11 +274,11 @@
 /* ===== M2: UMWELT (base filtrada + overlays vívidos) ===== */
 (function(){
   const M={
-    humano:{f:'none', cap:'Humano — visão tricromática', fact:'A cena como referência: luz visível, cores normais.', src:'', show:[]},
-    abelha:{f:'saturate(1.5) hue-rotate(205deg)', cap:'Abelha — ultravioleta, sem vermelho', fact:'A flor vermelha vira escura; padrões UV viram guias que apontam o néctar.', src:'NC State (2024); J. Plant Ecology (2020)', show:['ov-uv']},
-    cobra:{f:'brightness(.4) saturate(.6)', cap:'Cobra (jararaca) — calor (infravermelho)', fact:'O rato, o sol e o pássaro de sangue quente brilham; o resto, frio, some no escuro.', src:'Gracheva et al., Nature (2010)', show:['ov-thermal']},
-    morcego:{f:'grayscale(1) brightness(.5)', cap:'Morcego — ecolocalização', fact:'Sem cor: o morcego emite pulsos e lê os ecos; os objetos surgem como contornos.', src:'Scientific American', show:['ov-sonar']},
-    cao:{f:'saturate(.25) brightness(.95)', cap:'Cão — olfato dominante, visão dicromática', fact:'Cores desbotadas e plumas de cheiro subindo das fontes (rato, flores).', src:'Wikipedia (dog olfaction)', show:['ov-scent']}
+    humano:{f:'none', cap:'Humano: visão tricromática', fact:'A cena como referência: luz visível, cores normais.', src:'', show:[]},
+    abelha:{f:'saturate(1.5) hue-rotate(205deg)', cap:'Abelha: ultravioleta, sem vermelho', fact:'A flor vermelha vira escura; padrões UV viram guias que apontam o néctar.', src:'NC State (2024); J. Plant Ecology (2020)', show:['ov-uv']},
+    cobra:{f:'brightness(.4) saturate(.6)', cap:'Cobra (jararaca): calor (infravermelho)', fact:'O rato, o sol e o pássaro de sangue quente brilham; o resto, frio, some no escuro.', src:'Gracheva et al., Nature (2010)', show:['ov-thermal']},
+    morcego:{f:'grayscale(1) brightness(.5)', cap:'Morcego: ecolocalização', fact:'Sem cor: o morcego emite pulsos e lê os ecos; os objetos surgem como contornos.', src:'Scientific American', show:['ov-sonar']},
+    cao:{f:'saturate(.25) brightness(.95)', cap:'Cão: olfato dominante, visão dicromática', fact:'Cores desbotadas e plumas de cheiro subindo das fontes (rato, flores).', src:'Wikipedia (dog olfaction)', show:['ov-scent']}
   };
   const base=document.getElementById('scene-base');
   const cap=document.getElementById('o-cap'), fact=document.getElementById('o-fact'), src=document.getElementById('o-src');

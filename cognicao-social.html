@@ -208,7 +208,7 @@
     g('goal').textContent='Objetivo: '+(scn==='tronco'?'levantar o tronco.':'pegar a comida lá no alto.'); res.textContent=''; }
   function render(){ dims.innerHTML=DIMS.map(d=>{ const v=mode==='ind'?d.ind:d.sha, col=mode==='ind'?'var(--text-secondary)':'var(--text-accent)';
       return '<div style="background:var(--surface-1); border-radius:10px; padding:.7rem .9rem"><div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted)">'+d.k+'</div><div style="font-size:14px; margin-top:2px; color:'+col+'">'+v+'</div></div>'; }).join('');
-    g('cap').textContent= mode==='ind'? 'Modo individual (típico de grandes primatas): há entendimento do outro como agente, mas não se forma um "nós".' : 'Modo compartilhado (humano): surge o "nós" — objetivo comum, papéis reversíveis e comunicação para compartilhar, não só para pedir.'; reset(); }
+    g('cap').textContent= mode==='ind'? 'Modo individual (típico de grandes primatas): há entendimento do outro como agente, mas não se forma um "nós".' : 'Modo compartilhado (humano): surge o "nós": objetivo comum, papéis reversíveis e comunicação para compartilhar, não só para pedir.'; reset(); }
   function tryIt(){ if(busy)return; busy=true; res.textContent='';
     if(scn==='tronco'){
       if(mode==='sha'){ aL.setAttribute('cx',168); aR.setAttribute('cx',232); setTimeout(()=>{ tronco.setAttribute('y',70); },350); res.innerHTML='<span style="color:var(--text-success)">Conseguiram! A meta é NOSSA: cada um faz a sua parte e o tronco sobe.</span>'; }
@@ -272,7 +272,7 @@
   function desc(){ if(!st.af&&!st.co&&!st.pr) return 'Sem ressonância, sem compreensão e sem ação: indiferença.';
     const p=[]; if(st.af)p.push('você sente um eco do que o outro sente (ressonância afetiva: amígdala, ínsula)'); if(st.co)p.push('você compreende o que o outro pensa e sente, mesmo sem sentir junto (teoria da mente)'); if(st.pr)p.push('você age para ajudar');
     let r=''; if(st.af&&st.co&&!st.pr) r='Sente e entende, mas não age: empatia não garante ajuda.'; else if(st.co&&!st.af) r='Compreende sem ressoar: dá para entender o outro "de fora".'; else if(st.af&&!st.co) r='Sente junto sem necessariamente compreender (contágio afetivo).'; else if(st.pr&&!st.af&&!st.co) r='Ajuda sem ressoar nem compreender: o pró-social pode vir por outras vias.'; else if(st.af&&st.co&&st.pr) r='Sentir + compreender + agir: o caso completo.';
-    return p.join('; ')+'.'+(r?' — '+r:''); }
+    return p.join('; ')+'.'+(r?' '+r:''); }
   function render(){ out.textContent=desc(); document.querySelectorAll('.emp').forEach(b=>b.setAttribute('aria-pressed', st[b.dataset.e])); }
   document.querySelectorAll('.emp').forEach(b=>b.onclick=()=>{ st[b.dataset.e]=!st[b.dataset.e]; render(); }); render();
 })();
