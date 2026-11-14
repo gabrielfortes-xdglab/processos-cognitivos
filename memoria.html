@@ -9,15 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilos.css">
 <style>
-  :root{
-    --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
-    --text-primary:var(--ink); --text-success:#5bbf46; --text-danger:#e24b4a; --text-warning:var(--amber);
-    --surface-1:var(--bg-soft); --surface-2:var(--card); --bg-accent:rgba(43,180,138,.12);
-    --bg-warning:rgba(224,169,27,.12); --border:var(--line); --border-accent:var(--teal); --fill-secondary:rgba(43,180,138,.15);
-  }
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .gamehead{display:flex; gap:14px; font-size:13px; color:var(--ink-soft); margin-bottom:10px; flex-wrap:wrap}
   .panel{background:var(--bg-soft); border-radius:10px; padding:1rem; margin-top:.5rem}
+  .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
   .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2rem 0 .2rem}
 </style>
 </head>
@@ -45,24 +40,36 @@
   </nav>
 
   <h2>Memória</h2>
-  <p class="muted">A memória <b>codifica</b>, <b>armazena</b> e <b>recupera</b> informação em sistemas que conversam. Este módulo tem três partes.</p>
+  <p class="muted">A memória <b>codifica</b>, <b>armazena</b> e <b>recupera</b> informação em sistemas que conversam. Em cada atividade você primeiro prevê, depois faz e só então confere. No fim da página há questões de revisão.</p>
 
-  <div class="subnav">
-    <button data-tab="m1" aria-pressed="true">1 · Como funciona</button>
-    <button data-tab="m2" aria-pressed="false">2 · Memória de trabalho</button>
-    <button data-tab="m3" aria-pressed="false">3 · Longo prazo e tipos</button>
+  <div class="modhead">
+    <div class="k">Ao final deste módulo, você deve conseguir</div>
+    <ul>
+      <li>Descrever os três componentes do modelo modal (memória sensorial, de trabalho e de longo prazo) e o que diferencia cada um em duração, capacidade e forma de perda.</li>
+      <li>Explicar que evidências sustentam a separação entre memória de trabalho e longo prazo (posição serial com atraso; dupla dissociação H.M. e K.F.).</li>
+      <li>Explicar por que recuperar é reconstruir, usando profundidade de processamento, esquemas, redes associativas e especificidade da codificação.</li>
+      <li>Reconhecer as falhas e distorções da memória e o que elas implicam para o estudo, o testemunho e a clínica.</li>
+    </ul>
+    <div class="ref"><b>Aulas:</b> Memória 1 (a arquitetura mental) e Memória 2 (falhas, distorções e o que o psicólogo faz com isso). <b>Texto-base:</b> Gazzaniga, Heatherton e Halpern, <i>Ciência psicológica</i>, cap. 7.</div>
   </div>
 
-  <!-- ===================== MÓDULO 1 ===================== -->
+  <div class="subnav">
+    <button data-tab="m1">1 · Como funciona</button>
+    <button data-tab="m2">2 · Memória de trabalho</button>
+    <button data-tab="m3">3 · Longo prazo e tipos</button>
+  </div>
+
+  <!-- ===================== PARTE 1 ===================== -->
   <section id="m1">
     <div class="def">
       <div class="k">A arquitetura</div>
-      Três sistemas em sequência: memória <b>sensorial</b> (brevíssima), de <b>trabalho</b> (limitada, o "agora" consciente) e de <b>longo prazo</b> (duradoura). A <b>atenção</b> decide o que codifica; o <b>ensaio</b> decide o que consolida; o <b>tempo</b> faz decair.
+      Três armazenamentos em sequência (Atkinson e Shiffrin, 1968): memória <b>sensorial</b> (menos de 1 s, capacidade alta), de <b>curto prazo ou de trabalho</b> (20 a 30 s sem ensaio, cerca de 4 blocos) e de <b>longo prazo</b> (relativamente permanente, praticamente ilimitada). A <b>atenção</b> seleciona o que avança; o <b>ensaio</b> mantém ativo; a <b>codificação</b> leva ao longo prazo; a <b>recuperação</b> traz de volta.
     </div>
 
     <h3>Empurre a informação pelo sistema</h3>
-    <p class="muted" style="margin-top:0">Envie estímulos e mexa nas réguas: veja onde a informação se perde.</p>
-
+    <p class="how">Como fazer: responda à previsão, envie pelo menos 8 estímulos e veja onde cada um para. Isto é uma <b>ilustração do modelo</b>, com regras definidas pelo autor do site: os números não são dados seus.</p>
+    <div id="m1-prev"></div>
+    <div id="m1-msg" class="dim" role="status" aria-live="polite"></div>
     <div id="mem" style="position:relative; width:100%; height:250px; background:var(--surface-1); border-radius:12px; overflow:hidden">
       <div style="position:absolute; left:4%; top:0; width:26%; height:100%; border-right:1px dashed var(--border)"></div>
       <div style="position:absolute; left:37%; top:0; width:26%; height:100%; border-right:1px dashed var(--border)"></div>
@@ -94,100 +101,183 @@
       <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Ensaio / repetição</span><span id="l-en">médio</span></div><input type="range" id="en" min="0" max="100" value="45"></div>
       <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Tempo (velocidade do esquecimento)</span><span id="l-tp">médio</span></div><input type="range" id="tp" min="0" max="100" value="40"></div>
     </div>
+    <div id="m1-prog" class="dim" style="margin-top:.8rem" role="status" aria-live="polite"></div>
+    <div id="m1-res"></div>
+    <div class="why" id="m1-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>No modelo modal, a atenção seleciona o que passa da memória sensorial para a memória de trabalho; o restante some em menos de um segundo. O ensaio mantém a informação ativa, e a codificação a leva ao longo prazo. Com atenção baixa, pouco entra, por melhor que seja o ensaio.</p>
+      <p>Cuidado com a frase "sem atenção não há memória": parte da aprendizagem ocorre sem consciência de ter aprendido (memória implícita, na parte 3). Agora as réguas estão liberadas: mexa e compare.</p></div>
+    </div>
 
-    <div class="sources">Fontes: modelo modal de Atkinson e Shiffrin (1968); memória de trabalho de Baddeley e Hitch (1974).</div>
+    <div class="sources">Fontes: Atkinson e Shiffrin (1968); Cowan (2001) para a estimativa de capacidade; Gazzaniga et al., cap. 7, fig. 7.9. Aula Memória 1.</div>
   </section>
 
-  <!-- ===================== MÓDULO 2 ===================== -->
+  <!-- ===================== PARTE 2 ===================== -->
   <section id="m2" class="hidden">
     <div class="def">
-      <div class="k">O hub da consciência</div>
-      A memória de trabalho é o espaço de <b>capacidade limitada</b> onde percepção, objetivos e memórias recuperadas se encontram e viram experiência consciente. Cabe pouco (~4 itens, Cowan; 7±2, Miller), mas <b>agrupar</b> (chunking) amplia o que cabe.
+      <div class="k">Memória de trabalho</div>
+      A memória de trabalho mantém a informação ativa enquanto ela é ensaiada e, além de manter, <b>manipula</b> (Baddeley e Hitch, 1974). A capacidade é limitada e <b>contada em blocos</b>: agrupar faz caber mais em cada bloco.
     </div>
 
-    <p class="subtitle">O que está na sua consciência agora</p>
-    <h3 style="margin-top:.2rem">Vagas limitadas e competição</h3>
-    <div id="slots" style="display:flex; gap:8px; flex-wrap:wrap; min-height:56px; padding:10px; background:var(--surface-1); border-radius:10px"></div>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 1rem">
-      <span id="count" style="font-size:14px; color:var(--text-secondary)">0 / 4 vagas</span>
-      <span id="evict" style="font-size:13px; color:var(--text-danger); min-height:1.2em"></span>
-    </div>
-    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem">
-      <button id="add-p">+ item da percepção</button>
-      <button id="add-m">+ item da memória</button>
-      <button id="clear">limpar</button>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:1.25rem">
-      <span style="font-size:14px; color:var(--text-secondary)">Capacidade</span>
-      <input type="range" id="cap" min="2" max="7" value="4" step="1" style="flex:1">
-      <span id="cap-out" style="font-size:14px; font-weight:500; min-width:96px; text-align:right">4 (Cowan ~4)</span>
-    </div>
-    <div class="panel">
-      <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px">Chunking: agrupar o que é relacionado libera vagas</div>
-      <div id="chunks" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px"></div>
-      <div style="display:flex; align-items:center; gap:12px"><button id="chunk-toggle">Agrupar</button><span id="chunk-msg" style="font-size:14px"></span></div>
+    <p class="subtitle">Experimento 1</p>
+    <h3 style="margin-top:.2rem">As mesmas letras, de dois jeitos</h3>
+    <p class="how">Como fazer: uma sequência de 19 letras aparece por 5 segundos e some. Digite as letras de que lembrar, na ordem. Depois, as mesmas letras aparecem organizadas de outro jeito.</p>
+    <div id="bl-prev"></div>
+    <div id="bl-palco" class="palco">Responda à previsão para liberar o início.</div>
+    <div class="acoes"><button id="bl-go" class="primary" disabled>Começar</button></div>
+    <form id="bl-form" class="linha-resp" hidden>
+      <label for="bl-campo">Letras lembradas, na ordem</label>
+      <input id="bl-campo" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <button type="submit">Responder</button>
+    </form>
+    <div id="bl-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="bl-res"></div>
+    <div class="why" id="bl-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>O limite é contado em blocos: Miller (1956) estimou 7 ± 2 itens; estimativas mais recentes ficam em torno de 4 blocos (Cowan, 2001). Com as siglas, 19 letras soltas viram 5 blocos com significado. <b>Blocos dependem do longo prazo</b>: você só agrupa UFAL se já sabe o que é UFAL.</p>
+      <p>Limite desta demonstração: na segunda vez você já tinha visto as letras, então parte do ganho pode vir da repetição.</p></div>
     </div>
 
-    <p class="subtitle">Jogo</p>
-    <h3 style="margin-top:.2rem">Amplitude da memória de trabalho</h3>
-    <p class="muted" style="margin-top:0">A sequência aparece e some; reproduza no teclado. A cada acerto, fica mais longa.</p>
-    <div class="gamehead"><span>Tamanho: <b id="len" style="color:var(--text-primary)">3</b> dígitos</span><span>Recorde: <b id="rec" style="color:var(--text-success)">0</b></span></div>
-    <div id="screen" style="min-height:96px; background:var(--surface-1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; letter-spacing:6px; font-variant-numeric:tabular-nums; text-align:center; padding:1rem"><span style="font-size:15px; letter-spacing:normal; color:var(--text-muted)">Clique em "Mostrar sequência" para começar.</span></div>
-    <div style="display:flex; align-items:center; gap:12px; margin:10px 0">
-      <label style="display:flex; gap:6px; align-items:center; font-size:14px; color:var(--text-secondary); cursor:pointer"><input type="checkbox" id="group" style="width:auto"> mostrar agrupado (chunking)</label>
-      <span id="msg" style="font-size:13px; min-height:1.2em"></span>
-    </div>
-    <div id="pad" style="display:none; flex-wrap:wrap; gap:8px; max-width:260px; margin:0 auto"></div>
-    <div id="answer" style="text-align:center; font-size:24px; letter-spacing:6px; min-height:32px; margin-top:10px; font-variant-numeric:tabular-nums"></div>
-    <div style="display:flex; gap:8px; justify-content:center; margin-top:10px">
-      <button id="go">Mostrar sequência</button>
-      <button id="back" style="display:none">Apagar</button>
-      <button id="submit" style="display:none">Responder</button>
+    <p class="subtitle">Experimento 2</p>
+    <h3 style="margin-top:.2rem">Amplitude de dígitos</h3>
+    <p class="how">Como fazer: os dígitos aparecem um por vez, cerca de um por segundo. Quando terminar, digite a sequência na ordem. São duas tentativas por tamanho; acertando uma, a sequência cresce. Termina quando você erra as duas do mesmo tamanho. Depois, a tarefa se repete com os dígitos em grupos de três.</p>
+    <div id="am-prev"></div>
+    <div id="am-info" class="dim"></div>
+    <div id="am-palco" class="palco digitos">Responda à previsão para liberar o início.</div>
+    <div class="acoes"><button id="am-go" class="primary" disabled>Começar</button></div>
+    <form id="am-form" class="linha-resp" hidden>
+      <label for="am-campo">Sequência, na ordem</label>
+      <input id="am-campo" type="text" inputmode="numeric" autocomplete="off">
+      <button type="submit">Responder</button>
+    </form>
+    <div id="am-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="am-res"></div>
+    <div class="why" id="am-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>O limite é contado em blocos: Miller (1956) estimou 7 ± 2 itens; estimativas mais recentes ficam em torno de 4 blocos (Cowan, 2001). Agrupar faz caber mais dígitos em cada bloco.</p>
+      <p>O resultado vale para esta sessão: ele muda com cansaço, distração e prática, e não mede capacidade pessoal.</p></div>
     </div>
 
-    <div class="sources">Fontes: Miller (1956); Cowan (2001); memória de trabalho de Baddeley e Hitch (1974).</div>
+    <div class="sources">Fontes: Miller (1956); Cowan (2001); Chase e Simon (1973); Baddeley e Hitch (1974); Gazzaniga et al., cap. 7. Aula Memória 1.</div>
   </section>
 
-  <!-- ===================== MÓDULO 3 ===================== -->
+  <!-- ===================== PARTE 3 ===================== -->
   <section id="m3" class="hidden">
     <div class="def">
       <div class="k">Longo prazo e tipos</div>
-      O que entra depende de <b>como</b> você estuda, e o que sai pode ser <b>reconstruído</b> (às vezes com falsas memórias). A MLP guarda <b>saber que</b> (declarativa: episódica e semântica) e <b>saber como</b> (procedimental).
+      O que chega ao longo prazo depende de <b>como</b> a informação é processada, e recuperar não devolve uma cópia: <b>reconstrói</b> a partir de traços, pistas e conhecimento prévio. O longo prazo tem sistemas diferentes: memória <b>explícita</b> (episódica e semântica) e <b>implícita</b> (procedimentos, condicionamento, pré-ativação).
     </div>
 
-    <p class="subtitle">Jogo</p>
-    <h3 style="margin-top:.2rem">Estudar para a prova</h3>
-    <p class="muted" style="margin-top:0">Escolha uma estratégia, memorize a lista e marque na prova só o que apareceu. Cuidado com a isca.</p>
-    <div class="gamehead"><span>Nível <b id="lv" style="color:var(--text-primary)">1</b></span><span>Acertos: <b id="hit" style="color:var(--text-success)">0</b></span><span>Falsas memórias: <b id="fm" style="color:var(--text-danger)">0</b></span></div>
-    <p style="font-size:13px; color:var(--text-secondary); margin:0 0 6px">Escolha sua estratégia:</p>
-    <div id="strats" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px"></div>
-    <div id="phase" style="min-height:150px; background:var(--surface-1); border-radius:10px; padding:1rem; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px"><span style="color:var(--text-muted)">Escolha uma estratégia e comece a estudar.</span></div>
-    <div id="verdict" style="font-size:13px; color:var(--text-secondary); margin-top:10px; min-height:1.2em"></div>
+    <p class="subtitle">Experimento 3</p>
+    <h3 style="margin-top:.2rem">Leia a lista, sem anotar</h3>
+    <p class="how">Como fazer: 15 palavras aparecem uma por vez, uma a cada 2 segundos. Depois, para cada palavra apresentada, diga se ela estava ou não na lista.</p>
+    <div id="dr-prev"></div>
+    <div id="dr-palco" class="palco palavra">Responda à previsão para liberar o início.</div>
+    <div class="acoes"><button id="dr-go" class="primary" disabled>Começar</button></div>
+    <div id="dr-teste" hidden>
+      <p class="muted" style="margin-bottom:.4rem">Estava na lista?</p>
+      <div id="dr-itens"></div>
+      <div class="acoes"><button id="dr-conf" disabled>Conferir</button></div>
+    </div>
+    <div id="dr-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="dr-res"></div>
+    <div class="why" id="dr-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>Cada palavra lida ativa seu nó na rede e, por propagação, os nós associados (Collins e Loftus, 1975). As 15 palavras convergem em <b>sono</b>, que acumula ativação sem ter sido apresentada. No teste, essa ativação alta é interpretada como lembrança de ter visto a palavra. A mesma propagação que torna a busca rápida produz a lembrança de algo que não ocorreu: recuperar envolve reconstruir.</p></div>
+    </div>
 
-    <p class="subtitle">Atividade</p>
+    <p class="subtitle">Experimento 4</p>
+    <h3 style="margin-top:.2rem">Recordação livre de uma lista</h3>
+    <p class="how">Como fazer: 15 palavras sem relação entre si aparecem uma por vez. Logo depois, escreva todas de que lembrar, em qualquer ordem.</p>
+    <div id="ps-prev"></div>
+    <div id="ps-palco" class="palco palavra">Responda à previsão para liberar o início.</div>
+    <div class="acoes"><button id="ps-go" class="primary" disabled>Começar</button></div>
+    <form id="ps-form" class="linha-resp coluna" hidden>
+      <label for="ps-campo">Palavras lembradas (separe por espaço, vírgula ou linha)</label>
+      <textarea id="ps-campo" rows="4" autocomplete="off" spellcheck="false"></textarea>
+      <button type="submit">Responder</button>
+    </form>
+    <div id="ps-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="ps-pos" class="posicoes" hidden></div>
+    <div id="ps-res"></div>
+    <div class="why" id="ps-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p><b>Primazia:</b> as primeiras palavras recebem mais ensaio e chegam ao longo prazo. <b>Recência:</b> as últimas ainda estão na memória de trabalho no momento do teste. O teste decisivo (Glanzer e Cunitz, 1966): com 30 s de distração antes de recordar, a recência desaparece e a primazia permanece. Esse efeito seletivo sustenta a ideia de dois componentes. Limite: há recência também no longo prazo (a última aula, os presidentes mais recentes).</p>
+      <p>Com uma lista só, o seu padrão pode fugir do esperado: a curva dos estudos é a média de muitas listas e de muitas pessoas.</p></div>
+    </div>
+
+    <p class="subtitle">Classificação</p>
     <h3 style="margin-top:.2rem">Que tipo de memória é?</h3>
-    <p class="muted" style="margin-top:0">Declarativa = saber que (episódica: eventos vividos; semântica: fatos e conceitos). Procedimental = saber como (habilidades).</p>
-    <div class="panel">
-      <div id="cl-card" style="font-size:18px; text-align:center; margin:.5rem 0 1rem">…</div>
-      <div id="cl-btns" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center"></div>
-      <div id="cl-fb" style="text-align:center; font-size:14px; min-height:1.4em; margin-top:12px"></div>
-      <div id="cl-score" style="text-align:center; font-size:13px; color:var(--text-muted); margin-top:4px"></div>
-    </div>
+    <p class="how">Como fazer: classifique cada situação sem consultar o material. Explícita: episódica (eventos vividos, com tempo e lugar) ou semântica (fatos e conceitos). Implícita: procedimentos (habilidades e hábitos), condicionamento (associação entre estímulos) ou pré-ativação (exposição prévia que facilita e dá familiaridade).</p>
+    <div id="tipos"></div>
 
-    <div class="sources">Fontes: Dunlosky et al. (2013); efeito de teste, Roediger e Karpicke (2006); profundidade de processamento, Craik e Lockhart (1972); falsas memórias DRM, Roediger e McDermott (1995); tipos de memória, Tulving e Squire.</div>
+    <div class="sources">Fontes: Deese (1959); Roediger e McDermott (1995); Collins e Loftus (1975); Glanzer e Cunitz (1966); Squire (2004); Gazzaniga et al., cap. 7, fig. 7.12 e 7.18. Aulas Memória 1 e 2.</div>
   </section>
 
-  <footer>Protótipo · módulo de Memória · processos básicos da cognição</footer>
+  <!-- ===================== REVISÃO ===================== -->
+  <section aria-labelledby="rev-titulo">
+    <div id="quiz">
+      <h2 id="rev-titulo">Questões de revisão</h2>
+      <p class="muted">Responda sem consultar o material: tentar lembrar é prática de recuperação. Cada alternativa tem uma devolutiva. Não vale nota.</p>
+      <div id="quiz-lista"></div>
+    </div>
+    <p style="margin-top:1.5rem"><a href="resultados.html">Ver minha folha de resultados</a> <span class="dim">(fica só neste navegador)</span></p>
+  </section>
+
+  <footer>Módulo de Memória · processos básicos da cognição</footer>
 </div>
 
+<script src="comum.js"></script>
+<script src="dados/questoes-memoria.js"></script>
 <script>
-/* ===== TABS ===== */
-(function(){
-  const btns=document.querySelectorAll('.subnav button'), secs={m1:document.getElementById('m1'),m2:document.getElementById('m2'),m3:document.getElementById('m3')};
-  btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); });
-})();
+/* ===== Utilitários da página ===== */
+const $ = id => document.getElementById(id);
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const semAcento = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
-/* ===== M1: ARQUITETURA ===== */
+/* Escreve no palco: estímulo em corpo grande, aviso em corpo normal. */
+function pinta(el, texto, estimulo) { el.classList.toggle('est', !!estimulo); el.textContent = texto; }
+
+/* Controle de execução: cada apresentação recebe uma senha; cancelar() invalida a que está em curso. */
+function criarExec() {
+  let n = 0;
+  return { novo: () => ++n, vale: t => t === n, cancelar: () => { n++; } };
+}
+
+/* Mostra o resultado do estudante ao lado do esperado (sempre por textContent). */
+function colunas(el, cols) {
+  el.textContent = '';
+  el.className = 'expected';
+  cols.forEach(c => {
+    const d = document.createElement('div'); d.className = 'col' + (c.seu ? ' seu' : '');
+    const l = document.createElement('div'); l.className = 'label'; l.textContent = c.label;
+    const v = document.createElement('div'); v.className = 'value'; v.textContent = c.valor;
+    d.append(l, v);
+    if (c.nota) { const n = document.createElement('div'); n.className = 'nota'; n.textContent = c.nota; d.appendChild(n); }
+    el.appendChild(d);
+  });
+}
+
+/* "O que isso mostra" só aparece depois da atividade, comentando o resultado obtido. */
+function revelar(id, texto) {
+  const w = $(id);
+  w.querySelector('.seu-res').textContent = texto || '';
+  w.hidden = false;
+}
+
+/* Atividades com apresentação cronometrada registram aqui como pausar ao trocar de aba. */
+const pausaveis = [];
+document.addEventListener('pb:tab', e => pausaveis.forEach(f => f(e.detail)));
+
+PB.tabs();
+
+/* ===== PARTE 1: ARQUITETURA (ilustração do modelo) ===== */
+let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu percurso */
 (function(){
   const mem=document.getElementById('mem');
   const at=document.getElementById('at'), en=document.getElementById('en'), tp=document.getElementById('tp');
@@ -204,7 +294,7 @@
   function setVis(it){ const s=Math.min(1,it.strength); it.el.style.opacity = it.stage===2? (0.35+0.65*s).toFixed(2):'1'; it.el.style.transform='translate(-50%,-50%) scale('+(it.stage===2?(0.8+0.3*s):1).toFixed(2)+')'; }
   function updMlp(){ cMlp.textContent=items.filter(i=>i.stage===2&&!i.dead).length; }
   function dot(ty){ const el=document.createElement('div'); el.style.cssText='position:absolute;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);transition:left .5s,top .5s,opacity .4s,transform .3s;background:'+ty.c; mem.appendChild(el); const it={el,stage:0,dead:false,ty:ty,strength:0}; items.push(it); return it; }
-  function kill(it,reason){ if(it.dead)return; it.dead=true; it.el.style.opacity='0'; lost++; cLost.textContent=lost; status.textContent=reason; updMlp(); setTimeout(()=>{ it.el.remove(); items=items.filter(x=>x!==it); layout(); },420); }
+  function kill(it,reason){ if(it.dead)return; it.dead=true; if(m1Hook) m1Hook('perda',reason); it.el.style.opacity='0'; lost++; cLost.textContent=lost; status.textContent=reason; updMlp(); setTimeout(()=>{ it.el.remove(); items=items.filter(x=>x!==it); layout(); },420); }
   function wmCount(){ return items.filter(i=>i.stage===1&&!i.dead).length; }
   function emit(){
     if(items.filter(i=>!i.dead).length>9){ status.textContent='cena cheia, espere um pouco'; return; }
@@ -213,81 +303,421 @@
       if(Math.random()<+at.value/100){ if(wmCount()>=4){ kill(it,'MT cheia: não entrou'); return; }
         it.stage=1; layout(); status.textContent='entrou na MT (codificou) · '+it.ty.n;
         const consolidate=Math.random()<+en.value/100, wmLife=4200/decayMul();
-        if(consolidate){ setTimeout(()=>{ if(it.dead)return; it.stage=2; it.strength=1; setVis(it); layout(); updMlp(); status.textContent='consolidada na MLP ('+it.ty.n+')'; }, Math.min(1600,wmLife*0.6)); }
+        if(consolidate){ setTimeout(()=>{ if(it.dead)return; it.stage=2; it.strength=1; setVis(it); layout(); updMlp(); if(m1Hook) m1Hook('mlp'); status.textContent='consolidada na MLP ('+it.ty.n+')'; }, Math.min(1600,wmLife*0.6)); }
         else { setTimeout(()=>{ if(it.dead||it.stage!==1)return; kill(it,'decaiu na MT (faltou ensaio)'); }, wmLife); }
       } else { kill(it,'não atendido: nem chegou a codificar'); }
     }, sensoryDur);
   }
   function recall(){ const pool=items.filter(i=>i.stage===2&&!i.dead); if(!pool.length){ status.textContent='nada na MLP para recuperar ainda'; return; } const it=pool[Math.floor(Math.random()*pool.length)]; it.stage=1; setVis(it); layout(); status.textContent='recuperação: '+it.ty.n+' voltou à MT'; setTimeout(()=>{ if(it.dead)return; it.stage=2; it.strength=Math.min(1.8, it.strength+0.7); setVis(it); layout(); status.textContent='recuperar fortaleceu a memória (efeito de teste): mais difícil de esquecer'; },1500); }
-  setInterval(()=>{ items.filter(i=>i.stage===2&&!i.dead).forEach(it=>{ it.strength-=0.10*decayMul(); if(it.strength<=0) kill(it,'esquecida da MLP (sem uso)'); else setVis(it); }); }, 1500);
+  setInterval(()=>{ if(document.hidden) return; /* não gasta processamento com a aba em segundo plano */ items.filter(i=>i.stage===2&&!i.dead).forEach(it=>{ it.strength-=0.10*decayMul(); if(it.strength<=0) kill(it,'esquecida da MLP (sem uso)'); else setVis(it); }); }, 1500);
   document.getElementById('emit').onclick=emit; document.getElementById('recall').onclick=recall;
 })();
 
-/* ===== M2a: ESPAÇO DE TRABALHO ===== */
-(function(){
-  const PERC=['rosto','cor azul','um som','cheiro','movimento','palavra lida'], MEM=['nome de rua','uma fórmula','data de prova','rosto de amigo','senha','melodia'];
-  const slots=document.getElementById('slots'), count=document.getElementById('count'), evict=document.getElementById('evict'), cap=document.getElementById('cap'), capOut=document.getElementById('cap-out');
-  let items=[], pi=0, mi=0; const capN=()=>+cap.value;
-  function render(){ slots.innerHTML=''; items.forEach(it=>{ const c=document.createElement('div'); const col=it.src==='p'?['#185fa5','rgba(55,138,221,.18)']:['#a06a12','rgba(224,169,27,.18)']; c.textContent=it.label; c.style.cssText='font-size:13px; padding:6px 11px; border-radius:8px; background:'+col[1]+'; color:'+col[0]+'; border:1px solid '+col[0]+'55'; slots.appendChild(c); }); count.textContent=items.length+' / '+capN()+' vagas'; }
-  function add(src){ const label=src==='p'?PERC[pi++%PERC.length]:MEM[mi++%MEM.length]; items.push({src,label}); if(items.length>capN()){ const out=items.shift(); evict.textContent='"'+out.label+'" saiu da consciência (capacidade excedida)'; } else evict.textContent=''; render(); }
-  document.getElementById('add-p').onclick=()=>add('p'); document.getElementById('add-m').onclick=()=>add('m'); document.getElementById('clear').onclick=()=>{items=[];evict.textContent='';render();};
-  cap.oninput=()=>{ capOut.textContent=capN()+(capN()===4?' (Cowan ~4)':capN()===7?' (Miller 7)':''); while(items.length>capN())items.shift(); render(); renderChunks(); }; render();
-  const DIGITS='829987654', chunks=document.getElementById('chunks'), cmsg=document.getElementById('chunk-msg'); let grouped=false;
-  function chip(txt,big){ const c=document.createElement('div'); c.textContent=txt; c.style.cssText='font-size:'+(big?'15px':'14px')+'; padding:6px 10px; border-radius:8px; background:var(--bg-accent); color:var(--text-accent); font-variant-numeric:tabular-nums'; return c; }
-  function renderChunks(){ chunks.innerHTML=''; if(!grouped){ DIGITS.split('').forEach(d=>chunks.appendChild(chip(d))); cmsg.innerHTML='<span style="color:var(--text-danger)">9 itens soltos: não cabem em '+capN()+' vagas.</span>'; } else { [DIGITS.slice(0,3),DIGITS.slice(3,6),DIGITS.slice(6,9)].forEach(g=>chunks.appendChild(chip(g,true))); cmsg.innerHTML='<span style="color:var(--text-success)">3 blocos: cabem em '+capN()+' vagas.</span>'; } }
-  document.getElementById('chunk-toggle').onclick=()=>{ grouped=!grouped; document.getElementById('chunk-toggle').textContent=grouped?'Desagrupar':'Agrupar'; renderChunks(); }; renderChunks();
+(function () {
+  const N = 8, cont = { antes: 0, mt: 0, mlp: 0 };
+  const at = $('at'), en = $('en'), emit = $('emit'), recall = $('recall');
+  let previsao = null, concluido = false;
+  emit.disabled = recall.disabled = true;
+
+  PB.predict($('m1-prev'), {
+    pergunta: 'Com atenção baixa e ensaio alto, onde a maior parte da informação se perde?',
+    opcoes: ['Antes de entrar na memória de trabalho', 'Dentro da memória de trabalho', 'Depois de chegar ao longo prazo']
+  }).then(p => {
+    previsao = p;
+    PB.store.salvar('memoria', 'arquitetura', { rotulo: 'Modelo modal (ilustração)', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+    at.value = 15; en.value = 85;
+    at.dispatchEvent(new Event('input')); en.dispatchEvent(new Event('input'));
+    at.disabled = en.disabled = true;
+    emit.disabled = recall.disabled = false;
+    $('m1-msg').textContent = 'As réguas de atenção e de ensaio foram ajustadas para atenção baixa e ensaio alto, e ficam travadas até o oitavo estímulo. Clique em "Enviar estímulo" pelo menos ' + N + ' vezes.';
+  });
+
+  m1Hook = (tipo, motivo) => {
+    if (!previsao) return;
+    if (tipo === 'mlp') cont.mlp++;
+    else if (/^esquecida da MLP/.test(motivo)) return; /* já tinha sido contada ao chegar ao longo prazo */
+    else if (/^decaiu na MT/.test(motivo)) cont.mt++;
+    else cont.antes++;
+    const total = cont.antes + cont.mt + cont.mlp;
+    $('m1-prog').textContent = 'Estímulos que terminaram o percurso: ' + total + (total < N ? ' de ' + N : '');
+    if (total >= N) concluir(total);
+  };
+
+  function concluir(total) {
+    colunas($('m1-res'), [
+      { label: 'Perdidos antes de entrar na memória de trabalho', valor: cont.antes + ' de ' + total },
+      { label: 'Perdidos dentro da memória de trabalho', valor: cont.mt + ' de ' + total },
+      { label: 'Chegaram ao longo prazo', valor: cont.mlp + ' de ' + total }
+    ]);
+    const maior = cont.antes >= cont.mt && cont.antes >= cont.mlp ? 'antes de entrar na memória de trabalho'
+      : cont.mt >= cont.mlp ? 'dentro da memória de trabalho' : 'depois de chegar ao longo prazo (a maioria chegou lá)';
+    revelar('m1-why', 'Sua previsão: "' + previsao.texto + '". Nesta rodada do simulador, a maior parte ficou ' + maior + '.');
+    PB.store.salvar('memoria', 'arquitetura', { medidas: [
+      { nome: 'Perdidos antes de entrar na memória de trabalho', valor: cont.antes + ' de ' + total, esperado: 'no modelo, com atenção baixa, é onde a maior parte se perde' },
+      { nome: 'Perdidos dentro da memória de trabalho', valor: cont.mt + ' de ' + total, esperado: 'poucos, com ensaio alto' },
+      { nome: 'Chegaram ao longo prazo', valor: cont.mlp + ' de ' + total, esperado: 'poucos, porque pouco entra' }
+    ] });
+    if (!concluido) {
+      concluido = true;
+      at.disabled = en.disabled = false;
+      $('m1-msg').textContent = 'Réguas liberadas. Mexa na atenção e no ensaio e continue enviando estímulos para comparar.';
+    }
+  }
 })();
 
-/* ===== M2b: SPAN ===== */
-(function(){
-  const g=id=>document.getElementById(id); const screen=g('screen'), pad=g('pad'), ans=g('answer'), msg=g('msg'), group=g('group');
-  let len=3, rec=0, seq=[], typed=[], showing=false;
-  function fmt(arr){ if(group.checked){ let s=''; for(let i=0;i<arr.length;i+=3) s+=arr.slice(i,i+3).join('')+'  '; return s.trim(); } return arr.join(''); }
-  function show(){ if(showing)return; showing=true; msg.textContent=''; typed=[]; ans.textContent=''; pad.style.display='none'; g('back').style.display='none'; g('submit').style.display='none'; g('go').style.display='none';
-    seq=Array.from({length:len},()=>Math.floor(Math.random()*10)); screen.textContent=fmt(seq);
-    setTimeout(()=>{ screen.innerHTML='<span style="font-size:15px;letter-spacing:normal;color:var(--text-muted)">Reproduza a sequência na ordem.</span>'; showing=false; openPad(); }, Math.max(1400,len*650)); }
-  function openPad(){ pad.style.display='flex'; pad.innerHTML=''; for(let d=0;d<10;d++){ const b=document.createElement('button'); b.textContent=d; b.style.cssText='width:46px;height:46px;font-size:18px'; b.onclick=()=>{ if(typed.length<len){ typed.push(d); ans.textContent=typed.join(''); } }; pad.appendChild(b); } g('back').style.display=''; g('submit').style.display=''; }
-  g('go').onclick=show; g('back').onclick=()=>{ typed.pop(); ans.textContent=typed.join(''); };
-  g('submit').onclick=()=>{ const ok=typed.length===seq.length&&typed.every((d,i)=>d===seq[i]); pad.style.display='none'; g('back').style.display='none'; g('submit').style.display='none'; g('go').style.display='';
-    if(ok){ rec=Math.max(rec,len); g('rec').textContent=rec; len++; g('len').textContent=len; msg.innerHTML='<span style="color:var(--text-success)">Acertou! Sobe para '+len+' dígitos.</span>'+(len>5&&!group.checked?' Dica: além de ~4, agrupar ajuda muito.':''); g('go').textContent='Próxima sequência'; }
-    else { msg.innerHTML='<span style="color:var(--text-danger)">Era '+fmt(seq)+'. Recorde: '+rec+' dígitos.</span> Sem agrupar, passamos de ~4 com dificuldade.'; len=3; g('len').textContent=len; g('go').textContent='Tentar de novo'; } };
+/* ===== PARTE 2, EXPERIMENTO 1: LETRAS SOLTAS E EM BLOCOS ===== */
+(function () {
+  const SOLTAS = 'UFALUSPCNPQPIBICTCC', BLOCOS = ['UFAL', 'USP', 'CNPq', 'PIBIC', 'TCC'], TEMPO = 5000;
+  const palco = $('bl-palco'), btn = $('bl-go'), form = $('bl-form'), campo = $('bl-campo'), msg = $('bl-msg');
+  const ex = criarExec();
+  let fase = 0, acertos = [null, null], previsao = null, mostrando = false;
+
+  /* Maior subsequência comum: conta letras lembradas na ordem certa, sem punir um deslocamento. */
+  function lcs(a, b) {
+    const t = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+      t[i][j] = a[i - 1] === b[j - 1] ? t[i - 1][j - 1] + 1 : Math.max(t[i - 1][j], t[i][j - 1]);
+    return t[a.length][b.length];
+  }
+
+  PB.predict($('bl-prev'), {
+    pergunta: 'As mesmas 19 letras serão mostradas de dois jeitos, 5 segundos cada. No segundo jeito, você acha que vai lembrar:',
+    opcoes: ['Menos letras', 'A mesma quantidade', 'Um pouco mais', 'Quase todas']
+  }).then(p => {
+    previsao = p;
+    PB.store.salvar('memoria', 'blocos', { rotulo: 'As mesmas letras, de dois jeitos', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+    btn.disabled = false; pinta(palco, 'Clique em Começar.');
+  });
+
+  async function apresentar() {
+    const t = ex.novo(); mostrando = true;
+    btn.hidden = true; form.hidden = true; msg.textContent = '';
+    pinta(palco, 'Prepare-se...');
+    await espera(1200); if (!ex.vale(t)) return;
+    pinta(palco, fase === 0 ? SOLTAS.split('').join(' ') : BLOCOS.join('   '), true);
+    await espera(TEMPO); if (!ex.vale(t)) return;
+    mostrando = false;
+    pinta(palco, 'Digite as letras de que lembrar, na ordem.');
+    form.hidden = false; campo.value = ''; campo.focus();
+  }
+  btn.onclick = apresentar;
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    acertos[fase] = lcs(campo.value.toUpperCase().replace(/[^A-Z]/g, ''), SOLTAS);
+    form.hidden = true;
+    if (fase === 0) {
+      fase = 1;
+      pinta(palco, 'Primeira versão respondida. Agora as mesmas letras, organizadas de outro jeito.');
+      btn.textContent = 'Ver a segunda versão'; btn.hidden = false; btn.focus();
+      return;
+    }
+    pinta(palco, 'Experimento concluído.');
+    colunas($('bl-res'), [
+      { label: 'Seu resultado: letras soltas', valor: acertos[0] + ' de 19', seu: true },
+      { label: 'Seu resultado: em blocos', valor: acertos[1] + ' de 19', seu: true },
+      { label: 'Esperado', valor: 'mais letras em blocos', nota: '19 itens soltos passam do limite; 5 blocos com significado ficam perto dele.' }
+    ]);
+    const dif = acertos[1] - acertos[0];
+    revelar('bl-why', 'Sua previsão: "' + previsao.texto + '". Você recuperou ' + acertos[0] + ' letras soltas e ' + acertos[1] + ' em blocos (' +
+      (dif > 0 ? dif + ' a mais' : dif < 0 ? (-dif) + ' a menos, o contrário do padrão mais comum' : 'a mesma quantidade') + ').');
+    PB.announce(msg, 'Resultado: ' + acertos[0] + ' de 19 letras soltas e ' + acertos[1] + ' de 19 em blocos.');
+    PB.store.salvar('memoria', 'blocos', { medidas: [
+      { nome: 'Letras soltas lembradas', valor: acertos[0] + ' de 19', esperado: 'bem menos que 19' },
+      { nome: 'Letras em blocos lembradas', valor: acertos[1] + ' de 19', esperado: 'mais que soltas (5 blocos com significado)' }
+    ] });
+    fase = 0; btn.textContent = 'Refazer'; btn.hidden = false;
+  };
+
+  pausaveis.push(aba => {
+    if (aba === 'm2' || !mostrando) return;
+    ex.cancelar(); mostrando = false;
+    pinta(palco, 'Pausado porque você trocou de aba. A apresentação recomeça do início.');
+    btn.hidden = false;
+  });
 })();
 
-/* ===== M3a: JOGO DE ESTRATÉGIAS ===== */
-(function(){
-  const CATS=[ {tema:'sono', rel:['cama','travesseiro','noite','cobertor','descanso','sonho','cochilo','bocejo'], isca:'dormir'}, {tema:'frio', rel:['gelo','neve','inverno','geada','tremer','casaco','vento','nevasca'], isca:'frio'}, {tema:'doce', rel:['açúcar','mel','bolo','chocolate','bala','torta','sorvete','goiabada'], isca:'doce'} ];
-  const IRR=['lápis','janela','rua','tijolo','ônibus','cadeira','telhado','garfo','meia','nuvem'];
-  const STRATS=[ {id:'grifar',nome:'Grifar e reler',v:'Grifar e reler dá sensação de domínio (ilusão de competência), mas pouco recall real.'}, {id:'autoteste',nome:'Autoteste',v:'Prática de recuperação (efeito de teste): das estratégias mais eficazes.'}, {id:'espacar',nome:'Espaçar no tempo',v:'Prática distribuída (espaçamento): das mais eficazes.'}, {id:'associar',nome:'Associar ao significado',v:'Elaboração ajuda o recall, mas associar demais pode plantar falsas memórias relacionadas.'}, {id:'humor',nome:'Ficar de bom humor',v:'Humor em si quase não muda; o que conta é a emoção/relevância (arousal), não "estar feliz".'} ];
-  const g=id=>document.getElementById(id); const phase=g('phase'), strdiv=g('strats'), verdict=g('verdict');
-  let level=1, hits=0, fm=0, strat=null, studied=[], pool=[], cat, sel, tick=0;
-  /* Trava os botões de estratégia durante estudo e prova: um segundo clique criava outro intervalo e reiniciava a prova no meio. */
-  const lock=on=>[].forEach.call(strdiv.children,c=>c.disabled=on); const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
-  STRATS.forEach(s=>{ const b=document.createElement('button'); b.textContent=s.nome; b.style.fontSize='13px'; b.onclick=()=>{ strat=s; [].forEach.call(strdiv.children,c=>c.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); verdict.textContent=''; lock(true); study(); }; strdiv.appendChild(b); });
-  function study(){ clearInterval(tick); cat=CATS[(level-1)%CATS.length]; const n=Math.min(3+level,cat.rel.length-2); studied=shuf(cat.rel).slice(0,n); let secs=Math.ceil(n*0.8)+2; const assoc=strat.id==='associar';
-    phase.innerHTML='<div style="font-size:13px;color:var(--text-secondary)">Estude · <span id="cd">'+secs+'</span>s</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px">'+studied.map(w=>'<span style="font-size:16px;padding:6px 12px;border-radius:8px;background:var(--bg-accent);color:var(--text-accent)">'+w+(assoc?' <span style=\"font-size:11px;opacity:.7\">(pense no significado)</span>':'')+'</span>').join('')+'</div>'+(strat.id==='autoteste'?'<div style="font-size:12px;color:var(--text-muted);margin-top:8px">Tente repetir de cabeça antes do tempo acabar.</div>':'');
-    const cd=g('cd'); tick=setInterval(()=>{ secs--; if(cd)cd.textContent=secs; if(secs<=0){clearInterval(tick); tick=0; test();} },1000); }
-  function test(){ const remaining=cat.rel.filter(w=>!studied.includes(w)); const relatedNotStudied=shuf(remaining).slice(0,2); const irr=shuf(IRR).slice(0,3); pool=shuf(studied.concat([cat.isca]).concat(relatedNotStudied).concat(irr)); sel=new Set();
-    phase.innerHTML='<div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Prova: marque só as palavras que apareceram.</div><div id="grid" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div><button id="resp" style="margin-top:12px">Responder</button>';
-    const grid=g('grid'); pool.forEach(w=>{ const c=document.createElement('div'); c.textContent=w; c.style.cssText='font-size:15px;padding:7px 13px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);cursor:pointer'; c.onclick=()=>{ if(sel.has(w)){sel.delete(w);c.style.borderColor='var(--border)';c.style.background='var(--surface-2)';} else {sel.add(w);c.style.borderColor='var(--text-accent)';c.style.background='var(--bg-accent)';} }; grid.appendChild(c); }); g('resp').onclick=result; }
-  function result(){ const h=studied.filter(w=>sel.has(w)).length; const iscaHit=sel.has(cat.isca); const relFalse=pool.filter(w=>sel.has(w)&&!studied.includes(w)&&w!==cat.isca&&cat.rel.includes(w)).length+(iscaHit?1:0); const irrFalse=pool.filter(w=>sel.has(w)&&IRR.includes(w)).length;
-    hits+=h; fm+=relFalse; g('hit').textContent=hits; g('fm').textContent=fm;
-    phase.innerHTML='<div style="font-size:16px;font-weight:500">Acertou '+h+' de '+studied.length+'</div><div style="font-size:14px;color:var(--text-secondary);margin-top:6px">Falsas memórias relacionadas: '+relFalse+(iscaHit?' (você "lembrou" de <b>'+cat.isca+'</b>, que não apareceu)':'')+'</div><div style="font-size:13px;color:var(--text-muted);margin-top:2px">Irrelevantes marcados: '+irrFalse+'</div><button id="next" style="margin-top:12px">Próximo nível</button>';
-    verdict.textContent='Veredito da estratégia: '+strat.v+(iscaHit?' A isca era do mesmo campo semântico (falsa memória associativa, DRM).':'');
-    g('next').onclick=()=>{ level++; g('lv').textContent=level; strat=null; lock(false); [].forEach.call(strdiv.children,c=>c.setAttribute('aria-pressed','false')); phase.innerHTML='<span style="color:var(--text-muted)">Escolha uma estratégia para o próximo nível (mais palavras).</span>'; }; }
+/* ===== PARTE 2, EXPERIMENTO 2: AMPLITUDE DE DÍGITOS ===== */
+(function () {
+  const INICIO = 3, MAXIMO = 12;
+  const palco = $('am-palco'), btn = $('am-go'), form = $('am-form'), campo = $('am-campo'), msg = $('am-msg'), info = $('am-info');
+  const ex = criarExec();
+  const NOME = { solto: 'Sem agrupar', grupo: 'Com agrupamento' };
+  let cond = 'solto', len = INICIO, tent = 0, seq = [], mostrando = false, previsao = null;
+  const span = { solto: null, grupo: null }; /* null = ainda não feito; 0 = não acertou o menor tamanho */
+
+  PB.predict($('am-prev'), {
+    pergunta: 'Quantos dígitos em sequência você acha que consegue repetir, sem agrupar?',
+    opcoes: ['Até 4', '5 ou 6', '7 ou 8', '9 ou mais']
+  }).then(p => {
+    previsao = p;
+    PB.store.salvar('memoria', 'amplitude', { rotulo: 'Amplitude de dígitos', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+    btn.disabled = false; pinta(palco, 'Clique em Começar.');
+  });
+
+  function sortear(n) {
+    const s = [];
+    while (s.length < n) { const d = Math.floor(Math.random() * 10); if (d !== s[s.length - 1]) s.push(d); }
+    return s;
+  }
+  const txt = n => n === 0 ? 'menos de ' + INICIO + ' dígitos' : n + ' dígitos';
+
+  /* Um dígito por segundo (800 ms visível, 200 ms de intervalo). Agrupado: três dígitos juntos por 3 s, mesmo ritmo. */
+  async function apresentar() {
+    const t = ex.novo(); mostrando = true;
+    btn.hidden = true; form.hidden = true; msg.textContent = '';
+    seq = sortear(len);
+    info.textContent = NOME[cond] + ' · ' + len + ' dígitos · tentativa ' + (tent + 1) + ' de 2';
+    pinta(palco, 'Atenção...');
+    await espera(1000); if (!ex.vale(t)) return;
+    const partes = [];
+    if (cond === 'solto') seq.forEach(d => partes.push([d]));
+    else for (let i = 0; i < seq.length; i += 3) partes.push(seq.slice(i, i + 3));
+    for (const p of partes) {
+      pinta(palco, p.join(''), true);
+      await espera(p.length * 1000 - 200); if (!ex.vale(t)) return;
+      pinta(palco, '', true);
+      await espera(200); if (!ex.vale(t)) return;
+    }
+    mostrando = false;
+    pinta(palco, 'Digite a sequência na ordem.');
+    form.hidden = false; campo.value = ''; campo.focus();
+  }
+  btn.onclick = apresentar;
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const ok = campo.value.replace(/\D/g, '') === seq.join('');
+    form.hidden = true; tent++;
+    let fim = false;
+    if (ok) {
+      span[cond] = len; len++; tent = 0;
+      if (len > MAXIMO) fim = true;
+      PB.announce(msg, 'Correto. ' + (fim ? '' : 'A próxima sequência tem ' + len + ' dígitos.'));
+    } else {
+      if (tent >= 2) fim = true;
+      PB.announce(msg, 'Incorreto: a sequência era ' + seq.join(' ') + '. ' + (fim ? '' : 'Mais uma tentativa com ' + len + ' dígitos.'));
+    }
+    if (!fim) { pinta(palco, '', true); btn.textContent = 'Próxima sequência'; btn.hidden = false; btn.focus(); return; }
+    if (span[cond] === null) span[cond] = 0;
+    encerrar();
+  };
+
+  function encerrar() {
+    info.textContent = '';
+    const feitoGrupo = span.grupo !== null;
+    const cols = [{ label: 'Sua amplitude sem agrupar', valor: txt(span.solto), seu: true }];
+    if (feitoGrupo) cols.push({ label: 'Sua amplitude com agrupamento', valor: txt(span.grupo), seu: true });
+    cols.push({ label: 'Esperado', valor: '7 ± 2 itens', nota: 'Miller (1956). Em blocos, cerca de 4 (Cowan, 2001). Com agrupamento: igual ou maior.' });
+    colunas($('am-res'), cols);
+    let frase = 'Sua previsão: "' + previsao.texto + '". Sem agrupar, você chegou a ' + txt(span.solto) + ' nesta sessão.';
+    if (feitoGrupo) frase += ' Com agrupamento, a ' + txt(span.grupo) + (span.grupo > span.solto ? ': com os dígitos em blocos de três, coube mais.' : span.grupo === span.solto ? ': o mesmo tamanho desta vez.' : ': menos desta vez, o que acontece (cansaço, distração).');
+    else frase += ' Falta a segunda parte, com agrupamento.';
+    revelar('am-why', frase);
+    PB.store.salvar('memoria', 'amplitude', { medidas: [
+      { nome: 'Amplitude sem agrupar', valor: txt(span.solto), esperado: '7 ± 2 itens (Miller, 1956)' },
+      { nome: 'Amplitude com agrupamento', valor: feitoGrupo ? txt(span.grupo) : null, esperado: 'igual ou maior que sem agrupar' }
+    ] });
+    if (!feitoGrupo) {
+      cond = 'grupo'; len = INICIO; tent = 0;
+      pinta(palco, 'Primeira parte concluída. Agora os dígitos aparecem em grupos de três.');
+      btn.textContent = 'Fazer com agrupamento';
+    } else {
+      cond = 'solto'; len = INICIO; tent = 0; span.solto = null; span.grupo = null;
+      pinta(palco, 'Experimento concluído.');
+      btn.textContent = 'Refazer do início';
+    }
+    btn.hidden = false;
+  }
+
+  pausaveis.push(aba => {
+    if (aba === 'm2' || !mostrando) return;
+    ex.cancelar(); mostrando = false;
+    pinta(palco, 'Pausado porque você trocou de aba. Esta sequência será trocada por outra do mesmo tamanho.');
+    btn.textContent = 'Continuar'; btn.hidden = false;
+  });
 })();
 
-/* ===== M3b: CLASSIFICAÇÃO ===== */
-(function(){
-  const ITEMS=[ {t:'Andar de bicicleta',c:'proc'}, {t:'Amarrar o cadarço',c:'proc'}, {t:'Digitar sem olhar o teclado',c:'proc'}, {t:'Dirigir um carro',c:'proc'}, {t:'Seu último aniversário',c:'epi'}, {t:'O que você almoçou ontem',c:'epi'}, {t:'O dia da sua formatura',c:'epi'}, {t:'A capital da França',c:'sem'}, {t:'Quanto é 7 × 8',c:'sem'}, {t:'O que significa fotossíntese',c:'sem'} ];
-  const NAMES={proc:'Procedimental',epi:'Episódica',sem:'Semântica'};
-  const card=document.getElementById('cl-card'), btns=document.getElementById('cl-btns'), fb=document.getElementById('cl-fb'), score=document.getElementById('cl-score');
-  const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
-  let order=shuf(ITEMS.slice()), idx=0, correct=0, answered=false;
-  ['proc','epi','sem'].forEach(k=>{ const b=document.createElement('button'); b.textContent=NAMES[k]; b.onclick=()=>answer(k); btns.appendChild(b); });
-  function render(){ if(idx>=order.length){ card.textContent='Fim!'; btns.style.display='none'; fb.textContent=''; score.textContent='Você acertou '+correct+' de '+order.length+'. '; const r=document.createElement('button'); r.textContent='Recomeçar'; r.onclick=()=>{ order=shuf(ITEMS.slice()); idx=0; correct=0; btns.style.display='flex'; render(); }; score.appendChild(r); return; } answered=false; card.textContent='"'+order[idx].t+'"'; fb.textContent=''; score.textContent=(idx+1)+' de '+order.length; }
-  function answer(k){ if(answered)return; answered=true; const right=order[idx].c; if(k===right){ correct++; fb.innerHTML='<span style="color:var(--text-success)">Certo! É '+NAMES[right]+(right!=='proc'?' (declarativa)':'')+'.</span>'; } else { fb.innerHTML='<span style="color:var(--text-danger)">Era '+NAMES[right]+(right!=='proc'?' (declarativa)':'')+'.</span>'; } setTimeout(()=>{ idx++; render(); },1100); }
-  render();
+/* ===== PARTE 3, EXPERIMENTO 3: LISTA DE PALAVRAS (procedimento DRM, como na aula) ===== */
+(function () {
+  const LISTA = ['fronha', 'cama', 'descanso', 'vigília', 'sesta', 'esteira', 'dormir', 'macio', 'cobertor', 'noites', 'sonolento', 'travesseiro', 'descansar', 'ronco', 'sofá'];
+  /* tipo: 'lista' = estava; 'isca' = isca crítica; 'rel' = relacionada não apresentada; 'sem' = sem relação */
+  const TESTE = [{ w: 'cama', tipo: 'lista' }, { w: 'sono', tipo: 'isca' }, { w: 'mesa', tipo: 'sem' }, { w: 'travesseiro', tipo: 'lista' }, { w: 'sonho', tipo: 'rel' }, { w: 'ronco', tipo: 'lista' }];
+  const palco = $('dr-palco'), btn = $('dr-go'), teste = $('dr-teste'), itens = $('dr-itens'), conf = $('dr-conf'), msg = $('dr-msg');
+  const ex = criarExec();
+  let mostrando = false, previsao = null, resp = {};
+
+  PB.predict($('dr-prev'), {
+    pergunta: 'Depois de ler 15 palavras uma vez, como você acha que vai se sair ao dizer quais estavam na lista?',
+    opcoes: ['Sem nenhum erro', 'Vou esquecer palavras que estavam', 'Vou "lembrar" de palavra que não estava']
+  }).then(p => {
+    previsao = p;
+    PB.store.salvar('memoria', 'lista-palavras', { rotulo: 'Lista de palavras (reconhecimento)', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+    btn.disabled = false; pinta(palco, 'Clique em Começar.');
+  });
+
+  async function apresentar() {
+    const t = ex.novo(); mostrando = true;
+    btn.hidden = true; teste.hidden = true; msg.textContent = '';
+    $('dr-res').textContent = ''; $('dr-why').hidden = true;
+    pinta(palco, 'Atenção...');
+    await espera(1200); if (!ex.vale(t)) return;
+    for (const w of LISTA) {
+      pinta(palco, w, true);
+      await espera(1700); if (!ex.vale(t)) return;
+      pinta(palco, '', true);
+      await espera(300); if (!ex.vale(t)) return;
+    }
+    mostrando = false;
+    pinta(palco, 'Fim da lista.');
+    montarTeste();
+  }
+  btn.onclick = apresentar;
+
+  function montarTeste() {
+    resp = {}; itens.textContent = ''; conf.disabled = true;
+    TESTE.forEach(it => {
+      const linha = document.createElement('div'); linha.className = 'rec-linha';
+      const rot = document.createElement('span'); rot.className = 'rec-palavra'; rot.textContent = it.w; rot.id = 'dr-' + it.w;
+      const grupo = document.createElement('span'); grupo.setAttribute('role', 'group'); grupo.setAttribute('aria-labelledby', rot.id);
+      const bs = ['Estava', 'Não estava'].map((txt, k) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = txt; b.setAttribute('aria-pressed', 'false');
+        b.onclick = () => {
+          resp[it.w] = k === 0;
+          bs.forEach((x, j) => x.setAttribute('aria-pressed', j === k ? 'true' : 'false'));
+          conf.disabled = Object.keys(resp).length < TESTE.length;
+        };
+        grupo.appendChild(b); return b;
+      });
+      linha.append(rot, grupo); itens.appendChild(linha);
+    });
+    teste.hidden = false;
+    itens.querySelector('button').focus();
+  }
+
+  conf.onclick = () => {
+    const daLista = TESTE.filter(i => i.tipo === 'lista'), outras = TESTE.filter(i => i.tipo === 'rel' || i.tipo === 'sem');
+    const hits = daLista.filter(i => resp[i.w]).length, isca = resp.sono === true, falsas = outras.filter(i => resp[i.w]).length;
+    teste.hidden = true; pinta(palco, 'Experimento concluído.');
+    colunas($('dr-res'), [
+      { label: 'Palavras da lista que você reconheceu', valor: hits + ' de ' + daLista.length, seu: true },
+      { label: 'A palavra "sono" (não apresentada)', valor: isca ? 'você marcou que estava' : 'você marcou que não estava', seu: true },
+      { label: 'Outras não apresentadas (mesa, sonho)', valor: falsas + ' de ' + outras.length + ' marcadas', seu: true },
+      { label: 'Esperado', valor: '"sono" é lembrada', nota: 'Em Roediger e McDermott (1995), a isca crítica foi recordada com frequência comparável à das palavras estudadas e reconhecida com alta confiança.' }
+    ]);
+    revelar('dr-why', 'Sua previsão: "' + previsao.texto + '". ' + (isca
+      ? 'Você marcou "sono", que não foi apresentada. É o resultado mais comum nesta tarefa.'
+      : 'Desta vez você não marcou "sono", que não foi apresentada. Muita gente marca, e com confiança.'));
+    PB.announce(msg, 'Resultado: ' + hits + ' de ' + daLista.length + ' palavras da lista reconhecidas. A palavra sono não estava na lista.');
+    PB.store.salvar('memoria', 'lista-palavras', { medidas: [
+      { nome: 'Palavras da lista reconhecidas', valor: hits + ' de ' + daLista.length, esperado: 'a maioria' },
+      { nome: 'Isca crítica "sono" (não apresentada)', valor: isca ? 'marcada como presente' : 'não marcada', esperado: 'marcada com frequência comparável à das palavras estudadas (Roediger e McDermott, 1995)' },
+      { nome: 'Outras não apresentadas marcadas', valor: falsas + ' de ' + outras.length, esperado: 'poucas' }
+    ] });
+    btn.textContent = 'Refazer'; btn.hidden = false;
+  };
+
+  pausaveis.push(aba => {
+    if (aba === 'm3' || !mostrando) return;
+    ex.cancelar(); mostrando = false;
+    pinta(palco, 'Pausado porque você trocou de aba. A lista recomeça do início.');
+    btn.hidden = false;
+  });
 })();
+
+/* ===== PARTE 3, EXPERIMENTO 4: POSIÇÃO SERIAL ===== */
+(function () {
+  const PALAVRAS = ['tijolo', 'janela', 'garfo', 'nuvem', 'ônibus', 'lápis', 'telhado', 'meia', 'cadeira', 'sabão', 'chave', 'milho', 'botão', 'escada', 'peixe'];
+  const palco = $('ps-palco'), btn = $('ps-go'), form = $('ps-form'), campo = $('ps-campo'), msg = $('ps-msg'), pos = $('ps-pos');
+  const ex = criarExec();
+  let ordem = [], mostrando = false, previsao = null;
+
+  PB.predict($('ps-prev'), {
+    pergunta: 'De que parte da lista você acha que vai lembrar melhor?',
+    opcoes: ['Do início', 'Do meio', 'Do fim', 'Do início e do fim']
+  }).then(p => {
+    previsao = p;
+    PB.store.salvar('memoria', 'posicao-serial', { rotulo: 'Recordação livre (posição serial)', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+    btn.disabled = false; pinta(palco, 'Clique em Começar.');
+  });
+
+  async function apresentar() {
+    const t = ex.novo(); mostrando = true;
+    btn.hidden = true; form.hidden = true; pos.hidden = true; msg.textContent = '';
+    $('ps-res').textContent = ''; $('ps-why').hidden = true;
+    ordem = PB.stats.embaralhar(PALAVRAS); /* ordem nova a cada vez: a posição não fica presa a uma palavra */
+    pinta(palco, 'Atenção...');
+    await espera(1200); if (!ex.vale(t)) return;
+    for (const w of ordem) {
+      pinta(palco, w, true);
+      await espera(1300); if (!ex.vale(t)) return;
+      pinta(palco, '', true);
+      await espera(200); if (!ex.vale(t)) return;
+    }
+    mostrando = false;
+    pinta(palco, 'Escreva todas as palavras de que lembrar, em qualquer ordem.');
+    form.hidden = false; campo.value = ''; campo.focus();
+  }
+  btn.onclick = apresentar;
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const ditas = new Set(campo.value.split(/[\s,;.]+/).map(semAcento).filter(Boolean));
+    const lembrou = ordem.map(w => ditas.has(semAcento(w)));
+    const soma = (a, b) => lembrou.slice(a, b).filter(Boolean).length;
+    const ini = soma(0, 5), meio = soma(5, 10), fim = soma(10, 15);
+    form.hidden = true; pinta(palco, 'Experimento concluído.');
+    pos.textContent = '';
+    ordem.forEach((w, i) => {
+      const c = document.createElement('div'); c.className = 'pos' + (lembrou[i] ? ' sim' : '');
+      const n = document.createElement('span'); n.className = 'n'; n.textContent = i + 1;
+      const p = document.createElement('span'); p.className = 'w'; p.textContent = w;
+      const m = document.createElement('span'); m.className = 'm'; m.textContent = lembrou[i] ? '✓ lembrada' : 'não lembrada';
+      c.append(n, p, m); pos.appendChild(c);
+    });
+    pos.hidden = false;
+    colunas($('ps-res'), [
+      { label: 'Início (posições 1 a 5)', valor: ini + ' de 5', seu: true },
+      { label: 'Meio (posições 6 a 10)', valor: meio + ' de 5', seu: true },
+      { label: 'Fim (posições 11 a 15)', valor: fim + ' de 5', seu: true },
+      { label: 'Esperado', valor: 'início e fim acima do meio', nota: 'Primazia e recência (Glanzer e Cunitz, 1966).' }
+    ]);
+    const padrao = ini > meio && fim > meio ? 'Seu resultado seguiu o padrão: início e fim acima do meio.'
+      : 'Seu resultado não seguiu exatamente o padrão esperado (início e fim acima do meio), o que é comum com uma lista só.';
+    revelar('ps-why', 'Sua previsão: "' + previsao.texto + '". Você lembrou ' + ini + ' do início, ' + meio + ' do meio e ' + fim + ' do fim. ' + padrao);
+    PB.announce(msg, 'Resultado: ' + ini + ' de 5 do início, ' + meio + ' de 5 do meio e ' + fim + ' de 5 do fim.');
+    PB.store.salvar('memoria', 'posicao-serial', { medidas: [
+      { nome: 'Início da lista (1 a 5)', valor: ini + ' de 5', esperado: 'acima do meio (primazia)' },
+      { nome: 'Meio da lista (6 a 10)', valor: meio + ' de 5', esperado: 'o mais baixo' },
+      { nome: 'Fim da lista (11 a 15)', valor: fim + ' de 5', esperado: 'acima do meio (recência)' }
+    ] });
+    btn.textContent = 'Refazer com outra ordem'; btn.hidden = false;
+  };
+
+  pausaveis.push(aba => {
+    if (aba === 'm3' || !mostrando) return;
+    ex.cancelar(); mostrando = false;
+    pinta(palco, 'Pausado porque você trocou de aba. A lista recomeça do início, em outra ordem.');
+    btn.hidden = false;
+  });
+})();
+
+/* ===== PARTE 3: QUE TIPO DE MEMÓRIA É? (atividade 4 da aula Memória 1) ===== */
+(function () {
+  const T = window.PB_QUESTOES.memoria_tipos, nome = id => T.categorias.find(c => c.id === id).nome;
+  const questoes = T.itens.map(it => ({
+    id: it.id, tipo: 'aplicacao', aula: T.aula, enunciado: it.texto,
+    opcoes: T.categorias.map(c => c.nome),
+    correta: T.categorias.findIndex(c => c.id === it.cat),
+    devolutiva: T.categorias.map(c => c.id === it.cat ? it.porque : c.nome + ' é a memória de ' + c.def + '. Não é o que a situação descreve.')
+  }));
+  $('tipos').classList.add('plano');
+  PB.quiz($('tipos'), questoes, { aoTerminar: r => PB.store.salvar('memoria', 'tipos', { rotulo: 'Que tipo de memória é?', quiz: { acertos: r.acertos, total: r.total } }) });
+})();
+
+/* ===== QUESTÕES DE REVISÃO ===== */
+$('quiz-lista').classList.add('plano');
+PB.quiz($('quiz-lista'), window.PB_QUESTOES.memoria, { modulo: 'memoria' });
 </script>
 </body>
 </html>
