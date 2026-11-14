@@ -44,6 +44,8 @@ Registrar a resposta de cada item neste arquivo antes da fase indicada.
 
 **2.1 Materiais das aulas (antes da Fase 3).** Colocar em `aulas/` os slides ou roteiros de cada unidade e a bibliografia usada (os capítulos de Sternberg e de Eysenck e Keane, mais os textos complementares). Indicar aqui a correspondência módulo e aula e o que cada aula cobre que a plataforma não cobre.
 
+> **Decisão do docente (14/11/2026):** materiais de Memória entregues (aulas Memória 1 e 2; texto-base: Gazzaniga, Heatherton e Halpern, *Ciência psicológica*, cap. 7, e não Sternberg ou Eysenck e Keane). A pasta `aulas/` fica só no computador do docente, fora do GitHub (está no `.gitignore`). A correspondência aula e módulo está em `aulas/LEIAME.md`. Faltam os materiais dos outros módulos.
+
 **2.2 Paradigma (antes da Fase 2).** Aprovar a mudança de "modelo manipulável, não teste/quiz" para "prever, experimentar com os próprios dados, conferir, revisar". Se não aprovar as questões de revisão, cortar o item 3.2.5 e a Fase 3b.
 
 > **Decisão do docente (14/11/2026):** aprovado, incluindo as questões de revisão.
@@ -58,10 +60,14 @@ Qualquer opção: não pedir nome, matrícula nem e-mail na plataforma.
 
 **2.4 Simuladores de réguas (antes da Fase 4).** Para cada um, decidir entre manter como ilustração curta, converter em tarefa (ver seção 5) ou remover: rastreador de atenção, fluxo da memória, espaço de trabalho, esteira da linguagem, simulador de afasia, comparador de intencionalidade, avaliação da emoção, regulação, escopo atencional.
 
+> **Decisão do docente (14/11/2026):** em `memoria.html`, o fluxo da memória ("Empurre a informação pelo sistema") fica como ilustração curta, com previsão antes; o espaço de trabalho ("Vagas limitadas e competição") sai e dá lugar à demonstração de blocos da aula (19 letras soltas e em blocos). Os simuladores dos outros módulos seguem sem decisão.
+
 **2.5 Afirmações a conferir na literatura (antes da Fase 3).** Quatro trechos fazem afirmações mais fortes do que o revisor conseguiu sustentar sem consulta. O docente decide a redação:
 - `emocao.html`, parte 4: "Reconhecer e modificar esses vieses (CBM) ajuda a reduzir sintomas" e "reduzindo o viés e os sintomas". As meta-análises sobre CBM devem ser conferidas antes de manter o texto nessa forma.
 - `cognicao-social.html`, linha 169 (ressonância e neurônios-espelho): falta ressalva sobre a controvérsia em humanos.
 - `memoria.html`, linha 253: "Sem agrupar, passamos de ~4 com dificuldade". A tarefa é amplitude de dígitos, cuja média clássica fica perto de 7. O limite de cerca de 4 de Cowan se refere a blocos em condições que impedem ensaio e agrupamento. A frase mistura as duas coisas.
+
+> **Decisão do docente (14/11/2026):** seguir a redação do slide: "O limite é contado em blocos: Miller (1956) estimou 7 ± 2 itens; estimativas mais recentes ficam em torno de 4 blocos (Cowan, 2001). Agrupar faz caber mais dígitos em cada bloco." Os outros três trechos de 2.5 seguem sem decisão.
 - `pensamento.html`, disponibilidade: a comparação entre mortes por vacas e por tubarões está sem fonte.
 
 **2.6 Uso em avaliação.** Se as questões de revisão vão contar nota (o que mudaria os requisitos de registro) ou são só estudo. A recomendação é só estudo.
