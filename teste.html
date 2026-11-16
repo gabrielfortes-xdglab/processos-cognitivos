@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Processos Básicos · Testes de comum.js</title>
-<link rel="stylesheet" href="estilos.css?v=2026-11-14">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16">
 <style>
   .t{font-size:.92rem; padding:.35rem .6rem; border-bottom:1px solid var(--line)}
   .t.ok::before{content:"✓ passou: "; color:#8fdc7d}
@@ -24,7 +24,7 @@
   <div id="palco" hidden></div>
 </div>
 
-<script src="comum.js?v=2026-11-14"></script>
+<script src="comum.js?v=2026-11-16"></script>
 <script>
 (async function () {
   const lista = document.getElementById('lista'), palco = document.getElementById('palco');
@@ -193,6 +193,51 @@
     igual(fimQuiz.acertos, 1); igual(fimQuiz.total, 2);
     igual(qz.querySelector('.placar').textContent, 'Respondidas: 2 de 2. Acertos: 1.');
   });
+
+  /* ---------------- PB.quiz em sequência ---------------- */
+  const qs = document.createElement('div'); palco.appendChild(qs);
+  PB.quiz(qs, [
+    { id: 's1', enunciado: 'A?', opcoes: ['sim', 'não'], correta: 0, devolutiva: ['ok', 'não'] },
+    { id: 's2', enunciado: 'B?', opcoes: ['sim', 'não'], correta: 1, devolutiva: ['não', 'ok'] }
+  ]);
+  const bq = qs.querySelectorAll('.questao');
+  teste('quiz em sequência: só a primeira questão aparece, sem botão "Próxima" antes da resposta', () => {
+    igual(bq[0].hidden, false); igual(bq[1].hidden, true); igual(bq[0].querySelector('.nav button').hidden, true);
+    igual(bq[0].querySelector('.progresso').textContent, 'Questão 1 de 2');
+  });
+  bq[0].querySelectorAll('.opcoes button')[0].click();
+  teste('quiz em sequência: responder libera "Próxima", que troca de questão', () => {
+    igual(bq[0].querySelector('.nav button').hidden, false);
+    bq[0].querySelector('.nav button').click();
+    igual(bq[0].hidden, true); igual(bq[1].hidden, false);
+  });
+  bq[1].querySelectorAll('.opcoes button')[1].click();
+  bq[1].querySelector('.nav button').click();
+  teste('quiz em sequência: ao final mostra o resumo e permite rever todas', () => {
+    const fim = qs.querySelector('.fim');
+    igual(fim.hidden, false); igual(fim.querySelector('.texto').textContent, 'Você respondeu às 2 questões. Acertos: 2.');
+    fim.querySelector('button').click();
+    igual(bq[0].hidden, false); igual(bq[1].hidden, false); igual(fim.hidden, true);
+  });
+
+  /* ---------------- PB.explicar e PB.caso ---------------- */
+  const ex1 = document.createElement('div'), ex2 = document.createElement('div'), cs = document.createElement('div');
+  palco.append(ex1, ex2, cs);
+  let exp1 = 'pendente', exp2 = 'pendente';
+  PB.explicar(ex1, {}).then(t => { exp1 = t; });
+  PB.explicar(ex2, {}).then(t => { exp2 = t; });
+  ex1.querySelector('button.primary').click();
+  ex1.querySelector('textarea').value = '  porque sim  ';
+  ex1.querySelector('button.primary').click();
+  ex2.querySelectorAll('button')[1].click();
+  let casoTexto = null;
+  PB.caso(cs, { pergunta: 'E se?', aoRegistrar: t => { casoTexto = t; } });
+  cs.querySelector('textarea').value = 'minha resposta';
+  cs.querySelector('button').click();
+  await new Promise(r => setTimeout(r, 0));
+  teste('explicar: campo vazio não avança; com texto, resolve com o texto sem espaços nas pontas', () => { igual(exp1, 'porque sim'); igual(ex1.querySelector('textarea').readOnly, true); });
+  teste('explicar: "ver sem responder" resolve com null', () => { igual(exp2, null); });
+  teste('caso: registra a resposta escrita e avisa', () => { igual(casoTexto, 'minha resposta'); verdade(cs.querySelector('.registro').textContent.indexOf('Registrado') === 0); });
 
   /* ---------------- PB.tabs ---------------- */
   const abas = document.createElement('div');

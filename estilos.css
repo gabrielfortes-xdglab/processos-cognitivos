@@ -263,3 +263,19 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .posicoes .pos.sim{border-color:#5bbf46}
 .posicoes .pos.sim .m{color:#8fdc7d}
 .quiz.plano{margin-top:0; border-top:0; padding-top:0}
+
+/* ---- questões uma de cada vez (PB.quiz sequencial) ---- */
+.quiz .progresso{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:.4rem}
+.quiz .nav{margin-top:.8rem}
+.quiz .questao:focus, .quiz .fim:focus{outline:none}
+.quiz .fim{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem 1.2rem; margin:0 0 1rem}
+.quiz .fim .texto{margin:0 0 .7rem; font-weight:500}
+
+/* ---- explicar antes de ler a explicação (PB.explicar) e caso para a aula (PB.caso) ---- */
+.explicar, .caso{background:var(--card); border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:12px; padding:.9rem 1.1rem; margin:1rem 0}
+.explicar .k, .caso .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-bright); margin-bottom:2px}
+.explicar .pergunta, .caso .pergunta{display:block; margin:.2rem 0 .6rem}
+.explicar textarea, .caso textarea{display:block; width:100%; box-sizing:border-box; font:inherit; padding:8px 10px; border-radius:8px; border:1px solid var(--line-strong); background:var(--bg); color:var(--ink); margin-bottom:.6rem; resize:vertical}
+.explicar textarea:focus-visible, .caso textarea:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+.explicar .acoes-exp{display:flex; gap:8px; flex-wrap:wrap}
+.explicar .registro, .caso .registro{font-size:.88rem; color:var(--ink-soft); margin-top:.6rem; min-height:1.3em}

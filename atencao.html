@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-14">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
@@ -106,6 +106,8 @@
     <p class="how">Como fazer: nas três primeiras, decida se o processo é controlado ou automático; nas três últimas, se o erro é um equívoco ou um lapso.</p>
     <div id="cl-processos"></div>
 
+    <div id="caso-lapso"></div>
+
     <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 4 (Figura 4.1; Quadros 4.1 e 4.4); Schneider e Shiffrin (1977); Reason (1990); Norman (1988). Aula Atenção: bases cognitivas.</div>
   </section>
 
@@ -146,6 +148,8 @@
       <p><b>Busca de características:</b> o O tem um traço que os distratores não têm (a curvatura). O sistema detecta essa ativação em paralelo, tudo de uma vez, e o número de itens quase não afeta o tempo. <b>Busca conjunta:</b> T e L têm as mesmas características (uma linha horizontal e uma vertical); difere só a conjunção entre elas. Unir características exige atenção como uma cola mental, um objeto por vez, e o tempo cresce com o número de itens (teoria da integração de características: Treisman, 1986).</p>
       <p>Há alternativas: para a teoria da semelhança, pesa a semelhança entre alvo e distratores (Duncan e Humphreys, 1989); para a busca guiada, toda busca tem uma etapa paralela seguida de uma etapa serial (Cave e Wolfe, 1990). Limite desta medida: são 8 telas por condição, e a busca do T veio sempre depois da busca do O.</p></div>
     </div>
+
+    <div id="caso-vigilancia"></div>
 
     <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 4 (Quadro 4.5); Mackworth (1948); Broadbent e Gregory (1965); Treisman (1986); Duncan e Humphreys (1989); Cave e Wolfe (1990). Aula Atenção: bases cognitivas.</div>
   </section>
@@ -237,8 +241,8 @@
   <footer>Módulo de Atenção · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-14"></script>
-<script src="dados/questoes-atencao.js?v=2026-11-14"></script>
+<script src="comum.js?v=2026-11-16"></script>
+<script src="dados/questoes-atencao.js?v=2026-11-16"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -267,10 +271,18 @@ function colunas(el, cols) {
 }
 
 /* "O que isso mostra" só aparece depois da atividade, comentando o resultado obtido. */
-function revelar(id, texto) {
+function revelar(id, texto, atividade) {
   const w = $(id);
   w.querySelector('.seu-res').textContent = texto || '';
-  w.hidden = false;
+  const antigo = $(id + '-exp');
+  if (antigo) antigo.remove();
+  if (!atividade) { w.hidden = false; return; }
+  /* Com "atividade": o estudante escreve a própria explicação antes de ver a do material. */
+  w.hidden = true;
+  const cx = document.createElement('div');
+  cx.id = id + '-exp';
+  w.before(cx);
+  PB.explicar(cx, { modulo: 'atencao', atividade: atividade }).then(() => { w.hidden = false; });
 }
 
 /* Classificação com as mesmas alternativas para todos os itens (categorias). */
@@ -299,6 +311,8 @@ const comSinal = ms => (ms > 0 ? '+' : ms < 0 ? '−' : '') + Math.abs(Math.roun
 /* Atividades cronometradas registram aqui como parar ao trocar de aba. */
 const pausaveis = [];
 document.addEventListener('pb:tab', e => pausaveis.forEach(f => f(e.detail)));
+/* Aba do navegador oculta (outra janela, tela bloqueada): para a atividade em curso, como na troca de aba interna. */
+document.addEventListener('visibilitychange', () => { if (document.hidden) pausaveis.forEach(f => f('aba-oculta')); });
 
 PB.tabs();
 
@@ -453,7 +467,7 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     let frase = 'Você previu: "' + previsao.texto + '". ';
     if (iO === null || iT === null) frase += 'Não houve respostas corretas suficientes em alguma condição para calcular o aumento. Vale refazer.';
     else frase += 'No seu resultado, cada letra a mais acrescentou cerca de ' + Math.round(iO) + ' ms na busca do O e ' + Math.round(iT) + ' ms na busca do T.' + (iT > iO ? '' : ' O seu padrão saiu diferente do esperado; com 8 telas por condição isso pode acontecer.');
-    revelar('bv-why', frase);
+    revelar('bv-why', frase, 'busca-visual');
     PB.store.salvar(MOD, 'busca-visual', { medidas: [
       { nome: 'Busca do O: tempo médio com 4 / 8 / 16 letras', valor: trio('O'), esperado: 'quase igual nos três' },
       { nome: 'Busca do O: aumento por letra', valor: porItem(iO), esperado: 'próximo de zero' },
@@ -570,7 +584,7 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     else frase += 'Desta vez você não foi mais lento com a palavra em conflito (diferença de ' + comSinal(efeito) + '). O resultado típico é um atraso; veja também se os seus erros se concentraram nessa condição.';
     const fora = ex.rapidas + ex.lentas;
     if (fora) frase += ' Ficaram fora da média ' + fora + ' resposta' + (fora > 1 ? 's' : '') + ' (antecipações abaixo de 200 ms ou tempos muito acima dos seus demais).';
-    revelar('st-why', frase);
+    revelar('st-why', frase, 'stroop');
     PB.store.salvar(MOD, 'stroop', { medidas: [
       { nome: 'Tempo médio, palavra e tinta iguais', valor: PB.rt.formatar(ig.media) + ' (erros: ' + pct(ig.taxaErro) + ')', esperado: 'menor' },
       { nome: 'Tempo médio, palavra e tinta diferentes', valor: PB.rt.formatar(di.media) + ' (erros: ' + pct(di.taxaErro) + ')', esperado: 'maior' },
@@ -650,7 +664,7 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
       { seu: true, label: 'Sem piscada', valor: n(resultado[1]), nota: 'até você achar a mudança' },
       { label: 'Esperado', valor: 'mais ciclos com piscada', nota: 'Sem a piscada, a mudança costuma ser achada quase de imediato.' }
     ]);
-    revelar('cb-why', 'Você previu: "' + previsao.texto + '". Você precisou de ' + n(resultado[0]) + ' com a piscada e de ' + n(resultado[1]) + ' sem ela.');
+    revelar('cb-why', 'Você previu: "' + previsao.texto + '". Você precisou de ' + n(resultado[0]) + ' com a piscada e de ' + n(resultado[1]) + ' sem ela.', 'cegueira-mudanca');
     PB.store.salvar(MOD, 'cegueira-mudanca', { medidas: [
       { nome: 'Ciclos até achar a mudança, com piscada', valor: n(resultado[0]), esperado: 'mais ciclos' },
       { nome: 'Ciclos até achar a mudança, sem piscada', valor: n(resultado[1]), esperado: 'quase imediato' }
@@ -671,6 +685,12 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
   $('cbStop').onclick = parar;
   pausaveis.push(id => { if (id !== 'm4' && !palcoCb.classList.contains('hidden') && (rodando || timer)) parar(); });
 })();
+
+/* ===== CASOS PARA LEVAR À AULA (aula Atenção: bases cognitivas) ===== */
+PB.caso($('caso-lapso'), { modulo: MOD, chave: 'caso-lapso', titulo: 'Caso: um lapso seu',
+  pergunta: 'Pense em um lapso que você comete com frequência (esquecer a chave, mandar mensagem para a pessoa errada, sair sem o material). Descreva a rotina automática envolvida e proponha uma função forçada: uma mudança no ambiente que dificulte ou impeça essa sequência.' });
+PB.caso($('caso-vigilancia'), { modulo: MOD, chave: 'caso-vigilancia', titulo: 'Caso: o turno das câmeras',
+  pergunta: 'Você vai organizar o turno de quem vigia as câmeras de um hospital, onde quase nunca acontece nada. A partir do experimento de Mackworth e da ideia de critério móvel, proponha duas medidas e diga que tipo de erro (falha ou alarme falso) cada uma reduz.' });
 
 /* ===== QUESTÕES DE REVISÃO ===== */
 $('quiz-lista').classList.add('plano');

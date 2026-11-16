@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-14">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .gamehead{display:flex; gap:14px; font-size:13px; color:var(--ink-soft); margin-bottom:10px; flex-wrap:wrap}
@@ -216,6 +216,8 @@
     <p class="how">Como fazer: classifique cada situação sem consultar o material. Explícita: episódica (eventos vividos, com tempo e lugar) ou semântica (fatos e conceitos). Implícita: procedimentos (habilidades e hábitos), condicionamento (associação entre estímulos) ou pré-ativação (exposição prévia que facilita e dá familiaridade).</p>
     <div id="tipos"></div>
 
+    <div id="caso-testemunha"></div>
+
     <div class="sources">Fontes: Deese (1959); Roediger e McDermott (1995); Collins e Loftus (1975); Glanzer e Cunitz (1966); Squire (2004); Gazzaniga et al., cap. 7, fig. 7.12 e 7.18. Aulas Memória 1 e 2.</div>
   </section>
 
@@ -226,14 +228,15 @@
       <p class="muted">Responda sem consultar o material: tentar lembrar é prática de recuperação. Cada alternativa tem uma devolutiva. Não vale nota.</p>
       <div id="quiz-lista"></div>
     </div>
+    <div id="caso-estudo"></div>
     <p style="margin-top:1.5rem"><a href="resultados.html">Ver minha folha de resultados</a> <span class="dim">(fica só neste navegador)</span></p>
   </section>
 
   <footer>Módulo de Memória · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-14"></script>
-<script src="dados/questoes-memoria.js?v=2026-11-14"></script>
+<script src="comum.js?v=2026-11-16"></script>
+<script src="dados/questoes-memoria.js?v=2026-11-16"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -264,15 +267,25 @@ function colunas(el, cols) {
 }
 
 /* "O que isso mostra" só aparece depois da atividade, comentando o resultado obtido. */
-function revelar(id, texto) {
+function revelar(id, texto, atividade) {
   const w = $(id);
   w.querySelector('.seu-res').textContent = texto || '';
-  w.hidden = false;
+  const antigo = $(id + '-exp');
+  if (antigo) antigo.remove();
+  if (!atividade) { w.hidden = false; return; }
+  /* Com "atividade": o estudante escreve a própria explicação antes de ver a do material. */
+  w.hidden = true;
+  const cx = document.createElement('div');
+  cx.id = id + '-exp';
+  w.before(cx);
+  PB.explicar(cx, { modulo: 'memoria', atividade: atividade }).then(() => { w.hidden = false; });
 }
 
 /* Atividades com apresentação cronometrada registram aqui como pausar ao trocar de aba. */
 const pausaveis = [];
 document.addEventListener('pb:tab', e => pausaveis.forEach(f => f(e.detail)));
+/* Aba do navegador oculta (outra janela, tela bloqueada): para a atividade em curso, como na troca de aba interna. */
+document.addEventListener('visibilitychange', () => { if (document.hidden) pausaveis.forEach(f => f('aba-oculta')); });
 
 PB.tabs();
 
@@ -351,7 +364,7 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     ]);
     const maior = cont.antes >= cont.mt && cont.antes >= cont.mlp ? 'antes de entrar na memória de trabalho'
       : cont.mt >= cont.mlp ? 'dentro da memória de trabalho' : 'depois de chegar ao longo prazo (a maioria chegou lá)';
-    revelar('m1-why', 'Sua previsão: "' + previsao.texto + '". Nesta rodada do simulador, a maior parte ficou ' + maior + '.');
+    revelar('m1-why', 'Sua previsão: "' + previsao.texto + '". Nesta rodada do simulador, a maior parte ficou ' + maior + '.', 'arquitetura');
     PB.store.salvar('memoria', 'arquitetura', { medidas: [
       { nome: 'Perdidos antes de entrar na memória de trabalho', valor: cont.antes + ' de ' + total, esperado: 'no modelo, com atenção baixa, é onde a maior parte se perde' },
       { nome: 'Perdidos dentro da memória de trabalho', valor: cont.mt + ' de ' + total, esperado: 'poucos, com ensaio alto' },
@@ -420,7 +433,7 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     ]);
     const dif = acertos[1] - acertos[0];
     revelar('bl-why', 'Sua previsão: "' + previsao.texto + '". Você recuperou ' + acertos[0] + ' letras soltas e ' + acertos[1] + ' em blocos (' +
-      (dif > 0 ? dif + ' a mais' : dif < 0 ? (-dif) + ' a menos, o contrário do padrão mais comum' : 'a mesma quantidade') + ').');
+      (dif > 0 ? dif + ' a mais' : dif < 0 ? (-dif) + ' a menos, o contrário do padrão mais comum' : 'a mesma quantidade') + ').', 'blocos');
     PB.announce(msg, 'Resultado: ' + acertos[0] + ' de 19 letras soltas e ' + acertos[1] + ' de 19 em blocos.');
     PB.store.salvar('memoria', 'blocos', { medidas: [
       { nome: 'Letras soltas lembradas', valor: acertos[0] + ' de 19', esperado: 'bem menos que 19' },
@@ -513,7 +526,7 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     let frase = 'Sua previsão: "' + previsao.texto + '". Sem agrupar, você chegou a ' + txt(span.solto) + ' nesta sessão.';
     if (feitoGrupo) frase += ' Com agrupamento, a ' + txt(span.grupo) + (span.grupo > span.solto ? ': com os dígitos em blocos de três, coube mais.' : span.grupo === span.solto ? ': o mesmo tamanho desta vez.' : ': menos desta vez, o que acontece (cansaço, distração).');
     else frase += ' Falta a segunda parte, com agrupamento.';
-    revelar('am-why', frase);
+    revelar('am-why', frase, 'amplitude');
     PB.store.salvar('memoria', 'amplitude', { medidas: [
       { nome: 'Amplitude sem agrupar', valor: txt(span.solto), esperado: '7 ± 2 itens (Miller, 1956)' },
       { nome: 'Amplitude com agrupamento', valor: feitoGrupo ? txt(span.grupo) : null, esperado: 'igual ou maior que sem agrupar' }
@@ -607,7 +620,7 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     ]);
     revelar('dr-why', 'Sua previsão: "' + previsao.texto + '". ' + (isca
       ? 'Você marcou "sono", que não foi apresentada. É o resultado mais comum nesta tarefa.'
-      : 'Desta vez você não marcou "sono", que não foi apresentada. Muita gente marca, e com confiança.'));
+      : 'Desta vez você não marcou "sono", que não foi apresentada. Muita gente marca, e com confiança.'), 'lista-palavras');
     PB.announce(msg, 'Resultado: ' + hits + ' de ' + daLista.length + ' palavras da lista reconhecidas. A palavra sono não estava na lista.');
     PB.store.salvar('memoria', 'lista-palavras', { medidas: [
       { nome: 'Palavras da lista reconhecidas', valor: hits + ' de ' + daLista.length, esperado: 'a maioria' },
@@ -684,7 +697,7 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     ]);
     const padrao = ini > meio && fim > meio ? 'Seu resultado seguiu o padrão: início e fim acima do meio.'
       : 'Seu resultado não seguiu exatamente o padrão esperado (início e fim acima do meio), o que é comum com uma lista só.';
-    revelar('ps-why', 'Sua previsão: "' + previsao.texto + '". Você lembrou ' + ini + ' do início, ' + meio + ' do meio e ' + fim + ' do fim. ' + padrao);
+    revelar('ps-why', 'Sua previsão: "' + previsao.texto + '". Você lembrou ' + ini + ' do início, ' + meio + ' do meio e ' + fim + ' do fim. ' + padrao, 'posicao-serial');
     PB.announce(msg, 'Resultado: ' + ini + ' de 5 do início, ' + meio + ' de 5 do meio e ' + fim + ' de 5 do fim.');
     PB.store.salvar('memoria', 'posicao-serial', { medidas: [
       { nome: 'Início da lista (1 a 5)', valor: ini + ' de 5', esperado: 'acima do meio (primazia)' },
@@ -714,6 +727,12 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
   $('tipos').classList.add('plano');
   PB.quiz($('tipos'), questoes, { aoTerminar: r => PB.store.salvar('memoria', 'tipos', { rotulo: 'Que tipo de memória é?', quiz: { acertos: r.acertos, total: r.total } }) });
 })();
+
+/* ===== CASOS PARA LEVAR À AULA (aulas Memória 1 e 2) ===== */
+PB.caso($('caso-testemunha'), { modulo: 'memoria', chave: 'caso-testemunha', titulo: 'Caso: a testemunha segura',
+  pergunta: 'Duas semanas depois de um assalto, e depois de conversar com outras testemunhas, uma pessoa descreve o que viu com muita segurança. A partir do que aconteceu com você na lista de palavras, o que se pode e o que não se pode concluir da segurança dela?' });
+PB.caso($('caso-estudo'), { modulo: 'memoria', chave: 'caso-estudo', titulo: 'Caso: duas semanas para a prova',
+  pergunta: 'Faltam duas semanas para a prova desta disciplina. Monte um plano de estudo usando o que a aula diz sobre prática de recuperação e espaçamento, e explique por que reler o material dá sensação de domínio sem garantir a lembrança.' });
 
 /* ===== QUESTÕES DE REVISÃO ===== */
 $('quiz-lista').classList.add('plano');

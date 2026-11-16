@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-14">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
@@ -226,6 +226,8 @@
       <p>As três figuras mostram, em níveis diferentes, que a percepção vai além do estímulo. Na grade de Hermann, o próprio funcionamento do sistema visual transforma o sinal desde os primeiros estágios. No triângulo de Kanizsa, o sistema acrescenta um contorno que não está no estímulo. Em THE CAT, o contexto decide a leitura de um mesmo desenho.</p></div>
     </div>
 
+    <div id="caso-ilusao"></div>
+
     <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 3; Coren e Girgus (1978); Müller-Lyer (1889); Kanizsa (1955); Hermann (1870). Aula Sensação e Percepção.</div>
   </section>
 
@@ -263,6 +265,8 @@
       <div class="k">A ideia central</div>
       <div class="v"><p>A aula termina com a tese da complementaridade: os dados sensoriais restringem as interpretações possíveis, e o conhecimento prévio seleciona entre elas. Um sistema apoiado apenas em inferência acumularia erros; as ilusões são casos em que a restrição sensorial e a expectativa entram em conflito.</p></div>
     </div>
+
+    <div id="caso-tela"></div>
 
     <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 3; Penrose e Penrose (1958); Farah e colaboradores (reconhecimento de rostos e casas). Aula Sensação e Percepção.</div>
   </section>
@@ -366,8 +370,8 @@
   <footer>Módulo de Sensação e percepção · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-14"></script>
-<script src="dados/questoes-sensacao-percepcao.js?v=2026-11-14"></script>
+<script src="comum.js?v=2026-11-16"></script>
+<script src="dados/questoes-sensacao-percepcao.js?v=2026-11-16"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -389,10 +393,18 @@ function colunas(el, cols) {
 }
 
 /* "O que isso mostra" só aparece depois da atividade, comentando o resultado obtido. */
-function revelar(id, texto) {
+function revelar(id, texto, atividade) {
   const w = $(id);
   w.querySelector('.seu-res').textContent = texto || '';
-  w.hidden = false;
+  const antigo = $(id + '-exp');
+  if (antigo) antigo.remove();
+  if (!atividade) { w.hidden = false; return; }
+  /* Com "atividade": o estudante escreve a própria explicação antes de ver a do material. */
+  w.hidden = true;
+  const cx = document.createElement('div');
+  cx.id = id + '-exp';
+  w.before(cx);
+  PB.explicar(cx, { modulo: 'sensacao-percepcao', atividade: atividade }).then(() => { w.hidden = false; });
 }
 
 /* Classificação com as mesmas alternativas para todos os itens (categorias). */
@@ -647,7 +659,7 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
       return e === 0 ? 'em ' + il.nome + ', deixou ' + il.partes[0] + ' praticamente do mesmo tamanho que ' + il.partes[1]
                      : 'em ' + il.nome + ', deixou ' + il.partes[0] + ' ' + Math.abs(e) + ' % ' + il.adj[e > 0 ? 0 : 1] + ' que ' + il.partes[1];
     });
-    revelar('il-why', 'Você previu: "' + previsao.texto + '". Na média dos seus ajustes: ' + frases.join('; ') + '. Um ajuste exato daria 0 %.');
+    revelar('il-why', 'Você previu: "' + previsao.texto + '". Na média dos seus ajustes: ' + frases.join('; ') + '. Um ajuste exato daria 0 %.', 'ilusoes');
     PB.store.salvar(MOD, 'ilusoes', { medidas: IL.map((il, i) => ({
       nome: il.nome + ': erro médio do ajuste (' + il.partes[0] + ' em comparação com ' + il.partes[1] + ')',
       valor: pct(erros[i]),
@@ -697,7 +709,7 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
   function fim() {
     PB.store.salvar(MOD, 'demonstracoes', { rotulo: 'O que você vê? (Kanizsa, Hermann, THE CAT)',
       medidas: DEMOS.map(d => ({ nome: d.nome, valor: respostas[d.id], esperado: d.esperado })) });
-    revelar('dm-why', 'Suas respostas ficaram registradas na folha de resultados. Se você não viu o triângulo ou as manchas, anote: vale comparar com os colegas em sala.');
+    revelar('dm-why', 'Suas respostas ficaram registradas na folha de resultados. Se você não viu o triângulo ou as manchas, anote: vale comparar com os colegas em sala.', 'demonstracoes');
   }
 })();
 
@@ -755,6 +767,12 @@ classificar('cl-prof', Q['sensacao-percepcao_profundidade'], 'profundidade', 'Qu
   document.querySelectorAll('.obs').forEach(b => b.onclick = () => set(b.dataset.m));
   set('humano');
 })();
+
+/* ===== CASOS PARA LEVAR À AULA (aula Sensação e Percepção) ===== */
+PB.caso($('caso-ilusao'), { modulo: MOD, chave: 'caso-ilusao', titulo: 'Caso: "a percepção é defeituosa"',
+  pergunta: 'Um colega conclui: "as ilusões provam que a percepção é defeituosa". Com base no que você mediu nas três figuras, responda a ele: o ajuste que produziu o erro na figura plana serve para quê em uma cena natural? Dê um exemplo do dia a dia em que ele acerta.' });
+PB.caso($('caso-tela'), { modulo: MOD, chave: 'caso-tela', titulo: 'Caso: a tela de um aplicativo',
+  pergunta: 'Escolha um aplicativo que você usa todo dia. Aponte um elemento da tela que funciona por figura e fundo e outro que funciona por fechamento ou continuidade. O que aconteceria com o botão principal se ele tivesse a mesma cor do fundo?' });
 
 /* ===== QUESTÕES DE REVISÃO ===== */
 $('quiz-lista').classList.add('plano');

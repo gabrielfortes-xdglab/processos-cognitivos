@@ -432,6 +432,9 @@
      Formato das questões: ver REVISAO.md 3.4 (dados/questoes-<modulo>.js).
      A devolutiva aparece em texto ("Correta" ou "Incorreta"), não só em cor.
      Com "modulo" informado, o resultado é gravado em PB.store na atividade "revisao".
+     As questões aparecem uma de cada vez: depois da devolutiva surge o botão
+     "Próxima"; ao final, um resumo com a opção de rever todas. Para a lista
+     inteira de uma vez (comportamento antigo), passar { sequencial: false }.
      ==================================================================== */
   PB.quiz = function (el, questoes, cfg) {
     cfg = cfg || {};
@@ -443,8 +446,27 @@
       var t = 'Respondidas: ' + feitas + ' de ' + questoes.length + '. Acertos: ' + acertos + '.';
       if (feitas) PB.announce(placar, t); else placar.textContent = t;
     }
+    var seq = cfg.sequencial !== false && questoes.length > 1;
+    var blocos = [], fimEl = null;
+    function irPara(n) {
+      blocos.forEach(function (b, i) { b.hidden = i !== n; });
+      if (blocos[n]) { blocos[n].tabIndex = -1; blocos[n].focus(); }
+    }
     questoes.forEach(function (q, n) {
       var bloco = criar('div', 'questao');
+      blocos.push(bloco);
+      if (seq) { bloco.hidden = n !== 0; bloco.appendChild(criar('div', 'progresso', 'Questão ' + (n + 1) + ' de ' + questoes.length)); }
+      var avancar = null;
+      if (seq) {
+        avancar = criar('button', 'primary', n < questoes.length - 1 ? 'Próxima' : 'Ver resumo');
+        avancar.type = 'button'; avancar.hidden = true;
+        avancar.addEventListener('click', function () {
+          if (n < questoes.length - 1) { irPara(n + 1); return; }
+          bloco.hidden = true; fimEl.hidden = false;
+          fimEl.querySelector('.texto').textContent = 'Você respondeu às ' + questoes.length + ' questões. Acertos: ' + acertos + '.';
+          fimEl.tabIndex = -1; fimEl.focus();
+        });
+      }
       var enun = criar('p', 'enunciado', (n + 1) + '. ' + q.enunciado);
       enun.id = 'pb-q-' + (q.id || n);
       bloco.appendChild(enun);
@@ -471,6 +493,7 @@
           respostas[q.id || n] = { escolhida: i, correta: certa };
           feitas++; if (certa) acertos++;
           atualizarPlacar();
+          if (avancar) avancar.hidden = false;
           if (feitas === questoes.length) {
             var res = { acertos: acertos, total: questoes.length, respostas: respostas };
             if (cfg.modulo) PB.store.salvar(cfg.modulo, 'revisao', { rotulo: 'Questões de revisão', quiz: { acertos: acertos, total: questoes.length } });
@@ -482,10 +505,99 @@
       });
       bloco.appendChild(grupo);
       bloco.appendChild(dev);
+      if (avancar) { var nav = criar('div', 'nav'); nav.appendChild(avancar); bloco.appendChild(nav); }
       el.appendChild(bloco);
     });
+    if (seq) {
+      fimEl = criar('div', 'fim');
+      fimEl.hidden = true;
+      fimEl.appendChild(criar('p', 'texto', ''));
+      var rever = criar('button', null, 'Rever todas as questões');
+      rever.type = 'button';
+      rever.addEventListener('click', function () {
+        blocos.forEach(function (b) { b.hidden = false; var nv = b.querySelector('.nav'); if (nv) nv.hidden = true; });
+        fimEl.hidden = true;
+      });
+      fimEl.appendChild(rever);
+      el.appendChild(fimEl);
+    }
     el.appendChild(placar);
     atualizarPlacar();
+  };
+
+  /* ====================================================================
+     PB.explicar: o estudante formula a explicação antes de ler a do material
+     PB.explicar(el, { pergunta (opcional), modulo, atividade })
+     Mostra um campo de texto curto. Devolve uma Promise que resolve com o texto
+     (ou com null, se o estudante preferir ver a explicação sem responder).
+     Com "modulo" e "atividade", o texto é gravado em PB.store no campo "explicacao".
+     Não há correção: a resposta serve para comparar com a explicação e levar à aula.
+     ==================================================================== */
+  PB.explicar = function (el, cfg) {
+    cfg = cfg || {};
+    el.className = 'explicar';
+    el.textContent = '';
+    el.appendChild(criar('div', 'k', 'Antes da explicação: a sua'));
+    var id = 'pb-exp-' + Math.random().toString(36).slice(2, 8);
+    var rot = criar('label', 'pergunta', cfg.pergunta || 'Em uma ou duas frases: por que você acha que o resultado saiu assim?');
+    rot.htmlFor = id;
+    el.appendChild(rot);
+    var campo = document.createElement('textarea');
+    campo.id = id; campo.rows = 3; campo.maxLength = 600;
+    el.appendChild(campo);
+    var linha = criar('div', 'acoes-exp');
+    var ok = criar('button', 'primary', 'Registrar e ver a explicação'); ok.type = 'button';
+    var pular = criar('button', null, 'Ver a explicação sem responder'); pular.type = 'button';
+    linha.appendChild(ok); linha.appendChild(pular);
+    el.appendChild(linha);
+    var aviso = criar('div', 'registro');
+    el.appendChild(aviso);
+    return new Promise(function (resolver) {
+      function fechar(texto) {
+        campo.readOnly = true; ok.disabled = true; pular.disabled = true;
+        PB.announce(aviso, texto ? 'Registrado na sua folha de resultados. Compare com a explicação abaixo.' : 'Explicação liberada abaixo.');
+        resolver(texto);
+      }
+      ok.addEventListener('click', function () {
+        var t = campo.value.trim();
+        if (!t) { PB.announce(aviso, 'Escreva ao menos uma frase, ou use o outro botão.'); campo.focus(); return; }
+        if (cfg.modulo && cfg.atividade) PB.store.salvar(cfg.modulo, cfg.atividade, { explicacao: t });
+        fechar(t);
+      });
+      pular.addEventListener('click', function () { fechar(null); });
+    });
+  };
+
+  /* ====================================================================
+     PB.caso: caso de transferência, com resposta aberta para levar à aula
+     PB.caso(el, { titulo (opcional), pergunta, modulo, chave })
+     A resposta é gravada em PB.store como uma atividade própria
+     ({ rotulo, pergunta, texto }) e pode ser reescrita. Sem correção automática.
+     ==================================================================== */
+  PB.caso = function (el, cfg) {
+    el.className = 'caso';
+    el.textContent = '';
+    el.appendChild(criar('div', 'k', 'Para levar à aula'));
+    var id = 'pb-caso-' + Math.random().toString(36).slice(2, 8);
+    var rot = criar('label', 'pergunta', cfg.pergunta);
+    rot.htmlFor = id;
+    el.appendChild(rot);
+    var campo = document.createElement('textarea');
+    campo.id = id; campo.rows = 4; campo.maxLength = 1200;
+    var salvo = cfg.modulo && cfg.chave ? PB.store.ler(cfg.modulo, cfg.chave) : null;
+    if (salvo && typeof salvo.texto === 'string') campo.value = salvo.texto;
+    el.appendChild(campo);
+    var ok = criar('button', null, 'Registrar na folha de resultados'); ok.type = 'button';
+    el.appendChild(ok);
+    var aviso = criar('div', 'registro', salvo && salvo.texto ? 'Você já registrou uma resposta. Pode reescrever e registrar de novo.' : 'Não há resposta única. O que você escrever fica só neste navegador.');
+    el.appendChild(aviso);
+    ok.addEventListener('click', function () {
+      var t = campo.value.trim();
+      if (!t) { PB.announce(aviso, 'Escreva a sua resposta antes de registrar.'); campo.focus(); return; }
+      if (cfg.modulo && cfg.chave) PB.store.salvar(cfg.modulo, cfg.chave, { rotulo: cfg.titulo || 'Para levar à aula', pergunta: cfg.pergunta, texto: t });
+      PB.announce(aviso, 'Registrado. Leve a sua resposta para a discussão em sala.');
+      if (cfg.aoRegistrar) cfg.aoRegistrar(t);
+    });
   };
 
   window.PB = PB;

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-14">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16">
 <style>
   .aviso{background:var(--card); border:1px solid var(--line); border-left:3px solid var(--amber); border-radius:10px; padding:.8rem 1rem; font-size:.92rem; color:var(--ink-soft); margin:1rem 0 1.25rem}
   .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:1rem 0 .4rem}
@@ -39,7 +39,7 @@
 <div class="wrap">
   <div class="crumb"><a href="index.html">← Início</a></div>
   <h1><a class="home" href="index.html">Folha de resultados</a></h1>
-  <p class="lead">O que você previu, o que mediu em cada experimento e como foi nas questões de revisão. Leve esta folha para a aula.</p>
+  <p class="lead">O que você previu, o que mediu em cada experimento, as suas explicações e como foi nas questões de revisão. Leve esta folha para a aula.</p>
 
   <div class="aviso">
     Estes dados ficam <b>só neste navegador, neste aparelho</b>. Nada é enviado ao professor nem a nenhum servidor, e a plataforma não pede nome, matrícula ou e-mail. Se você trocar de aparelho, limpar os dados do navegador ou usar janela anônima, a folha começa vazia. Os resultados servem para estudo: não são nota nem avaliação de capacidade.
@@ -57,7 +57,7 @@
   <footer>Processos básicos da cognição · folha de resultados</footer>
 </div>
 
-<script src="comum.js?v=2026-11-14"></script>
+<script src="comum.js?v=2026-11-16"></script>
 <script>
 (function () {
   const folha = document.getElementById('folha'), retorno = document.getElementById('retorno');
@@ -105,6 +105,12 @@
         const sec = criar('div', 'ativ');
         sec.appendChild(criar('h3', null, a.rotulo || chave));
         if (a.data) sec.appendChild(criar('div', 'quando', 'Feito em ' + dataLegivel(a.data)));
+        if (typeof a.pergunta === 'string' && a.pergunta.trim()) {
+          const p = criar('p');
+          p.appendChild(criar('span', 'rot', 'Pergunta: '));
+          p.appendChild(document.createTextNode(a.pergunta));
+          sec.appendChild(p);
+        }
         if (ehObjeto(a.previsao)) {
           const p = criar('p');
           p.appendChild(criar('span', 'rot', 'Sua previsão: '));
@@ -131,6 +137,12 @@
           p.appendChild(document.createTextNode(a.quiz.acertos + ' de ' + a.quiz.total + ' corretas'));
           sec.appendChild(p);
         }
+        if (typeof a.explicacao === 'string' && a.explicacao.trim()) {
+          const p = criar('p');
+          p.appendChild(criar('span', 'rot', 'Sua explicação: '));
+          p.appendChild(document.createTextNode(a.explicacao));
+          sec.appendChild(p);
+        }
         if (typeof a.texto === 'string' && a.texto.trim()) {
           const p = criar('p');
           p.appendChild(criar('span', 'rot', 'Sua resposta: '));
@@ -153,12 +165,14 @@
         const a = dados[id][chave];
         if (!ehObjeto(a)) return;
         L.push('  ' + (a.rotulo || chave) + (a.data ? ' (' + dataLegivel(a.data) + ')' : ''));
+        if (typeof a.pergunta === 'string' && a.pergunta.trim()) L.push('    Pergunta: ' + a.pergunta);
         if (ehObjeto(a.previsao)) L.push('    Previsão: ' + (a.previsao.pergunta ? a.previsao.pergunta + ' ' : '') + 'Resposta: ' + (a.previsao.resposta || ''));
         (Array.isArray(a.medidas) ? a.medidas : []).forEach(m => {
           if (!ehObjeto(m)) return;
           L.push('    ' + (m.nome || '') + ': ' + (m.valor === undefined || m.valor === null ? 'sem dados suficientes' : m.valor) + (m.esperado ? ' (esperado: ' + m.esperado + ')' : ''));
         });
         if (ehObjeto(a.quiz)) L.push('    Acertos: ' + a.quiz.acertos + ' de ' + a.quiz.total + ' corretas');
+        if (typeof a.explicacao === 'string' && a.explicacao.trim()) L.push('    Sua explicação: ' + a.explicacao);
         if (typeof a.texto === 'string' && a.texto.trim()) L.push('    Resposta: ' + a.texto);
       });
       L.push('');
