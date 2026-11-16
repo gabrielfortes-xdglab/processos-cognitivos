@@ -20,6 +20,10 @@
   .teclas{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:.4rem 0}
   .teclas button{min-width:104px; padding:10px 14px}
   .teclas kbd, .how kbd{font:inherit; font-size:.8rem; border:1px solid var(--line-strong); border-radius:4px; padding:0 5px; margin-left:6px; color:var(--ink-soft)}
+  /* Detecção de sinais */
+  .ds-palco{display:flex; gap:16px; align-items:center; flex-wrap:wrap; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; padding:14px; margin:.6rem 0}
+  .ds-palco canvas{width:240px; max-width:100%; height:auto; border-radius:6px; image-rendering:pixelated; flex:none}
+  .ds-palco p{flex:1; min-width:200px; margin:0; color:var(--ink-soft)}
   /* Busca visual */
   #bv-campo{position:relative; height:300px; background:var(--bg-soft); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:.6rem 0}
   #bv-campo::before{content:""; position:absolute; left:50%; top:8%; bottom:8%; border-left:1px dashed var(--line-strong)}
@@ -128,6 +132,28 @@
     <h3 style="margin-top:.2rem">Qual dos quatro resultados?</h3>
     <p class="how">Como fazer: em cada situação, veja se o sinal estava presente e qual foi a resposta.</p>
     <div id="cl-tds"></div>
+
+    <p class="subtitle">Experimento</p>
+    <h3 style="margin-top:.2rem">Detectar é decidir: duas rodadas, os mesmos sinais</h3>
+    <p class="how">Como fazer: a cada tela, um quadro de ruído cinza aparece por um instante. Em metade das telas há um <b>sinal</b>: uma mancha um pouco mais clara no centro. Responda se havia sinal: tecla <kbd>F</kbd> para "havia", <kbd>J</kbd> para "não havia" (ou toque nos botões). São 4 telas de treino e duas rodadas de 24 telas, cada uma com uma instrução diferente (cerca de 3 minutos). O quadro pisca rápido em tons de cinza; se isso incomoda você, não faça esta atividade.</p>
+    <div id="ds-prev"></div>
+    <div class="ds-palco">
+      <canvas id="ds-campo" width="240" height="240" role="img" aria-label="Quadro de ruído cinza em que pode haver um sinal fraco no centro"></canvas>
+      <p id="ds-texto">Responda à previsão para liberar o início.</p>
+    </div>
+    <div class="teclas">
+      <button id="ds-sim" type="button" disabled>Havia sinal <kbd>F</kbd></button>
+      <button id="ds-nao" type="button" disabled>Não havia <kbd>J</kbd></button>
+    </div>
+    <div class="acoes"><button id="ds-go" class="primary" disabled>Começar</button></div>
+    <div id="ds-msg" class="aviso-ativ" role="status" aria-live="polite"></div>
+    <div id="ds-res"></div>
+    <div class="why" id="ds-why" hidden>
+      <div class="k">O que isso mostra</div>
+      <div class="v"><p class="seu-res"></p>
+      <p>Os sinais eram igualmente fracos nas duas rodadas; o que a instrução mudou foi o <b>critério</b>. Quando as consequências de uma falha são graves, baixa-se o critério: aumentam os acertos e aumentam também os alarmes falsos. Detectar depende de um critério móvel, e não só da sensibilidade. É o que acontece na revista de bagagem dos aeroportos, e, ao contrário, na vigilância prolongada: com o tempo, a pessoa fica menos disposta a arriscar um alarme falso e passa a não relatar sinais de que não tem certeza.</p>
+      <p>Limite desta medida: são 12 telas com sinal e 12 sem por rodada, e a rodada "Só com certeza" veio sempre depois da outra.</p></div>
+    </div>
 
     <p class="subtitle">Experimento</p>
     <h3 style="margin-top:.2rem">Busca visual: encontre o O, depois encontre o T</h3>
@@ -332,6 +358,134 @@ classificar('cl-funcoes', Q.atencao_funcoes, 'funcoes', 'Que função da atenç�
 classificarPares('cl-processos', Q.atencao_processos, 'processos', 'Que processo? Que erro?');
 classificar('cl-tds', Q.atencao_tds, 'deteccao-sinais', 'Qual dos quatro resultados?');
 classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?');
+
+/* ===== PARTE 2: DETECÇÃO DE SINAIS COMO TAREFA =====
+   Duas rodadas com os mesmos estímulos e instruções diferentes: o que muda é o critério.
+   O sinal é uma mancha um pouco mais clara no centro de um quadro de ruído. */
+(function () {
+  const cv = $('ds-campo'), ctx = cv.getContext('2d'), go = $('ds-go'), msg = $('ds-msg'), txt = $('ds-texto');
+  const bSim = $('ds-sim'), bNao = $('ds-nao'), ctl = criarExec();
+  const CEL = 16, LADO = 15, BASE = 110, RUIDO = 45;   /* 16 x 16 células; cinza médio 110; ruído de mais ou menos 45 */
+  const DELTA = 18, DELTA_TREINO = 34;                 /* quanto o sinal clareia as 36 células do centro (valendo e treino) */
+  const TEMPO = 300, POR_TIPO = 12;                    /* quadro visível por 300 ms; 12 telas com sinal e 12 sem, por rodada */
+  const RODADAS = [
+    { id: 'liberal', nome: 'Não deixe passar', instr: 'Rodada 1 de 2. Aqui uma FALHA custa caro: não deixe passar nenhum sinal. Na dúvida, responda que havia.' },
+    { id: 'rigoroso', nome: 'Só com certeza', instr: 'Rodada 2 de 2. Aqui um ALARME FALSO custa caro: só responda que havia se tiver certeza.' }
+  ];
+  let previsao = null, emCurso = null, rodando = false, timer = 0;
+
+  PB.predict($('ds-prev'), {
+    pergunta: 'Os sinais são igualmente fracos nas duas rodadas. Na rodada em que a ordem é não deixar passar nenhum, em comparação com a outra, o que você espera?',
+    opcoes: ['Mais acertos e também mais alarmes falsos', 'Mais acertos e menos alarmes falsos', 'Os mesmos resultados, porque os sinais são iguais']
+  }).then(p => {
+    previsao = p;
+    go.disabled = false;
+    escrever('Previsão registrada. Clique em Começar.');
+    PB.store.salvar(MOD, 'deteccao-tarefa', { rotulo: 'Detecção de sinais: duas rodadas', previsao: { pergunta: p.pergunta, resposta: p.texto } });
+  });
+
+  function escrever(t) { txt.textContent = t; }
+  function liso(cruz) {
+    ctx.fillStyle = 'rgb(' + BASE + ',' + BASE + ',' + BASE + ')'; ctx.fillRect(0, 0, cv.width, cv.height);
+    if (cruz) { ctx.fillStyle = '#111'; ctx.fillRect(cv.width / 2 - 1, cv.height / 2 - 8, 2, 16); ctx.fillRect(cv.width / 2 - 8, cv.height / 2 - 1, 16, 2); }
+  }
+  function quadro(delta) {
+    for (let r = 0; r < CEL; r++) for (let c = 0; c < CEL; c++) {
+      const centro = r >= 5 && r <= 10 && c >= 5 && c <= 10;
+      const v = Math.max(0, Math.min(255, Math.round(BASE + (Math.random() * 2 - 1) * RUIDO + (centro ? delta : 0))));
+      ctx.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')';
+      ctx.fillRect(c * LADO, r * LADO, LADO, LADO);
+    }
+  }
+  const lista = n => PB.stats.embaralhar(Array.from({ length: n * 2 }, (x, i) => i < n));
+
+  /* Uma tela: cruz, quadro por 300 ms, resposta. Devolve true se respondeu "havia", ou null se foi interrompida. */
+  async function tela(temSinal, delta, exec) {
+    liso(true);
+    await espera(500);
+    if (!ctl.vale(exec)) return null;
+    emCurso = PB.rt.medir({
+      mostrar: () => { quadro(temSinal ? delta : 0); timer = setTimeout(() => liso(false), TEMPO); },
+      teclas: { f: true, j: false },
+      botoes: [{ el: bSim, valor: true }, { el: bNao, valor: false }]
+    });
+    const r = await emCurso;
+    clearTimeout(timer); liso(false);
+    if (!r || !ctl.vale(exec)) return null;
+    return r.resposta;
+  }
+
+  function travar(on) { rodando = on; bSim.disabled = bNao.disabled = !on; go.hidden = on; }
+  function parar(t) {
+    ctl.cancelar(); clearTimeout(timer);
+    if (emCurso) emCurso.cancelar();
+    travar(false); liso(false); escrever(t);
+    go.textContent = 'Começar';
+  }
+  pausaveis.push(id => { if (rodando && id !== 'm2') parar('Pausado porque você saiu desta aba. A tarefa recomeça do início.'); });
+
+  go.onclick = async () => {
+    const exec = ctl.novo();
+    travar(true);
+    $('ds-res').textContent = ''; $('ds-why').hidden = true;
+    escrever('Treino: 4 telas com o sinal mais forte, para você ver como ele é. Tecla F: havia sinal. Tecla J: não havia.');
+    liso(false);
+    await espera(3500);
+    for (const s of lista(2)) {
+      if (!ctl.vale(exec)) return;
+      const r = await tela(s, DELTA_TREINO, exec);
+      if (r === null) return;
+      escrever(s ? (r ? 'Certo: havia sinal (uma mancha mais clara no centro).' : 'Havia sinal: uma mancha mais clara no centro.') : (r ? 'Não havia sinal nesta tela.' : 'Certo: não havia sinal.'));
+      await espera(1500);
+    }
+    const cont = {};
+    for (const rod of RODADAS) {
+      if (!ctl.vale(exec)) return;
+      escrever(rod.instr + ' São ' + POR_TIPO * 2 + ' telas, sem aviso de certo ou errado.');
+      PB.announce(msg, rod.instr);
+      liso(false);
+      await espera(5000);
+      if (!ctl.vale(exec)) return;
+      escrever(rod.instr);
+      const c = { ac: 0, fa: 0, af: 0, rc: 0 };
+      for (const s of lista(POR_TIPO)) {
+        const r = await tela(s, DELTA, exec);
+        if (r === null) return;
+        c[s ? (r ? 'ac' : 'fa') : (r ? 'af' : 'rc')]++;
+      }
+      cont[rod.id] = c;
+    }
+    fim(cont);
+  };
+
+  function fim(cont) {
+    travar(false);
+    liso(false);
+    escrever('Tarefa concluída. Veja o resultado abaixo.');
+    const pc = n => Math.round(n / POR_TIPO * 100) + ' %';
+    /* tabela com os quatro resultados em cada rodada (texto sempre por textContent) */
+    const tab = document.createElement('table'); tab.className = 'quadro';
+    const linha = (cels, th) => { const tr = document.createElement('tr'); cels.forEach((t, i) => { const c = document.createElement(th || i === 0 ? 'th' : 'td'); c.textContent = t; if (th) c.scope = 'col'; else if (i === 0) c.scope = 'row'; tr.appendChild(c); }); tab.appendChild(tr); };
+    linha(['Rodada', 'Acertos', 'Falhas', 'Alarmes falsos', 'Rejeições corretas', 'Respondeu "havia"'], true);
+    RODADAS.forEach(rod => { const c = cont[rod.id]; linha([rod.nome, c.ac + ' de ' + POR_TIPO + ' (' + pc(c.ac) + ')', String(c.fa), c.af + ' de ' + POR_TIPO + ' (' + pc(c.af) + ')', String(c.rc), (c.ac + c.af) + ' de ' + POR_TIPO * 2]); });
+    const res = $('ds-res'); res.textContent = ''; res.appendChild(tab);
+    const nota = document.createElement('p'); nota.className = 'dim';
+    nota.textContent = 'Em cada rodada havia sinal em ' + POR_TIPO + ' telas e não havia em ' + POR_TIPO + '. Esperado: na rodada "Não deixe passar", mais acertos e mais alarmes falsos.';
+    res.appendChild(nota);
+    const a = cont.liberal, b = cont.rigoroso, simA = a.ac + a.af, simB = b.ac + b.af;
+    let frase = 'Você previu: "' + previsao.texto + '". Com os mesmos sinais, você respondeu "havia" em ' + simA + ' telas na rodada "Não deixe passar" e em ' + simB + ' na rodada "Só com certeza". Acertos: ' + pc(a.ac) + ' e ' + pc(b.ac) + '. Alarmes falsos: ' + pc(a.af) + ' e ' + pc(b.af) + '. ';
+    frase += simA > simB ? 'O seu critério se moveu com a instrução.' : 'Desta vez o seu critério não se moveu na direção esperada. Com 24 telas por rodada isso pode acontecer.';
+    revelar('ds-why', frase, 'deteccao-tarefa');
+    PB.store.salvar(MOD, 'deteccao-tarefa', { medidas: [
+      { nome: 'Rodada "Não deixe passar": acertos e alarmes falsos', valor: pc(a.ac) + ' e ' + pc(a.af), esperado: 'os dois mais altos' },
+      { nome: 'Rodada "Só com certeza": acertos e alarmes falsos', valor: pc(b.ac) + ' e ' + pc(b.af), esperado: 'os dois mais baixos' },
+      { nome: 'Telas em que respondeu "havia" (de 24), nas duas rodadas', valor: simA + ' e ' + simB, esperado: 'mais na primeira' }
+    ] });
+    PB.announce(msg, 'Tarefa concluída. Veja o resultado abaixo.');
+    go.textContent = 'Refazer';
+  }
+  liso(false);
+})();
 
 /* ===== PARTE 2: BUSCA VISUAL, E O DESAFIO ===== */
 (function () {
