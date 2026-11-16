@@ -12,7 +12,8 @@ Este arquivo se chama `REVISAO2.md` porque já existe um `REVISAO.md` na pasta: 
 - **Pedido do docente em 16/11/2026:** as questões não devem ficar todas em rolagem. `PB.quiz` passou a mostrar uma questão de cada vez (revisão e classificações), com "Próxima" depois da devolutiva e "Rever todas" no final.
 - **16/11/2026: etapa 2 aprovada e feita** (A3, A4, S2, S5, T2, M2, E1), em commit local. `PB.sim` (estado, função única de derivação, valores escritos vindos da mesma função) e `PB.desafio` (meta conferida contra o resultado). Desafios: enfraquecer a ilusão mudando a figura (Sensação); busca do T que não dependa do número de letras, trocando os distratores (Atenção); fazer a recência sumir com 30 s de contagem, em lista nova (Memória); de raiva a outra emoção mudando uma única avaliação, com as regras da simulação escritas na página (Emoção). A transdução passou a mostrar a taxa de disparos em número, vinda da mesma função que desenha.
 - Fora do que estava previsto: a segunda lista de 15 palavras do desafio de Memória é minha (palavras comuns sem relação entre si), como já era a primeira.
-- D1 e D2 ficam aprovadas na prática pela etapa 1. D3 a D6 seguem abertas.
+- **16/11/2026: D3 aprovada (Three.js entra) e etapa 4 feita** (A6, S3), em commit local. Cópia local em `vendor/three.module.min.js` (versão 0.160.0, 671 KB, licença MIT em `vendor/THREE-LICENSE.txt`), carregada só quando a cena é pedida. `PB.tres` cria a cena e é rejeitada sem WebGL; o endereço com `?sem3d=1` força a reserva, para teste. Piloto: "A porta que abre" (constância de forma), na parte 2 de Sensação e percepção, com previsão, cena em 3D feita de primitivas, contorno projetado ao lado, explicação, e desafio (um quarto da largura). Sem WebGL, a cena vira um desenho 2D calculado pela mesma projeção.
+- D1 e D2 ficam aprovadas na prática pela etapa 1. D4 a D6 seguem abertas.
 
 ---
 

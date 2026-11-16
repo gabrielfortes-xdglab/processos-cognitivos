@@ -659,5 +659,56 @@
     };
   };
 
+  /* ====================================================================
+     PB.tres: cena em 3D (Three.js) dentro de um elemento da página
+     PB.tres(el, { proporcao, fov, distancia, fundo, montar: function (THREE, cena, camera) })
+     O Three.js é uma cópia local (vendor/three.module.min.js, licença MIT),
+     carregada só quando esta função é chamada. A cena é desenhada sob demanda
+     (renderizar()), sem laço de animação: nada se move sozinho.
+     Devolve uma Promise com { THREE, cena, camera, renderizar() }.
+     A Promise é rejeitada quando o aparelho não abre WebGL, quando o arquivo
+     não carrega ou quando o endereço da página traz "sem3d" (para testar a
+     reserva). Quem chama deve mostrar um desenho 2D equivalente nesse caso.
+     O texto fica sempre fora do canvas, em HTML.
+     ==================================================================== */
+  PB.tres = function (el, cfg) {
+    cfg = cfg || {};
+    function temWebGL() {
+      try {
+        var c = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
+      } catch (e) { return false; }
+    }
+    if (/[?&]sem3d\b/.test(window.location.search) || !temWebGL()) return Promise.reject(new Error('sem-webgl'));
+    return import('./vendor/three.module.min.js').then(function (T) {
+      var prop = cfg.proporcao || 4 / 3;
+      var renderer = new T.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); /* teto de resolução: poupa celulares */
+      var cena = new T.Scene();
+      cena.background = new T.Color(cfg.fundo === undefined ? 0x101818 : cfg.fundo);
+      var camera = new T.PerspectiveCamera(cfg.fov || 50, prop, 0.1, 60);
+      camera.position.set(0, 0, cfg.distancia || 3);
+      camera.lookAt(0, 0, 0);
+      if (cfg.montar) cfg.montar(T, cena, camera);
+      var canvas = renderer.domElement;
+      canvas.setAttribute('aria-hidden', 'true'); /* a descrição fica no elemento que contém o canvas */
+      canvas.style.display = 'block'; canvas.style.width = '100%'; canvas.style.height = 'auto'; canvas.style.borderRadius = 'inherit';
+      el.textContent = '';
+      el.appendChild(canvas);
+      if (!el.getAttribute('role')) el.setAttribute('role', 'img');
+      function renderizar() { renderer.render(cena, camera); }
+      function ajustar() {
+        var w = el.clientWidth;
+        if (!w) return;
+        renderer.setSize(w, Math.round(w / prop), false);
+        renderizar();
+      }
+      if ('ResizeObserver' in window) new ResizeObserver(ajustar).observe(el);
+      else window.addEventListener('resize', ajustar);
+      ajustar();
+      return { THREE: T, cena: cena, camera: camera, renderizar: renderizar };
+    });
+  };
+
   window.PB = PB;
 })();

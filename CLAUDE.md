@@ -8,6 +8,7 @@ Ferramenta web interativa para alunos de 2º período de Psicologia (UFAL) **vis
 
 ## Stack e arquitetura
 - **HTML/CSS/JS puro, estático, sem build.** 1 página por módulo + `index.html` (home) + `estilos.css` (compartilhado). Hospedagem: GitHub Pages.
+- **Única dependência externa: Three.js**, como cópia local em `vendor/three.module.min.js` (versão 0.160.0, MIT), carregada sob demanda por `PB.tres` (em `comum.js`). Usar só onde o objeto de estudo é espacial (ver `REVISAO2.md`, seção 5), sempre com desenho 2D de reserva e texto fora do canvas. `?sem3d=1` no endereço força a reserva.
 - Repo: `gabrielfortes-xdglab/processos-cognitivos`, branch `main` (commit/push só quando pedido).
 - Páginas: `sensacao-percepcao`, `atencao`, `memoria`, `linguagem`, `pensamento`, `emocao`, `cognicao-social` (7 processos) + `evolucao-cognicao`, `desenvolvimento-cognitivo` (2 temas transversais).
 - **Nunca codar por cima de um módulo pronto**: cada módulo é seu próprio arquivo.
