@@ -720,7 +720,7 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
       $('pt-aviso').textContent = 'Este aparelho não abriu a cena em 3D. A figura à esquerda é o desenho equivalente, calculado pela mesma projeção.';
       desenhar(sim.derivado());
     });
-  desenhar(sim.derivado());
+  sim.atualizar(); /* escreve os números e desenha o contorno já com a porta fechada */
 
   PB.predict($('pt-prev'), {
     pergunta: 'Com a porta aberta a 60 graus, a borda mais distante de você aparece menor na imagem. Que altura você espera que ela tenha, em relação à borda mais próxima?',
