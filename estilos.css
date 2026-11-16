@@ -279,3 +279,11 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .explicar textarea:focus-visible, .caso textarea:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
 .explicar .acoes-exp{display:flex; gap:8px; flex-wrap:wrap}
 .explicar .registro, .caso .registro{font-size:.88rem; color:var(--ink-soft); margin-top:.6rem; min-height:1.3em}
+
+/* ---- desafio: meta a atingir (PB.desafio) ---- */
+.desafio{background:rgba(230,178,58,.05); border:1px dashed rgba(230,178,58,.45); border-radius:12px; padding:.9rem 1.1rem; margin:1rem 0}
+.desafio .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--amber); margin-bottom:2px}
+.desafio .meta{margin:.2rem 0 .6rem}
+.desafio .registro{font-size:.9rem; color:var(--ink-soft); min-height:1.3em}
+.desafio.feito{border-style:solid; border-color:var(--teal); background:rgba(47,191,148,.08)}
+.desafio.feito .registro{color:var(--ink)}

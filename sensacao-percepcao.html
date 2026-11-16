@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-16">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16b">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
@@ -127,6 +127,7 @@
     <p class="subtitle">A intensidade e os disparos</p>
     <div id="tr-prev"></div>
     <canvas id="spk" role="img" aria-label="Traçado dos disparos do receptor ao longo do tempo"></canvas>
+    <p class="dim" id="tr-taxa-linha" hidden>Taxa nesta ilustração: <b id="tr-taxa"></b></p>
     <div class="regua">
       <label for="inten">Intensidade</label>
       <input type="range" id="inten" min="0" max="100" value="50" disabled>
@@ -177,6 +178,23 @@
       <div class="v"><p class="seu-res"></p>
       <p>Nos três casos o sistema aplica um ajuste que funciona em cenas naturais; em figuras planas construídas para esse fim, o mesmo ajuste produz erro. Em <b>Ponzo</b>, as linhas convergentes funcionam como pista de profundidade, e a barra de cima parece maior. Em <b>Ebbinghaus</b>, pesa o contexto imediato. Para a <b>Müller-Lyer</b>, a explicação permanece em aberto: Coren e Girgus (1978) propuseram que as pontas funcionam como pistas de profundidade, à maneira de quinas de parede, e essa hipótese cobre parte dos dados.</p>
       <p>A ilusão persiste mesmo quando sabemos que as medidas são iguais: a percepção opera de forma automática e resiste à correção consciente. Limite desta medida: são 4 ajustes por figura, feitos em uma tela; o tamanho do seu erro pode mudar de uma tentativa para outra.</p></div>
+    </div>
+
+    <div id="il-des" hidden>
+      <div id="il-des-caixa"></div>
+      <div class="selrow" role="group" aria-label="Figura do desafio">
+        <button class="ilfig" type="button" aria-pressed="true">Müller-Lyer</button>
+        <button class="ilfig" type="button" aria-pressed="false">Ponzo</button>
+        <button class="ilfig" type="button" aria-pressed="false">Ebbinghaus</button>
+      </div>
+      <div class="regua">
+        <label for="il-p">Figura</label>
+        <input type="range" id="il-p" min="0" max="100" value="100">
+        <span id="il-p-read" class="leitura">original</span>
+      </div>
+      <p class="how" id="il-des-pista"></p>
+      <button id="il-des-go" class="primary" type="button">Medir com esta figura (2 ajustes)</button>
+      <p class="dim" style="margin-top:.8rem">O que conferir com a aula: em Ponzo, as linhas convergentes funcionam como pista de profundidade; em Ebbinghaus, pesa o contexto imediato; para a Müller-Lyer, a explicação por pistas de profundidade cobre parte dos dados e o debate segue aberto.</p>
     </div>
 
     <p class="subtitle">Demonstrações</p>
@@ -370,8 +388,8 @@
   <footer>Módulo de Sensação e percepção · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-16"></script>
-<script src="dados/questoes-sensacao-percepcao.js?v=2026-11-16"></script>
+<script src="comum.js?v=2026-11-16b"></script>
+<script src="dados/questoes-sensacao-percepcao.js?v=2026-11-16b"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -426,7 +444,9 @@ PB.tabs();
 /* ===== PARTE 1: PERCURSO (Quadro 3.1) ===== */
 classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que ponto do percurso?');
 
-/* ===== PARTE 1: TRANSDUÇÃO (ilustração) ===== */
+/* ===== PARTE 1: TRANSDUÇÃO (ilustração) =====
+   Uma única função (derivar) calcula tudo o que a tela mostra a partir das réguas:
+   o desenho e os números escritos leem o mesmo objeto. */
 (function () {
   const SENSES = {
     visao: { meio: 'Luz: onda eletromagnética', sig: 'wave', freqLab: 'Frequência (cor: vermelho → violeta)',
@@ -441,7 +461,7 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
   const sig = $('sig'), sctx = sig.getContext('2d'), spk = $('spk'), pctx = spk.getContext('2d');
   const freq = $('freq'), inten = $('inten'), freqWrap = $('freq-wrap');
   const acc = getComputedStyle(document.documentElement).getPropertyValue('--teal-bright').trim() || '#6ff0c0';
-  let sense = 'visao', spikes = [], ultimoDisparo = 0, tAtual = 0;
+  let spikes = [], ultimoDisparo = 0, tAtual = 0;
   const mols = [];
   for (let i = 0; i < 40; i++) mols.push({ x: Math.random(), y: Math.random(), s: 0.2 + Math.random() * 0.8 });
 
@@ -455,10 +475,33 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
     else { r = 1; }
     return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
   }
-  function colorName(wl) { return wl < 450 ? 'violeta' : wl < 490 ? 'azul' : wl < 560 ? 'verde' : wl < 590 ? 'amarelo' : wl < 625 ? 'laranja' : 'vermelho'; }
+  const nomeCor = wl => wl < 450 ? 'violeta' : wl < 490 ? 'azul' : wl < 560 ? 'verde' : wl < 590 ? 'amarelo' : wl < 625 ? 'laranja' : 'vermelho';
+
+  /* Função de estado: recebe as réguas e o sentido; devolve o que o desenho e os textos usam. */
+  function derivar(e) {
+    const v = e.inten / 100, f = e.freq / 100, d = SENSES[e.sentido], wl = 700 - 300 * f, taxa = Math.round(2 + v * 38);
+    return {
+      tipo: d.sig, v: v, ciclos: 2 + f * 16, taxa: taxa, wl: wl,
+      cor: e.sentido === 'visao' ? nmToRGB(wl) : '#6cc6ff',
+      rotuloInten: v < 0.33 ? 'fraca' : v < 0.66 ? 'média' : 'forte',
+      taxaTexto: taxa + ' disparos por segundo',
+      rotuloFreq: d.sig !== 'wave' ? '' : e.sentido === 'visao' ? nomeCor(wl) : (f < 0.33 ? 'grave' : f < 0.66 ? 'médio' : 'agudo') + ' (~' + Math.round(80 * Math.pow(50, f)) + ' Hz)'
+    };
+  }
+  const sim = PB.sim({
+    estado: { sentido: 'visao', freq: +freq.value, inten: +inten.value },
+    derivar: derivar,
+    mostrar: { rotuloInten: '#inten-read', taxaTexto: '#tr-taxa' },
+    aoMudar: (e, d) => {
+      const out = $('freq-read');
+      out.textContent = '';
+      if (e.sentido === 'visao') { const am = document.createElement('span'); am.className = 'amostra'; am.style.background = d.cor; out.appendChild(am); }
+      out.append(d.rotuloFreq);
+      desenhar(0, tAtual);
+    }
+  });
 
   function setSense(s) {
-    sense = s;
     const d = SENSES[s];
     document.querySelectorAll('.sx').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s));
     $('sig-meio').textContent = 'Meio físico: ' + d.meio;
@@ -472,22 +515,7 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
       box.appendChild(c); chain.appendChild(box);
       if (i < d.stages.length - 1) { const a = document.createElement('div'); a.className = 'arr'; a.textContent = '→'; a.setAttribute('aria-hidden', 'true'); chain.appendChild(a); }
     });
-    leituras();
-    desenhar(0, tAtual);
-  }
-  function leituras() {
-    const v = +inten.value / 100;
-    $('inten-read').textContent = v < 0.33 ? 'fraca' : v < 0.66 ? 'média' : 'forte';
-    if (SENSES[sense].sig !== 'wave') return;
-    const f = +freq.value / 100, out = $('freq-read');
-    out.textContent = '';
-    if (sense === 'visao') {
-      const wl = 700 - 300 * f, am = document.createElement('span');
-      am.className = 'amostra'; am.style.background = nmToRGB(wl);
-      out.append(am, colorName(wl));
-    } else {
-      out.textContent = (f < 0.33 ? 'grave' : f < 0.66 ? 'médio' : 'agudo') + ' (~' + Math.round(80 * Math.pow(50, f)) + ' Hz)';
-    }
+    sim.definir('sentido', s);
   }
 
   /* O buffer do canvas só é refeito quando o tamanho na tela muda (não a cada quadro). */
@@ -502,17 +530,17 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
 
   function desenhar(dt, total) {
     tAtual = total;
-    const t = total * 1000, v = +inten.value / 100, f = +freq.value / 100, d = SENSES[sense];
+    const t = total * 1000, d = sim.derivado(), v = d.v;
     const [W, H] = ajustar(sig, sctx);
     if (!W) return;
     sctx.clearRect(0, 0, W, H);
-    if (d.sig === 'wave') {
-      const cycles = 2 + f * 16, amp = 6 + v * (H * 0.36);
-      sctx.strokeStyle = sense === 'visao' ? nmToRGB(700 - 300 * f) : '#6cc6ff';
+    if (d.tipo === 'wave') {
+      const amp = 6 + v * (H * 0.36);
+      sctx.strokeStyle = d.cor;
       sctx.lineWidth = 2.5; sctx.beginPath();
-      for (let x = 0; x <= W; x++) { const y = H / 2 + amp * Math.sin((x / W) * cycles * 6.283 + t / 300); if (x) sctx.lineTo(x, y); else sctx.moveTo(x, y); }
+      for (let x = 0; x <= W; x++) { const y = H / 2 + amp * Math.sin((x / W) * d.ciclos * 6.283 + t / 300); if (x) sctx.lineTo(x, y); else sctx.moveTo(x, y); }
       sctx.stroke();
-    } else if (d.sig === 'mol') {
+    } else if (d.tipo === 'mol') {
       const rx = W - 34, ry = H / 2; /* receptor (encaixe) à direita */
       sctx.strokeStyle = '#2bb48a'; sctx.lineWidth = 3;
       sctx.beginPath(); sctx.moveTo(rx, ry - 22); sctx.lineTo(rx, ry - 7); sctx.arc(rx, ry, 7, -Math.PI / 2, Math.PI / 2, true); sctx.lineTo(rx, ry + 22); sctx.stroke();
@@ -536,9 +564,9 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
       const mrY = Math.min(H - 8, baseY + H * 0.36), rxr = 12 + depth * 0.55, ryr = Math.max(3, 12 - depth * 0.55);
       sctx.fillStyle = 'rgba(43,180,138,' + (0.4 + v * 0.5) + ')'; sctx.beginPath(); sctx.ellipse(cx, mrY, rxr, ryr, 0, 0, 6.283); sctx.fill();
     }
-    /* disparos: a taxa cresce com a intensidade; a altura é sempre a mesma */
-    const [Ws, Hs] = ajustar(spk, pctx), taxa = Math.round(2 + v * 38);
-    if (t - ultimoDisparo >= 1000 / taxa) { spikes.push(Ws); ultimoDisparo = t; }
+    /* disparos: a taxa (a mesma que aparece escrita) cresce com a intensidade; a altura é sempre a mesma */
+    const [Ws, Hs] = ajustar(spk, pctx);
+    if (t - ultimoDisparo >= 1000 / d.taxa) { spikes.push(Ws); ultimoDisparo = t; }
     pctx.clearRect(0, 0, Ws, Hs); pctx.strokeStyle = acc; pctx.lineWidth = 2;
     pctx.globalAlpha = .25; pctx.beginPath(); pctx.moveTo(0, Hs * 0.72); pctx.lineTo(Ws, Hs * 0.72); pctx.stroke(); pctx.globalAlpha = 1;
     spikes = spikes.map(x => x - 156 * dt).filter(x => x > -4);
@@ -546,7 +574,8 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
   }
 
   document.querySelectorAll('.sx').forEach(b => b.onclick = () => setSense(b.dataset.s));
-  freq.oninput = () => { leituras(); desenhar(0, tAtual); };
+  sim.ligar(freq, 'freq');
+  sim.ligar(inten, 'inten');
 
   /* Previsão antes de liberar a régua de intensidade. */
   const opcoes = ['Os disparos ficam mais frequentes', 'Cada disparo fica mais alto', 'Nada muda nos disparos'];
@@ -557,52 +586,63 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
   }).then(p => {
     previsao = p;
     inten.disabled = false;
+    $('tr-taxa-linha').hidden = false;
     PB.store.salvar(MOD, 'transducao', { rotulo: 'Transdução (ilustração)', previsao: { pergunta: p.pergunta, resposta: p.texto } });
   });
-  inten.oninput = () => {
-    leituras(); desenhar(0, tAtual);
+  inten.addEventListener('input', () => {
     if (mexeu || !previsao) return;
     mexeu = true;
-    revelar('tr-why', 'Você previu: "' + previsao.texto + '". Mexa a régua de intensidade e compare a distância entre os disparos e a altura de cada um.');
-  };
+    revelar('tr-why', 'Você previu: "' + previsao.texto + '". Mexa a régua de intensidade e compare a taxa escrita, a distância entre os disparos e a altura de cada um.');
+  });
 
   setSense('visao');
   PB.anim(desenhar, sig);
 })();
 
-/* ===== PARTE 2: TRÊS ILUSÕES COM AJUSTE ===== */
+/* ===== PARTE 2: TRÊS ILUSÕES COM AJUSTE, E O DESAFIO =====
+   Cada figura tem um parâmetro p: 1 é a figura original; 0 é a figura sem a pista
+   que a aula aponta (pontas retas, trilhos paralelos, vizinhos do mesmo tamanho). */
 (function () {
   const svg = $('il-svg'), range = $('il-range'), ok = $('il-ok'), go = $('il-go');
   const palco = $('il-palco'), area = $('il-area'), msg = $('il-msg'), instr = $('il-instr');
-  const N = 4, A = 16; /* ajustes por figura; tamanho das pontas */
-  const linha = (x1, y1, x2, y2, w, op) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="currentColor" stroke-width="' + (w || 3) + '" stroke-linecap="round"' + (op ? ' opacity="' + op + '"' : '') + '/>';
-  const circ = (cx, cy, r, attr) => '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r + '" ' + attr + '/>';
+  const N = 4, A = 16;
+  const linha = (x1, y1, x2, y2, w, op) => '<line x1="' + x1.toFixed(1) + '" y1="' + y1 + '" x2="' + x2.toFixed(1) + '" y2="' + y2 + '" stroke="currentColor" stroke-width="' + (w || 3) + '" stroke-linecap="round"' + (op ? ' opacity="' + op + '"' : '') + '/>';
+  const circ = (cx, cy, r, attr) => '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(1) + '" ' + attr + '/>';
 
   const IL = [
     { id: 'ml', nome: 'Müller-Lyer', ref: 200, min: 120, max: 300, passo: 1, jit: 15, inicios: [140, 270, 155, 255],
       instr: 'Ajuste a linha de baixo até ela parecer do mesmo comprimento da linha de cima. Compare só os traços horizontais.',
       partes: ['a linha de baixo', 'a de cima'], adj: ['mais comprida', 'mais curta'],
-      desenha: (v, d) => {
-        const a1 = 300 + d - 100, b1 = 300 + d + 100, y1 = 62, a2 = 300 - d - v / 2, b2 = 300 - d + v / 2, y2 = 168;
-        return linha(a1, y1, b1, y1) + linha(a1, y1, a1 - A, y1 - A) + linha(a1, y1, a1 - A, y1 + A) + linha(b1, y1, b1 + A, y1 - A) + linha(b1, y1, b1 + A, y1 + A) +
-               linha(a2, y2, b2, y2) + linha(a2, y2, a2 + A, y2 - A) + linha(a2, y2, a2 + A, y2 + A) + linha(b2, y2, b2 - A, y2 - A) + linha(b2, y2, b2 - A, y2 + A);
+      pista: 'a inclinação das pontas', neutro: 'pontas retas',
+      desenha: (v, d, p) => {
+        const dx = A * p, a1 = 300 + d - 100, b1 = 300 + d + 100, y1 = 62, a2 = 300 - d - v / 2, b2 = 300 - d + v / 2, y2 = 168;
+        return linha(a1, y1, b1, y1) + linha(a1, y1, a1 - dx, y1 - A) + linha(a1, y1, a1 - dx, y1 + A) + linha(b1, y1, b1 + dx, y1 - A) + linha(b1, y1, b1 + dx, y1 + A) +
+               linha(a2, y2, b2, y2) + linha(a2, y2, a2 + dx, y2 - A) + linha(a2, y2, a2 + dx, y2 + A) + linha(b2, y2, b2 - dx, y2 - A) + linha(b2, y2, b2 - dx, y2 + A);
       } },
     { id: 'ponzo', nome: 'Ponzo', ref: 110, min: 60, max: 200, passo: 1, jit: 10, inicios: [72, 172, 86, 152],
       instr: 'Ajuste a barra de baixo até ela parecer do mesmo comprimento da barra de cima.',
       partes: ['a barra de baixo', 'a de cima'], adj: ['mais comprida', 'mais curta'],
-      desenha: v => linha(120, 220, 272, 8, 2, .6) + linha(480, 220, 328, 8, 2, .6) + linha(245, 55, 355, 55, 5) + linha(300 - v / 2, 178, 300 + v / 2, 178, 5) },
+      pista: 'a convergência dos trilhos', neutro: 'trilhos paralelos',
+      desenha: (v, d, p) => { const topo = 120 + 152 * p; return linha(120, 220, topo, 8, 2, .6) + linha(480, 220, 600 - topo, 8, 2, .6) + linha(245, 55, 355, 55, 5) + linha(300 - v / 2, 178, 300 + v / 2, 178, 5); } },
     { id: 'ebb', nome: 'Ebbinghaus', ref: 22, min: 12, max: 34, passo: 0.5, jit: 1.5, inicios: [14, 32, 16, 29],
       instr: 'Ajuste o círculo amarelo da direita até ele parecer do mesmo tamanho do círculo amarelo da esquerda.',
       partes: ['o círculo da direita', 'o da esquerda'], adj: ['maior', 'menor'],
-      desenha: v => {
+      pista: 'a diferença de tamanho entre os círculos vizinhos', neutro: 'vizinhos do mesmo tamanho',
+      /* vizinhos: pequenos (raio 8) à esquerda e grandes (raio 34) à direita na figura original; com p = 0, todos com raio 18 */
+      viz: p => { const rp = 18 - 10 * p, rg = 18 + 16 * p; return { rp: rp, rg: rg, dp: 22 + rp + 8, dg: 22 + rg + 8 + 16 * p }; },
+      teto: p => { const z = IL[2].viz(p); return Math.min(34, z.dg - z.rg - 2); },
+      desenha: (v, d, p) => {
+        const z = IL[2].viz(p);
         let s = circ(150, 115, 22, 'fill="var(--amber)"') + circ(430, 115, v, 'fill="var(--amber)"');
-        for (let i = 0; i < 8; i++) s += circ(150 + 38 * Math.cos(i * Math.PI / 4), 115 + 38 * Math.sin(i * Math.PI / 4), 8, 'fill="currentColor" opacity=".5"');
-        for (let i = 0; i < 6; i++) s += circ(430 + 80 * Math.cos(i * Math.PI / 3), 115 + 80 * Math.sin(i * Math.PI / 3), 34, 'fill="currentColor" opacity=".5"');
+        for (let i = 0; i < 8; i++) s += circ(150 + z.dp * Math.cos(i * Math.PI / 4), 115 + z.dp * Math.sin(i * Math.PI / 4), z.rp, 'fill="currentColor" opacity=".5"');
+        for (let i = 0; i < 6; i++) s += circ(430 + z.dg * Math.cos(i * Math.PI / 3), 115 + z.dg * Math.sin(i * Math.PI / 3), z.rg, 'fill="currentColor" opacity=".5"');
         return s;
       } }
   ];
 
-  let previsao = null, qual = 0, tent = 0, desloc = 0, valores = {};
+  const pct = x => { const r = Math.round(x); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r) + ' %'; };
+  const erroDe = (il, vals) => (PB.stats.media(vals) - il.ref) / il.ref * 100;
+  let previsao = null, atual = null, originais = null;
 
   PB.predict($('il-prev'), {
     pergunta: 'Você já sabe que as três figuras são ilusões. Sabendo disso, acha que consegue ajustar sem erro?',
@@ -614,43 +654,44 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
     PB.store.salvar(MOD, 'ilusoes', { rotulo: 'Três ilusões, com o seu ajuste', previsao: { pergunta: p.pergunta, resposta: p.texto } });
   });
 
-  function desenha() { svg.innerHTML = IL[qual].desenha(+range.value, desloc); }
-
-  function proximo() {
-    const il = IL[qual];
-    /* A posição do botão da régua não serve de pista: os limites mudam um pouco a cada ajuste. */
-    const s = (Math.random() * 2 - 1) * il.jit;
-    range.min = il.min + s; range.max = il.max + s; range.step = il.passo;
-    range.value = il.inicios[tent];
-    desloc = il.id === 'ml' ? (Math.random() < 0.5 ? -1 : 1) * (20 + Math.random() * 20) : 0;
-    instr.textContent = il.instr;
-    range.setAttribute('aria-label', 'Tamanho de ' + il.partes[0]);
-    desenha();
-    PB.announce(msg, 'Figura ' + (qual + 1) + ' de ' + IL.length + ' (' + il.nome + '), ajuste ' + (tent + 1) + ' de ' + N + '.');
+  /* Faz n ajustes da figura "il" com o parâmetro p e devolve os valores confirmados. */
+  function rodar(il, n, p, rotulo) {
+    return new Promise(resolver => {
+      const vals = [];
+      let k = 0, desloc = 0;
+      const desenha = () => { svg.innerHTML = il.desenha(+range.value, desloc, p); };
+      function proximo() {
+        /* A posição do botão da régua não serve de pista: os limites mudam um pouco a cada ajuste. */
+        const s = (Math.random() * 2 - 1) * il.jit, teto = il.teto ? il.teto(p) : il.max;
+        range.min = il.min + s; range.max = Math.min(il.max + s, teto); range.step = il.passo;
+        range.value = il.inicios[k % il.inicios.length];
+        desloc = il.id === 'ml' ? (Math.random() < 0.5 ? -1 : 1) * (20 + Math.random() * 20) : 0;
+        instr.textContent = il.instr;
+        range.setAttribute('aria-label', 'Tamanho de ' + il.partes[0]);
+        desenha();
+        PB.announce(msg, rotulo + ', ajuste ' + (k + 1) + ' de ' + n + '.');
+      }
+      atual = { desenha: desenha, confirmar: () => { vals.push(+range.value); k++; if (k >= n) { atual = null; resolver(vals); } else proximo(); } };
+      range.disabled = ok.disabled = false;
+      proximo();
+    });
   }
+  range.oninput = () => { if (atual) atual.desenha(); };
+  ok.onclick = () => { if (atual) atual.confirmar(); };
 
-  go.onclick = () => {
-    qual = 0; tent = 0; valores = {};
-    go.hidden = true; palco.hidden = true; area.hidden = false;
-    $('il-res').textContent = ''; $('il-res').className = ''; $('il-why').hidden = true;
-    proximo();
+  go.onclick = async () => {
+    go.hidden = true; palco.hidden = true;
+    $('il-msg').before(area); area.hidden = false; /* a área de ajuste volta ao lugar, se estava no desafio */
+    $('il-res').textContent = ''; $('il-res').className = ''; $('il-why').hidden = true; $('il-des').hidden = true;
     range.focus();
-  };
-  range.oninput = desenha;
-  ok.onclick = () => {
-    const il = IL[qual];
-    (valores[il.id] = valores[il.id] || []).push(+range.value);
-    tent++;
-    if (tent >= N) { tent = 0; qual++; }
-    if (qual >= IL.length) return fim();
-    proximo();
+    const erros = [];
+    for (let i = 0; i < IL.length; i++) erros.push(erroDe(IL[i], await rodar(IL[i], N, 1, 'Figura ' + (i + 1) + ' de ' + IL.length + ' (' + IL[i].nome + ')')));
+    fim(erros);
   };
 
-  const pct = x => { const r = Math.round(x); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r) + ' %'; };
-
-  function fim() {
+  function fim(erros) {
     area.hidden = true;
-    const erros = IL.map(il => (PB.stats.media(valores[il.id]) - il.ref) / il.ref * 100);
+    originais = erros;
     const cols = IL.map((il, i) => ({ seu: true, label: il.nome + ': seu erro médio', valor: pct(erros[i]), nota: il.partes[0] + ' em comparação com ' + il.partes[1] }));
     cols.push({ label: 'Sem ilusão', valor: '0 %', nota: 'Nas figuras clássicas, as partes iguais parecem diferentes. Em Ponzo, a barra de cima parece maior.' });
     colunas($('il-res'), cols);
@@ -667,7 +708,44 @@ classificar('cl-percurso', Q['sensacao-percepcao_percurso'], 'percurso', 'Em que
     })) });
     PB.announce(msg, 'Ajustes concluídos. Veja o resultado abaixo.');
     go.textContent = 'Refazer'; go.hidden = false;
+    abrirDesafio();
   }
+
+  /* ----- Desafio: mudar a figura até a ilusão enfraquecer ----- */
+  const pReg = $('il-p'), medir = $('il-des-go'), figs = Array.from(document.querySelectorAll('.ilfig'));
+  let fig = 0, desafio = null;
+  const limite = i => Math.max(2, Math.abs(originais[i]) / 2);
+  function previa() {
+    const il = IL[fig], p = +pReg.value / 100;
+    $('il-p-read').textContent = p > 0.95 ? 'original' : p < 0.05 ? il.neutro : Math.round(p * 100) + ' % da original';
+    $('il-des-pista').textContent = 'A régua muda ' + il.pista + '. Na prévia, as duas partes estão exatamente iguais: mexa até elas parecerem iguais para você. Meta nesta figura: erro abaixo de ' + Math.round(limite(fig)) + ' % (o seu foi ' + pct(originais[fig]) + ').';
+    instr.textContent = 'Prévia da figura (' + il.nome + '). Quando estiver pronta, clique em Medir.';
+    svg.innerHTML = il.desenha(il.ref, 0, p);
+  }
+  function abrirDesafio() {
+    desafio = PB.desafio($('il-des-caixa'), {
+      titulo: 'Desafio: enfraquecer a ilusão', modulo: MOD, chave: 'desafio-ilusao',
+      meta: 'Escolha uma das três figuras e mude-a até a ilusão enfraquecer: o seu erro médio, em 2 ajustes, deve cair para menos da metade do que foi na figura original.',
+      conferir: r => r.p > 0.95 ? { ok: false, texto: 'Você mediu com a figura original (erro de ' + pct(r.erro) + '). O desafio é mudar a figura: mexa a régua "Figura" e meça de novo.' } : ({ ok: Math.abs(r.erro) < limite(r.fig),
+        texto: 'Em ' + IL[r.fig].nome + ', com a figura em ' + r.rotulo + ', o seu erro foi ' + pct(r.erro) + ' (na original: ' + pct(originais[r.fig]) + ').' +
+          (Math.abs(r.erro) < limite(r.fig) ? ' Tirar ' + IL[r.fig].pista + ' enfraqueceu o engano: era essa a pista que desviava o seu ajuste.' : ' Mude mais a figura e meça de novo.') })
+    });
+    $('il-des').hidden = false;
+    medir.before(area); area.hidden = false; /* a mesma área de ajuste é usada no desafio */
+    range.disabled = ok.disabled = true;
+    previa();
+  }
+  figs.forEach((b, i) => b.onclick = () => { fig = i; figs.forEach((x, j) => x.setAttribute('aria-pressed', j === i ? 'true' : 'false')); previa(); });
+  pReg.oninput = previa;
+  medir.onclick = async () => {
+    const il = IL[fig], p = +pReg.value / 100, rotulo = $('il-p-read').textContent;
+    medir.disabled = pReg.disabled = true; figs.forEach(b => { b.disabled = true; });
+    const vals = await rodar(il, 2, p, 'Desafio (' + il.nome + ')');
+    range.disabled = ok.disabled = true;
+    desafio.avaliar({ fig: fig, p: p, erro: erroDe(il, vals), rotulo: rotulo });
+    medir.disabled = pReg.disabled = false; figs.forEach(b => { b.disabled = false; });
+    previa();
+  };
 })();
 
 /* ===== PARTE 2: DEMONSTRAÇÕES (Kanizsa, Hermann, THE CAT) ===== */

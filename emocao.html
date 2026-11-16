@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-16">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16b">
 <style>
   :root{
     --text-accent:var(--teal); --text-secondary:var(--ink-soft); --text-muted:var(--ink-dim);
@@ -20,6 +20,10 @@
   .why .k{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px}
   .why .v{font-size:14px; color:var(--ink-soft)}
   .how{font-size:13px; color:var(--ink-dim); margin:.2rem 0 .8rem}
+  .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
+  .regras{margin:1.2rem 0; font-size:.92rem; color:var(--ink-soft)}
+  .regras summary{cursor:pointer; color:var(--ink)}
+  .regras ol{margin:.6rem 0; padding-left:1.2rem}
   .subtitle{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin:2rem 0 .2rem}
 </style>
 </head>
@@ -62,7 +66,7 @@
       <div class="k">Como a emoção nasce</div>
       As teorias de <b>avaliação</b> supõem que a experiência emocional vem das avaliações cognitivas da situação. Cada emoção é gerada por um <b>padrão de avaliação</b> específico, que pode envolver processos automáticos e controlados.
     </div>
-    <p class="how">Imagine uma situação importante para você. Ajuste como você a avalia e veja a emoção que tende a surgir.</p>
+    <p class="how">Imagine uma situação importante para você. Ajuste como você a avalia e veja a emoção que tende a surgir. Isto é uma <b>ilustração</b>: as regras estão escritas logo abaixo das réguas. Depois, tente os três desafios.</p>
 
     <div id="emo" style="border-radius:12px; padding:1.1rem; margin-bottom:1.25rem; text-align:center">
       <div id="emo-name" style="font-size:26px; font-weight:500; font-family:Georgia,serif">…</div>
@@ -70,7 +74,7 @@
     </div>
     <div style="font-size:14px; color:var(--text-secondary); margin-bottom:6px">Quem é o responsável?</div>
     <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px">
-      <button class="ag" data-a="eu">Eu</button><button class="ag" data-a="outro" aria-pressed="true">Outro</button><button class="ag" data-a="circ">Circunstância</button>
+      <button class="ag" data-a="eu" aria-pressed="false">Eu</button><button class="ag" data-a="outro" aria-pressed="true">Outro</button><button class="ag" data-a="circ" aria-pressed="false">Circunstância</button>
     </div>
     <div style="display:grid; gap:14px">
       <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Relevância para meus objetivos</span><span id="l-rel">alta</span></div><input type="range" id="rel" min="0" max="100" value="75"></div>
@@ -78,6 +82,24 @@
       <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Controle / capacidade de lidar</span><span id="l-ctrl">baixo</span></div><input type="range" id="ctrl" min="0" max="100" value="40"></div>
       <div><div style="display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary)"><span>Certeza (incerto/futuro ↔ certo/agora)</span><span id="l-cert">certo</span></div><input type="range" id="cert" min="0" max="100" value="70"></div>
     </div>
+    <details class="regras">
+      <summary>Ver as regras desta simulação</summary>
+      <ol>
+        <li>Relevância baixa (abaixo de 25): <b>indiferença</b>, qualquer que seja o resto.</li>
+        <li>Situação boa (55 ou mais): se é incerta (certeza abaixo de 40), <b>esperança</b>; se o responsável sou eu, <b>orgulho</b>; nos outros casos, <b>alegria</b>.</li>
+        <li>Situação ruim (45 ou menos): se é incerta e o controle é baixo (abaixo de 50), <b>medo ou ansiedade</b>; se o responsável é outro, <b>raiva</b>; se sou eu, <b>culpa</b>; se é a circunstância, <b>tristeza</b>.</li>
+        <li>Entre 45 e 55: <b>neutro ou ambivalente</b>.</li>
+      </ol>
+      <p class="dim">Estas regras foram escritas pelo autor do site para ilustrar as teorias de avaliação. Os limiares (25, 40, 45, 50, 55) são arbitrários: servem à ilustração e não vêm de um estudo.</p>
+    </details>
+
+    <div id="av-des-caixa"></div>
+    <div class="acoes">
+      <button id="av-conf" class="primary" type="button">Conferir</button>
+      <button id="av-reset" type="button">Voltar ao ponto de partida (raiva)</button>
+      <button id="av-prox" type="button" hidden>Próximo desafio</button>
+    </div>
+
     <div class="why"><div class="k">O que isso mostra</div><div class="v">Mudar só uma avaliação (quem é o responsável, ter ou não controle) troca a emoção, mesmo com a "mesma" situação ruim: raiva, culpa, medo e tristeza vêm de padrões de avaliação diferentes.</div></div>
     <div class="sources">Fontes: avaliação, Lazarus; Scherer; Smith e Ellsworth (1985); Roseman.</div>
   </section>
@@ -148,29 +170,93 @@
   <footer>Protótipo · módulo de Emoção · processos básicos da cognição</footer>
 </div>
 
+<script src="comum.js?v=2026-11-16b"></script>
 <script>
 /* ===== TABS ===== */
 (function(){ const btns=document.querySelectorAll('.subnav button'), secs={m1:m1e(),m2:m2e(),m3:m3e(),m4:m4e()};
   function m1e(){return document.getElementById('m1');} function m2e(){return document.getElementById('m2');} function m3e(){return document.getElementById('m3');} function m4e(){return document.getElementById('m4');}
   btns.forEach(b=>b.onclick=()=>{ const t=b.dataset.tab; btns.forEach(x=>x.setAttribute('aria-pressed',x===b)); for(const k in secs) secs[k].classList.toggle('hidden',k!==t); }); })();
 
-/* ===== M1: AVALIAÇÃO -> EMOÇÃO ===== */
-(function(){
-  let agent='outro'; const g=id=>document.getElementById(id);
-  const rel=g('rel'),val=g('val'),ctrl=g('ctrl'),cert=g('cert'),box=g('emo'),name=g('emo-name'),why=g('emo-why');
-  function pick(){ const r=+rel.value,v=+val.value,c=+ctrl.value,ce=+cert.value;
-    if(r<25) return {e:'Indiferença',t:'neu',w:'Pouco relevante para seus objetivos: quase nenhuma emoção surge.'};
-    if(v>=55){ if(ce<40) return {e:'Esperança',t:'pos',w:'Algo bom, mas ainda incerto/futuro.'}; if(agent==='eu') return {e:'Orgulho',t:'pos',w:'Bom para você e fruto da sua ação.'}; return {e:'Alegria',t:'pos',w:'Bom para seus objetivos.'}; }
-    if(v<=45){ if(ce<40&&c<50) return {e:'Medo / Ansiedade',t:'neg',w:'Algo ruim, incerto e fora do seu controle: ameaça futura.'};
-      if(agent==='outro') return {e:'Raiva',t:'neg',w:'Algo ruim atribuído a outra pessoa'+(c>55?', e você sente que pode reagir.':'.')};
-      if(agent==='eu') return {e:'Culpa',t:'neg',w:'Algo ruim atribuído a você mesmo.'};
-      return {e:'Tristeza',t:'neg',w:'Algo ruim, por circunstância, com pouco a fazer.'}; }
-    return {e:'Neutro / ambivalente',t:'neu',w:'Avaliação no meio do caminho: a emoção não se define.'}; }
-  function render(){ g('l-rel').textContent=rel.value<33?'baixa':rel.value<66?'média':'alta'; g('l-val').textContent=val.value<45?'ruim':val.value>55?'bom':'neutro'; g('l-ctrl').textContent=ctrl.value<33?'baixo':ctrl.value<66?'médio':'alto'; g('l-cert').textContent=cert.value<40?'incerto':'certo';
-    const p=pick(), C={pos:['rgba(43,180,138,.14)','var(--text-success)'],neg:['rgba(226,75,74,.14)','var(--text-danger)'],neu:['var(--surface-1)','var(--text-secondary)']};
-    box.style.background=C[p.t][0]; name.style.color=C[p.t][1]; name.textContent=p.e; why.textContent=p.w; why.style.color='var(--text-secondary)'; }
-  document.querySelectorAll('.ag').forEach(b=>b.onclick=()=>{ agent=b.dataset.a; document.querySelectorAll('.ag').forEach(x=>x.setAttribute('aria-pressed',x.dataset.a===agent)); render(); });
-  [rel,val,ctrl,cert].forEach(s=>s.oninput=render); render();
+/* ===== M1: AVALIAÇÃO -> EMOÇÃO =====
+   Uma única função (derivar) transforma as cinco avaliações na emoção mostrada.
+   As regras são do autor do site e aparecem escritas na página. */
+(function () {
+  const g = id => document.getElementById(id);
+  const rel = g('rel'), val = g('val'), ctrl = g('ctrl'), cert = g('cert'), box = g('emo'), name = g('emo-name'), why = g('emo-why');
+  const PARTIDA = { agente: 'outro', rel: 75, val: 28, ctrl: 40, cert: 70 }; /* resulta em raiva */
+  const NOMES = { agente: 'o responsável', rel: 'a relevância', val: 'ruim ou bom', ctrl: 'o controle', cert: 'a certeza' };
+  const CORES = { pos: ['rgba(43,180,138,.14)', 'var(--text-success)'], neg: ['rgba(226,75,74,.14)', 'var(--text-danger)'], neu: ['var(--surface-1)', 'var(--text-secondary)'] };
+
+  function emocao(e) {
+    if (e.rel < 25) return { e: 'Indiferença', t: 'neu', w: 'Pouco relevante para seus objetivos: quase nenhuma emoção surge.' };
+    if (e.val >= 55) {
+      if (e.cert < 40) return { e: 'Esperança', t: 'pos', w: 'Algo bom, mas ainda incerto ou futuro.' };
+      if (e.agente === 'eu') return { e: 'Orgulho', t: 'pos', w: 'Bom para você e fruto da sua ação.' };
+      return { e: 'Alegria', t: 'pos', w: 'Bom para seus objetivos.' };
+    }
+    if (e.val <= 45) {
+      if (e.cert < 40 && e.ctrl < 50) return { e: 'Medo / Ansiedade', t: 'neg', w: 'Algo ruim, incerto e fora do seu controle: ameaça futura.' };
+      if (e.agente === 'outro') return { e: 'Raiva', t: 'neg', w: 'Algo ruim atribuído a outra pessoa' + (e.ctrl > 55 ? ', e você sente que pode reagir.' : '.') };
+      if (e.agente === 'eu') return { e: 'Culpa', t: 'neg', w: 'Algo ruim atribuído a você mesmo.' };
+      return { e: 'Tristeza', t: 'neg', w: 'Algo ruim, por circunstância, com pouco a fazer.' };
+    }
+    return { e: 'Neutro / ambivalente', t: 'neu', w: 'Avaliação no meio do caminho: a emoção não se define.' };
+  }
+  function derivar(e) {
+    const r = emocao(e);
+    return {
+      nome: r.e, tipo: r.t, porque: r.w,
+      rRel: e.rel < 33 ? 'baixa' : e.rel < 66 ? 'média' : 'alta',
+      rVal: e.val < 45 ? 'ruim' : e.val > 55 ? 'bom' : 'neutro',
+      rCtrl: e.ctrl < 33 ? 'baixo' : e.ctrl < 66 ? 'médio' : 'alto',
+      rCert: e.cert < 40 ? 'incerto' : 'certo',
+      mudados: Object.keys(PARTIDA).filter(k => e[k] !== PARTIDA[k])
+    };
+  }
+  const sim = PB.sim({
+    estado: PARTIDA,
+    derivar: derivar,
+    mostrar: { nome: name, porque: why, rRel: '#l-rel', rVal: '#l-val', rCtrl: '#l-ctrl', rCert: '#l-cert' },
+    aoMudar: (e, d) => {
+      box.style.background = CORES[d.tipo][0]; name.style.color = CORES[d.tipo][1]; why.style.color = 'var(--text-secondary)';
+      document.querySelectorAll('.ag').forEach(x => x.setAttribute('aria-pressed', x.dataset.a === e.agente));
+    }
+  });
+  document.querySelectorAll('.ag').forEach(b => b.onclick = () => sim.definir('agente', b.dataset.a));
+  sim.ligar(rel, 'rel'); sim.ligar(val, 'val'); sim.ligar(ctrl, 'ctrl'); sim.ligar(cert, 'cert');
+  function partida() {
+    rel.value = PARTIDA.rel; val.value = PARTIDA.val; ctrl.value = PARTIDA.ctrl; cert.value = PARTIDA.cert;
+    Object.keys(PARTIDA).forEach(k => { sim.estado[k] = PARTIDA[k]; });
+    sim.atualizar();
+  }
+  partida();
+
+  /* ----- Desafios: chegar a outra emoção mudando uma única avaliação ----- */
+  const ALVOS = ['Culpa', 'Medo / Ansiedade', 'Indiferença'];
+  const conf = g('av-conf'), prox = g('av-prox');
+  let n = 0, desafio = null;
+  function abrir() {
+    prox.hidden = true; conf.disabled = false;
+    partida();
+    desafio = PB.desafio(g('av-des-caixa'), {
+      titulo: 'Desafio ' + (n + 1) + ' de ' + ALVOS.length + ': de raiva a ' + ALVOS[n].toLowerCase(), modulo: 'emocao', chave: 'desafio-avaliacao-' + (n + 1),
+      meta: 'Desafio ' + (n + 1) + ' de ' + ALVOS.length + '. O ponto de partida é raiva. Chegue a "' + ALVOS[n] + '" mudando uma única avaliação, e clique em Conferir.',
+      conferir: d => {
+        const certa = d.nome === ALVOS[n], uma = d.mudados.length === 1;
+        return { ok: certa && uma, texto: !certa ? 'A emoção agora é "' + d.nome + '". O alvo é "' + ALVOS[n] + '".'
+          : !uma ? 'Você chegou a "' + d.nome + '", mas mudou ' + d.mudados.length + ' avaliações. Volte ao ponto de partida e tente com uma só.'
+          : 'De raiva a "' + d.nome + '" mudando só ' + NOMES[d.mudados[0]] + '.' };
+      }
+    });
+  }
+  conf.onclick = () => {
+    if (!desafio.avaliar(sim.derivado())) return;
+    conf.disabled = true;
+    if (n < ALVOS.length - 1) prox.hidden = false;
+  };
+  prox.onclick = () => { n++; abrir(); };
+  g('av-reset').onclick = partida;
+  abrir();
 })();
 
 /* ===== M2: REGULAÇÃO (GROSS) ===== */

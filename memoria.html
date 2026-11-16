@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-16">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16b">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .gamehead{display:flex; gap:14px; font-size:13px; color:var(--ink-soft); margin-bottom:10px; flex-wrap:wrap}
@@ -210,6 +210,10 @@
       <p><b>Primazia:</b> as primeiras palavras recebem mais ensaio e chegam ao longo prazo. <b>Recência:</b> as últimas ainda estão na memória de trabalho no momento do teste. O teste decisivo (Glanzer e Cunitz, 1966): com 30 s de distração antes de recordar, a recência desaparece e a primazia permanece. Esse efeito seletivo sustenta a ideia de dois componentes. Limite: há recência também no longo prazo (a última aula, os presidentes mais recentes).</p>
       <p>Com uma lista só, o seu padrão pode fugir do esperado: a curva dos estudos é a média de muitas listas e de muitas pessoas.</p></div>
     </div>
+    <div id="ps-des" hidden>
+      <div id="ps-des-caixa"></div>
+      <button id="ps-des-go" class="primary" type="button">Fazer a lista com contagem</button>
+    </div>
 
     <p class="subtitle">Classificação</p>
     <h3 style="margin-top:.2rem">Que tipo de memória é?</h3>
@@ -235,8 +239,8 @@
   <footer>Módulo de Memória · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-16"></script>
-<script src="dados/questoes-memoria.js?v=2026-11-16"></script>
+<script src="comum.js?v=2026-11-16b"></script>
+<script src="dados/questoes-memoria.js?v=2026-11-16b"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -642,8 +646,11 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
 (function () {
   const PALAVRAS = ['tijolo', 'janela', 'garfo', 'nuvem', 'ônibus', 'lápis', 'telhado', 'meia', 'cadeira', 'sabão', 'chave', 'milho', 'botão', 'escada', 'peixe'];
   const palco = $('ps-palco'), btn = $('ps-go'), form = $('ps-form'), campo = $('ps-campo'), msg = $('ps-msg'), pos = $('ps-pos');
+  /* Segunda lista, só para o desafio: palavras novas, para a primeira lista não ajudar. */
+  const PALAVRAS2 = ['sapato', 'relógio', 'colher', 'árvore', 'caderno', 'ponte', 'tapete', 'limão', 'mochila', 'vidro', 'martelo', 'praia', 'anel', 'cortina', 'formiga'];
+  const desGo = $('ps-des-go');
   const ex = criarExec();
-  let ordem = [], mostrando = false, previsao = null;
+  let ordem = [], mostrando = false, previsao = null, modo = 'normal', fimNormal = null, desafio = null;
 
   PB.predict($('ps-prev'), {
     pergunta: 'De que parte da lista você acha que vai lembrar melhor?',
@@ -654,11 +661,14 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
     btn.disabled = false; pinta(palco, 'Clique em Começar.');
   });
 
-  async function apresentar() {
+  async function apresentar(novoModo) {
     const t = ex.novo(); mostrando = true;
-    btn.hidden = true; form.hidden = true; pos.hidden = true; msg.textContent = '';
-    $('ps-res').textContent = ''; $('ps-why').hidden = true;
-    ordem = PB.stats.embaralhar(PALAVRAS); /* ordem nova a cada vez: a posição não fica presa a uma palavra */
+    modo = novoModo === 'desafio' ? 'desafio' : 'normal';
+    btn.hidden = true; desGo.disabled = true; form.hidden = true; pos.hidden = true; msg.textContent = '';
+    $('ps-res').textContent = '';
+    if (modo === 'normal') { $('ps-why').hidden = true; $('ps-des').hidden = true; }
+    else palco.scrollIntoView({ block: 'center' });
+    ordem = PB.stats.embaralhar(modo === 'desafio' ? PALAVRAS2 : PALAVRAS); /* ordem nova a cada vez: a posição não fica presa a uma palavra */
     pinta(palco, 'Atenção...');
     await espera(1200); if (!ex.vale(t)) return;
     for (const w of ordem) {
@@ -667,11 +677,20 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
       pinta(palco, '', true);
       await espera(200); if (!ex.vale(t)) return;
     }
+    if (modo === 'desafio') {
+      /* 30 s de contagem antes de recordar (Glanzer e Cunitz, 1966): a contagem ocupa a memória de trabalho. */
+      const inicio = 400 + Math.floor(Math.random() * 500);
+      for (let seg = 30; seg > 0; seg--) {
+        pinta(palco, 'Conte para trás de 3 em 3, em voz alta, a partir de ' + inicio + '. Faltam ' + seg + ' s.');
+        await espera(1000); if (!ex.vale(t)) return;
+      }
+    }
     mostrando = false;
     pinta(palco, 'Escreva todas as palavras de que lembrar, em qualquer ordem.');
     form.hidden = false; campo.value = ''; campo.focus();
   }
-  btn.onclick = apresentar;
+  btn.onclick = () => apresentar('normal');
+  desGo.onclick = () => apresentar('desafio');
 
   form.onsubmit = e => {
     e.preventDefault();
@@ -689,6 +708,18 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
       c.append(n, p, m); pos.appendChild(c);
     });
     pos.hidden = false;
+    if (modo === 'desafio') {
+      colunas($('ps-res'), [
+        { label: 'Com contagem: início (1 a 5)', valor: ini + ' de 5', seu: true },
+        { label: 'Com contagem: meio (6 a 10)', valor: meio + ' de 5', seu: true },
+        { label: 'Com contagem: fim (11 a 15)', valor: fim + ' de 5', seu: true, nota: 'sem contagem, você lembrou ' + fimNormal + ' de 5' },
+        { label: 'Esperado', valor: 'o fim cai, o início fica', nota: 'Com 30 s de distração, a recência desaparece e a primazia permanece.' }
+      ]);
+      desafio.avaliar({ ini: ini, fim: fim });
+      PB.announce(msg, 'Resultado com contagem: ' + ini + ' de 5 do início, ' + meio + ' de 5 do meio e ' + fim + ' de 5 do fim.');
+      desGo.disabled = false; desGo.textContent = 'Refazer a lista com contagem'; btn.hidden = false;
+      return;
+    }
     colunas($('ps-res'), [
       { label: 'Início (posições 1 a 5)', valor: ini + ' de 5', seu: true },
       { label: 'Meio (posições 6 a 10)', valor: meio + ' de 5', seu: true },
@@ -705,13 +736,23 @@ let m1Hook = null; /* avisado pelo simulador a cada estímulo que termina seu pe
       { nome: 'Fim da lista (11 a 15)', valor: fim + ' de 5', esperado: 'acima do meio (recência)' }
     ] });
     btn.textContent = 'Refazer com outra ordem'; btn.hidden = false;
+    fimNormal = fim;
+    desafio = PB.desafio($('ps-des-caixa'), {
+      titulo: 'Desafio: fazer a recência sumir', modulo: 'memoria', chave: 'desafio-recencia',
+      meta: 'Refaça a tarefa com uma lista nova. Desta vez, entre a última palavra e a recordação, você conta para trás de 3 em 3 por 30 segundos. Meta: lembrar menos palavras do fim da lista do que na primeira vez (foram ' + fim + ' de 5).',
+      conferir: r => fimNormal === 0
+        ? { ok: false, texto: 'Na primeira lista você não lembrou nenhuma palavra do fim, então não há o que diminuir. Refaça a primeira lista e tente de novo.' }
+        : { ok: r.fim < fimNormal, texto: 'Do fim da lista, você lembrou ' + r.fim + ' de 5 com a contagem e ' + fimNormal + ' de 5 sem ela. Do início, ' + r.ini + ' de 5.' +
+            (r.fim < fimNormal ? ' A contagem ocupou a memória de trabalho, onde as últimas palavras ainda estavam; as primeiras já tinham chegado ao longo prazo.' : ' Desta vez o fim não caiu. Com uma lista só isso pode acontecer; vale repetir.') }
+    });
+    $('ps-des').hidden = false; desGo.disabled = false;
   };
 
   pausaveis.push(aba => {
     if (aba === 'm3' || !mostrando) return;
     ex.cancelar(); mostrando = false;
     pinta(palco, 'Pausado porque você trocou de aba. A lista recomeça do início, em outra ordem.');
-    btn.hidden = false;
+    btn.hidden = false; desGo.disabled = false;
   });
 })();
 

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=2026-11-16">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16b">
 <style>
   button[aria-pressed="true"]{background:rgba(43,180,138,.15); border-color:var(--teal); color:var(--teal-bright)}
   .acoes{display:flex; gap:8px; flex-wrap:wrap; margin:.6rem 0}
@@ -149,6 +149,17 @@
       <p>Há alternativas: para a teoria da semelhança, pesa a semelhança entre alvo e distratores (Duncan e Humphreys, 1989); para a busca guiada, toda busca tem uma etapa paralela seguida de uma etapa serial (Cave e Wolfe, 1990). Limite desta medida: são 8 telas por condição, e a busca do T veio sempre depois da busca do O.</p></div>
     </div>
 
+    <div id="bv-des" hidden>
+      <div id="bv-des-caixa"></div>
+      <div class="selrow" role="group" aria-label="Letras em volta do T">
+        <button class="bvd" type="button" data-d="L" aria-pressed="false">T entre letras L (como antes)</button>
+        <button class="bvd" type="button" data-d="O" aria-pressed="true">T entre letras O</button>
+        <button class="bvd" type="button" data-d="LO" aria-pressed="false">T entre L e O misturadas</button>
+      </div>
+      <button id="bv-des-go" class="primary" type="button">Fazer a busca curta</button>
+      <p class="dim" style="margin-top:.8rem">O que conferir com a aula: para a teoria da semelhança (Duncan e Humphreys, 1989), o que pesa é a semelhança entre o alvo e os distratores e a uniformidade entre os distratores.</p>
+    </div>
+
     <div id="caso-vigilancia"></div>
 
     <div class="sources">Fontes: Sternberg, <i>Psicologia cognitiva</i>, cap. 4 (Quadro 4.5); Mackworth (1948); Broadbent e Gregory (1965); Treisman (1986); Duncan e Humphreys (1989); Cave e Wolfe (1990). Aula Atenção: bases cognitivas.</div>
@@ -241,8 +252,8 @@
   <footer>Módulo de Atenção · processos básicos da cognição</footer>
 </div>
 
-<script src="comum.js?v=2026-11-16"></script>
-<script src="dados/questoes-atencao.js?v=2026-11-16"></script>
+<script src="comum.js?v=2026-11-16b"></script>
+<script src="dados/questoes-atencao.js?v=2026-11-16b"></script>
 <script>
 /* ===== Utilitários da página ===== */
 const $ = id => document.getElementById(id);
@@ -322,12 +333,12 @@ classificarPares('cl-processos', Q.atencao_processos, 'processos', 'Que processo
 classificar('cl-tds', Q.atencao_tds, 'deteccao-sinais', 'Qual dos quatro resultados?');
 classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?');
 
-/* ===== PARTE 2: BUSCA VISUAL ===== */
+/* ===== PARTE 2: BUSCA VISUAL, E O DESAFIO ===== */
 (function () {
   const campo = $('bv-campo'), aviso = $('bv-aviso'), go = $('bv-go'), msg = $('bv-msg');
-  const bEsq = $('bv-esq'), bDir = $('bv-dir');
+  const bEsq = $('bv-esq'), bDir = $('bv-dir'), desGo = $('bv-des-go'), opcoesDes = Array.from(document.querySelectorAll('.bvd'));
   const TAM = [4, 8, 16], POR_CELULA = 8, ctl = criarExec();
-  let previsao = null, dados = [], emCurso = null, rodando = false;
+  let previsao = null, emCurso = null, rodando = false, inclinT = null, desafio = null, distrDes = 'O';
 
   PB.predict($('bv-prev'), {
     pergunta: 'Em qual das duas buscas o número de letras na tela vai pesar mais no seu tempo?',
@@ -344,17 +355,19 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     aviso.textContent = texto || '';
   }
 
-  /* Monta uma tela: n letras, metade de cada lado; o alvo fica do lado sorteado. */
-  function montar(alvo, n, lado) {
+  /* Monta uma tela: n letras, metade de cada lado; o alvo fica do lado sorteado.
+     distr: 'L' (só letras L), 'O' (só letras O) ou 'LO' (metade de cada). */
+  function montar(alvo, n, lado, distr) {
     limpar('');
     const celulas = { esq: [], dir: [] };
     for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) celulas[c < 3 ? 'esq' : 'dir'].push([c, r]);
     const esc = { esq: PB.stats.embaralhar(celulas.esq).slice(0, n / 2), dir: PB.stats.embaralhar(celulas.dir).slice(0, n / 2) };
     const giro = () => [0, 90, 180, 270][Math.floor(Math.random() * 4)];
+    let k = 0;
     ['esq', 'dir'].forEach(l => esc[l].forEach((cel, i) => {
       const ehAlvo = l === lado && i === 0, d = document.createElement('div');
       d.className = 'letra';
-      d.textContent = ehAlvo ? alvo : 'L';
+      d.textContent = ehAlvo ? alvo : distr === 'LO' ? (k++ % 2 ? 'O' : 'L') : distr;
       d.style.left = ((cel[0] + 0.5) / 6 * 100 + (Math.random() * 5 - 2.5)) + '%';
       d.style.top = ((cel[1] + 0.5) / 4 * 100 + (Math.random() * 8 - 4)) + '%';
       d.style.transform = 'rotate(' + giro() + 'deg)';
@@ -362,61 +375,67 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     }));
   }
 
-  function lista(alvo) {
-    const t = [];
-    ['esq', 'dir'].forEach(l => t.push({ alvo, n: 8, lado: l, treino: true }));
+  function lista(tamanhos, porCelula, comTreino) {
+    const treino = comTreino ? ['esq', 'dir'].map(l => ({ n: 8, lado: l, treino: true })) : [];
     const valendo = [];
-    TAM.forEach(n => { for (let i = 0; i < POR_CELULA; i++) valendo.push({ alvo, n, lado: i % 2 ? 'esq' : 'dir', treino: false }); });
-    return PB.stats.embaralhar(t).concat(PB.stats.embaralhar(valendo));
+    tamanhos.forEach(n => { for (let i = 0; i < porCelula; i++) valendo.push({ n, lado: i % 2 ? 'esq' : 'dir', treino: false }); });
+    return PB.stats.embaralhar(treino).concat(PB.stats.embaralhar(valendo));
   }
 
-  async function bloco(alvo, exec) {
-    const tentativas = lista(alvo);
+  /* Roda um bloco e devolve as tentativas (ou null, se foi interrompido). */
+  async function bloco(alvo, distr, tentativas, exec, nTreino) {
+    const dados = [];
     for (let i = 0; i < tentativas.length; i++) {
       const tr = tentativas[i];
-      if (i === 2) { limpar('Fim do treino. Agora valendo.'); await espera(1300); if (!ctl.vale(exec)) return false; }
+      if (nTreino && i === nTreino) { limpar('Fim do treino. Agora valendo.'); await espera(1300); if (!ctl.vale(exec)) return null; }
       limpar('+');
       await espera(500);
-      if (!ctl.vale(exec)) return false;
+      if (!ctl.vale(exec)) return null;
       PB.announce(msg, 'Encontre a letra ' + alvo + (tr.treino ? ' (treino)' : '') + '.');
       emCurso = PB.rt.medir({
-        mostrar: () => montar(alvo, tr.n, tr.lado),
+        mostrar: () => montar(alvo, tr.n, tr.lado, distr),
         teclas: { f: 'esq', j: 'dir' },
         botoes: [{ el: bEsq, valor: 'esq' }, { el: bDir, valor: 'dir' }],
         correta: tr.lado
       });
       const r = await emCurso;
-      if (!r || !ctl.vale(exec)) return false;
+      if (!r || !ctl.vale(exec)) return null;
       dados.push({ rt: r.rt, correta: r.correta, cond: alvo + '-' + tr.n, treino: tr.treino });
-      if (!r.correta) { limpar('Lado errado.'); await espera(500); if (!ctl.vale(exec)) return false; }
+      if (!r.correta) { limpar('Lado errado.'); await espera(500); if (!ctl.vale(exec)) return null; }
     }
-    return true;
+    return dados;
   }
 
+  function travar(on) {
+    rodando = on;
+    bEsq.disabled = bDir.disabled = !on;
+    go.hidden = on;
+    desGo.disabled = on; opcoesDes.forEach(b => { b.disabled = on; });
+  }
   function parar(texto) {
     ctl.cancelar();
     if (emCurso) emCurso.cancelar();
-    rodando = false;
-    bEsq.disabled = bDir.disabled = true;
+    travar(false);
     limpar(texto);
-    go.textContent = 'Começar'; go.hidden = false;
+    go.textContent = 'Começar';
   }
-  pausaveis.push(id => { if (rodando && id !== 'm2') parar('Pausado porque você trocou de aba. A busca recomeça do início.'); });
+  pausaveis.push(id => { if (rodando && id !== 'm2') parar('Pausado porque você saiu desta aba. A busca recomeça do início.'); });
 
   go.onclick = async () => {
     const exec = ctl.novo();
-    rodando = true; dados = [];
-    go.hidden = true; bEsq.disabled = bDir.disabled = false;
-    $('bv-res').textContent = ''; $('bv-res').className = ''; $('bv-graf').textContent = ''; $('bv-why').hidden = true;
+    travar(true);
+    $('bv-res').textContent = ''; $('bv-res').className = ''; $('bv-graf').textContent = ''; $('bv-why').hidden = true; $('bv-des').hidden = true;
     limpar('Parte 1 de 2: encontre a letra O. Dedos nas teclas F e J.');
     await espera(2200);
     if (!ctl.vale(exec)) return;
-    if (!await bloco('O', exec)) return;
+    const dO = await bloco('O', 'L', lista(TAM, POR_CELULA, true), exec, 2);
+    if (!dO) return;
     limpar('Parte 2 de 2: agora encontre a letra T. Atenção: as outras letras são L.');
     await espera(3000);
     if (!ctl.vale(exec)) return;
-    if (!await bloco('T', exec)) return;
-    fim();
+    const dT = await bloco('T', 'L', lista(TAM, POR_CELULA, true), exec, 2);
+    if (!dT) return;
+    fim(dO.concat(dT));
   };
 
   /* Gráfico simples: tempo médio por número de letras, uma linha por busca. */
@@ -435,6 +454,7 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     s += '<text x="12" y="14" font-size="11" fill="currentColor">tempo médio (ms)</text>';
     series.forEach(sr => {
       const pts = sr.pontos.filter(p => p.y !== null);
+      if (!pts.length) return; /* série sem nenhuma média válida: não desenha */
       s += '<polyline fill="none" stroke="' + sr.cor + '" stroke-width="2.5" points="' + pts.map(p => X(p.x) + ',' + Y(p.y).toFixed(1)).join(' ') + '"/>';
       pts.forEach(p => { s += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y).toFixed(1) + '" r="4" fill="' + sr.cor + '"/>'; });
       const u = pts[pts.length - 1];
@@ -444,17 +464,22 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
     el.innerHTML = '<svg viewBox="0 0 420 220" role="img" aria-label="Tempo médio por número de letras. ' + desc + '">' + s + '</svg>';
   }
 
-  function fim() {
-    rodando = false;
-    bEsq.disabled = bDir.disabled = true;
+  /* Aumento do tempo por letra entre a menor e a maior tela (null se faltar dado). */
+  function inclinacao(res, alvo, a, b) {
+    const ma = res[alvo + '-' + a] ? res[alvo + '-' + a].media : null, mb = res[alvo + '-' + b] ? res[alvo + '-' + b].media : null;
+    return ma === null || mb === null ? null : (mb - ma) / (b - a);
+  }
+  const porItem = v => v === null ? 'sem dados suficientes' : comSinal(v) + ' por letra';
+
+  function fim(dados) {
+    travar(false);
     limpar('Busca concluída. Veja o resultado abaixo.');
     const res = PB.rt.resumo(dados).condicoes;
     const m = (alvo, n) => res[alvo + '-' + n] ? res[alvo + '-' + n].media : null;
-    const inclin = alvo => (m(alvo, 4) === null || m(alvo, 16) === null) ? null : (m(alvo, 16) - m(alvo, 4)) / 12;
     const erros = alvo => { let n = 0, e = 0; TAM.forEach(t => { const c = res[alvo + '-' + t]; if (c) { n += c.n; e += Math.round(c.taxaErro * c.n); } }); return n ? e / n : null; };
     const trio = alvo => TAM.map(n => PB.rt.formatar(m(alvo, n)).replace(' ms', '')).join(' / ') + ' ms';
-    const porItem = v => v === null ? 'sem dados suficientes' : comSinal(v) + ' por letra';
-    const iO = inclin('O'), iT = inclin('T');
+    const iO = inclinacao(res, 'O', 4, 16), iT = inclinacao(res, 'T', 4, 16);
+    inclinT = iT;
     grafico($('bv-graf'), [
       { nome: 'O', cor: '#6ff0c0', pontos: TAM.map(n => ({ x: n, y: m('O', n) })) },
       { nome: 'T', cor: '#e0a91b', pontos: TAM.map(n => ({ x: n, y: m('T', n) })) }
@@ -475,8 +500,39 @@ classificar('cl-gargalo', Q.atencao_gargalo, 'gargalo', 'Que modelo de gargalo?'
       { nome: 'Busca do T: aumento por letra', valor: porItem(iT), esperado: 'maior que na busca do O' }
     ] });
     PB.announce(msg, 'Busca concluída. Veja o resultado abaixo.');
-    go.textContent = 'Refazer'; go.hidden = false;
+    go.textContent = 'Refazer';
+    abrirDesafio();
   }
+
+  /* ----- Desafio: uma busca do T em que o número de letras quase não pese ----- */
+  const NOME_DISTR = { L: 'letras L', O: 'letras O', LO: 'metade L e metade O' };
+  const limite = () => inclinT !== null && inclinT > 10 ? inclinT / 2 : 5;
+  function abrirDesafio() {
+    desafio = PB.desafio($('bv-des-caixa'), {
+      titulo: 'Desafio: uma busca do T que não dependa do número de letras', modulo: MOD, chave: 'desafio-busca',
+      meta: 'O alvo continua sendo o T. Troque as letras que o cercam e refaça uma busca curta (16 telas, com 4 e 16 letras). Meta: cada letra a mais deve acrescentar menos de ' + Math.round(limite()) + ' ms' + (inclinT !== null && inclinT > 10 ? ' (a metade do que acrescentou com as letras L).' : '.'),
+      conferir: r => r.distr === 'L' ? { ok: false, texto: 'Você refez a busca com as mesmas letras L' + (r.inclin === null ? '.' : ' (' + Math.round(r.inclin) + ' ms por letra).') + ' O desafio é trocar as letras em volta do T.' } : ({ ok: r.inclin !== null && r.inclin < limite(),
+        texto: r.inclin === null ? 'Não houve respostas corretas suficientes. Refaça a busca curta.'
+          : 'Com o T entre ' + NOME_DISTR[r.distr] + ', cada letra a mais acrescentou ' + Math.round(r.inclin) + ' ms' + (inclinT !== null ? ' (com as letras L: ' + Math.round(inclinT) + ' ms).' : '.') +
+            (r.inclin < limite() ? ' O alvo é o mesmo; o que mudou foi a relação entre ele e as letras em volta.' : ' Tente outras letras em volta do T.') })
+    });
+    $('bv-des').hidden = false;
+  }
+  opcoesDes.forEach(b => b.onclick = () => { distrDes = b.dataset.d; opcoesDes.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); });
+  desGo.onclick = async () => {
+    const exec = ctl.novo(), distr = distrDes;
+    travar(true);
+    campo.scrollIntoView({ block: 'center' });
+    limpar('Desafio: encontre a letra T. As outras são ' + NOME_DISTR[distr] + '.');
+    await espera(2500);
+    if (!ctl.vale(exec)) return;
+    const d = await bloco('T', distr, lista([4, 16], 8, false), exec, 0);
+    if (!d) return;
+    travar(false);
+    limpar('Busca curta concluída. Veja o desafio abaixo.');
+    desafio.avaliar({ distr: distr, inclin: inclinacao(PB.rt.resumo(d).condicoes, 'T', 4, 16) });
+    $('bv-des-caixa').scrollIntoView({ block: 'center' });
+  };
 })();
 
 /* ===== PARTE 3: STROOP ===== */

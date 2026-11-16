@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Processos Básicos · Testes de comum.js</title>
-<link rel="stylesheet" href="estilos.css?v=2026-11-16">
+<link rel="stylesheet" href="estilos.css?v=2026-11-16b">
 <style>
   .t{font-size:.92rem; padding:.35rem .6rem; border-bottom:1px solid var(--line)}
   .t.ok::before{content:"✓ passou: "; color:#8fdc7d}
@@ -24,7 +24,7 @@
   <div id="palco" hidden></div>
 </div>
 
-<script src="comum.js?v=2026-11-16"></script>
+<script src="comum.js?v=2026-11-16b"></script>
 <script>
 (async function () {
   const lista = document.getElementById('lista'), palco = document.getElementById('palco');
@@ -238,6 +238,24 @@
   teste('explicar: campo vazio não avança; com texto, resolve com o texto sem espaços nas pontas', () => { igual(exp1, 'porque sim'); igual(ex1.querySelector('textarea').readOnly, true); });
   teste('explicar: "ver sem responder" resolve com null', () => { igual(exp2, null); });
   teste('caso: registra a resposta escrita e avisa', () => { igual(casoTexto, 'minha resposta'); verdade(cs.querySelector('.registro').textContent.indexOf('Registrado') === 0); });
+
+  /* ---------------- PB.sim e PB.desafio ---------------- */
+  const visor = document.createElement('span'); palco.appendChild(visor);
+  let mudancas = 0;
+  const sim = PB.sim({ estado: { x: 2 }, derivar: e => ({ dobro: e.x * 2 }), mostrar: { dobro: visor }, aoMudar: () => { mudancas++; } });
+  teste('sim: o valor derivado vem de uma função só e é escrito na página', () => {
+    igual(sim.derivado().dobro, 4); const d = sim.definir('x', 5); igual(d.dobro, 10); igual(visor.textContent, '10'); igual(mudancas, 1);
+  });
+  const regua = document.createElement('input'); regua.type = 'range'; regua.min = 0; regua.max = 100; palco.appendChild(regua);
+  sim.ligar(regua, 'x');
+  regua.value = 7; regua.dispatchEvent(new Event('input'));
+  teste('sim: régua ligada altera o estado e atualiza o visor', () => { igual(sim.estado.x, 7); igual(visor.textContent, '14'); });
+  const dz = document.createElement('div'); palco.appendChild(dz);
+  const des = PB.desafio(dz, { meta: 'Chegue a 10.', conferir: v => ({ ok: v === 10, texto: 'valor ' + v }) });
+  teste('desafio: meta não atingida e depois atingida', () => {
+    igual(des.avaliar(3), false); verdade(dz.querySelector('.registro').textContent.indexOf('Ainda não. valor 3') === 0);
+    igual(des.avaliar(10), true); verdade(dz.classList.contains('feito')); verdade(dz.querySelector('.registro').textContent.indexOf('Meta atingida. valor 10') === 0);
+  });
 
   /* ---------------- PB.tabs ---------------- */
   const abas = document.createElement('div');

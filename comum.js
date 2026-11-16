@@ -600,5 +600,64 @@
     });
   };
 
+  /* ====================================================================
+     PB.sim: simulação com uma única função de estado
+     PB.sim({ estado: {...}, derivar: function (estado) -> {...}, mostrar: { chave: elemento ou seletor }, aoMudar: function (estado, derivado) })
+     "estado" guarda o que o estudante altera. "derivar" é uma função pura e a
+     ÚNICA fonte dos valores: o desenho e os números escritos na página leem o
+     mesmo objeto derivado, então não podem divergir.
+     Devolve { estado, derivado(), definir(chave, valor), atualizar(), ligar(input, chave, converter) }.
+     ==================================================================== */
+  PB.sim = function (cfg) {
+    var estado = {};
+    Object.keys(cfg.estado || {}).forEach(function (k) { estado[k] = cfg.estado[k]; });
+    function derivado() { return cfg.derivar(estado); }
+    function atualizar() {
+      var d = derivado();
+      Object.keys(cfg.mostrar || {}).forEach(function (k) {
+        var alvo = cfg.mostrar[k], el = typeof alvo === 'string' ? document.querySelector(alvo) : alvo;
+        if (el) el.textContent = d[k] === null || d[k] === undefined ? '' : String(d[k]);
+      });
+      if (cfg.aoMudar) cfg.aoMudar(estado, d);
+      return d;
+    }
+    function definir(chave, valor) { estado[chave] = valor; return atualizar(); }
+    return {
+      estado: estado, derivado: derivado, definir: definir, atualizar: atualizar,
+      ligar: function (input, chave, converter) {
+        input.addEventListener('input', function () { definir(chave, converter ? converter(input.value) : +input.value); });
+      }
+    };
+  };
+
+  /* ====================================================================
+     PB.desafio: uma meta a atingir, conferida contra o resultado do estudante
+     PB.desafio(el, { titulo, meta, modulo, chave, conferir: function (valor) -> { ok, texto } })
+     Devolve { avaliar(valor) }. Cada chamada confere a meta e escreve o retorno.
+     Quando a meta é atingida, grava em PB.store ({ rotulo, pergunta, medidas }).
+     ==================================================================== */
+  PB.desafio = function (el, cfg) {
+    el.className = 'desafio';
+    el.textContent = '';
+    el.appendChild(criar('div', 'k', 'Desafio'));
+    el.appendChild(criar('p', 'meta', cfg.meta));
+    var status = criar('div', 'registro', 'Meta ainda não tentada.');
+    el.appendChild(status);
+    var tentativas = 0;
+    return {
+      avaliar: function (valor) {
+        var r = cfg.conferir(valor) || {};
+        tentativas++;
+        el.classList.toggle('feito', !!r.ok);
+        PB.announce(status, (r.ok ? 'Meta atingida. ' : 'Ainda não. ') + (r.texto || ''));
+        if (r.ok && cfg.modulo && cfg.chave) {
+          PB.store.salvar(cfg.modulo, cfg.chave, { rotulo: cfg.titulo || 'Desafio', pergunta: cfg.meta,
+            medidas: [{ nome: 'Resultado do desafio', valor: r.texto || 'meta atingida', esperado: 'meta atingida' }, { nome: 'Tentativas até atingir', valor: String(tentativas), esperado: '' }] });
+        }
+        return !!r.ok;
+      }
+    };
+  };
+
   window.PB = PB;
 })();
